@@ -134,7 +134,7 @@ class PhysicalHealth extends StatelessWidget {
                             title: 'Add Water',
                             colour: kPrimaryColor,
                             onPressed: () {
-                              showBottomSheet(
+                              showModalBottomSheet(
                                   context: context,
                                   builder: (builder) {
                                     return const AddWater();
