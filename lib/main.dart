@@ -24,8 +24,7 @@ class MyApp extends StatelessWidget {
       create: (context) => AuthCubit(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: BlocBuilder<AuthCubit, authstate>(
+        home: BlocBuilder<AuthCubit, authstate>(
             buildWhen: ((previous, current) {
               return previous == authstate.init;
             }),
@@ -46,7 +45,7 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
-      ),
+      
     );
   }
 }

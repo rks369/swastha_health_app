@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:swastha/models/on_boarding_slider.dart';
-import 'package:swastha/screens/authentication/login.dart';
 import 'package:swastha/screens/authentication/register.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
@@ -97,7 +96,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 GestureDetector(
                   child: const Text('Sign in', style: kLinkTextStyle),
                   onTap: () {
-                    changeScreen(context, const Login());
+                    changeScreen(context, const Register());
                   },
                 )
               ],

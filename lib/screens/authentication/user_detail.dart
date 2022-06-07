@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:swastha/screens/authentication/bmi_reg.dart';
-import 'package:swastha/screens/side_drawer/bmi_calculator.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
@@ -119,17 +118,20 @@ class _UserDetailState extends State<UserDetail> {
                 RoundedButton(
                     title: 'Continue',
                     colour: kPrimaryColor,
-                    onPressed: () {
+                    onPressed: () async {
                       if (image != null) {
-                        final _auth = FirebaseAuth.instance.currentUser;
-                        FirebaseStorage.instance
+                        showProgressDialog(context);
+                        final auth = FirebaseAuth.instance.currentUser;
+                        final displayPicture = FirebaseStorage.instance
                             .ref('Profile')
-                            .child(_auth!.uid)
+                            .child(auth!.uid)
                             .putFile(image!)
-                            .whenComplete(() {
-                          changeScreen(context,
-                              BMIReg(name: name.text, profileURL: image!.path));
-                        });
+                            .snapshot;
+
+                        final downloadURL =
+                            await displayPicture.ref.getDownloadURL();
+                        changeScreen(context,
+                            BMIReg(name: name.text, profileURL: downloadURL));
                       }
                     }),
               ],

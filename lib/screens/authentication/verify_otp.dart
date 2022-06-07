@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
+import 'package:swastha/screens/home.dart';
 import 'package:swastha/screens/home/physical_health.dart';
 import 'package:swastha/screens/authentication/user_detail.dart';
 import 'package:swastha/services/change_screen.dart';
@@ -68,7 +69,7 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 BlocConsumer<AuthCubit, authstate>(
                   listener: ((context, state) {
                     if (state == authstate.loggedIn) {
-                      changeScreenReplacement(context, const PhysicalHealth());
+                      changeScreenReplacement(context, const Home());
                     } else if (state == authstate.unRegistered) {
                       changeScreenReplacement(context, const UserDetail());
                     } else if (state == authstate.error) {
@@ -80,32 +81,16 @@ class _VerifyOTPState extends State<VerifyOTP> {
                     }
                   }),
                   builder: ((context, state) {
-                    if (state == authstate.loading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
                     return RoundedButton(
                         title: "Verify",
                         colour: kPrimaryColor,
                         onPressed: () {
+                          showProgressDialog(context);
+
                           BlocProvider.of<AuthCubit>(context)
                               .verifyOTP(otp.text);
                         });
                   }),
-                ),
-                const Text(
-                  "Didn't you receive any code?",
-                  style: kNormalTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(
-                  height: 18,
-                ),
-                const Text(
-                  "Resend New Code",
-                  style: kLinkTextStyle,
-                  textAlign: TextAlign.center,
                 ),
               ],
             ),

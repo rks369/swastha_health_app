@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/models/user_model.dart';
 import 'package:swastha/screens/authentication/user_detail.dart';
+import 'package:swastha/screens/home.dart';
 import 'package:swastha/screens/home/physical_health.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
@@ -264,8 +265,7 @@ class _BMIReg extends State<BMIReg> {
                     BlocConsumer<AuthCubit, authstate>(
                       listener: ((context, state) {
                         if (state == authstate.loggedIn) {
-                          changeScreenReplacement(
-                              context, const PhysicalHealth());
+                          changeScreenReplacement(context, const Home());
                         } else if (state == authstate.unRegistered) {
                           changeScreenReplacement(context, const UserDetail());
                         } else if (state == authstate.error) {
@@ -286,13 +286,14 @@ class _BMIReg extends State<BMIReg> {
                             title: "Verify",
                             colour: kPrimaryColor,
                             onPressed: () {
-                              final _auth = FirebaseAuth.instance.currentUser;
+                              showProgressDialog(context);
+                              final auth = FirebaseAuth.instance.currentUser;
 
                               if (widget.name != null) {
                                 BlocProvider.of<AuthCubit>(context).register(
                                     UserModel(
-                                        _auth!.uid,
-                                        _auth.email!,
+                                        auth!.uid,
+                                        auth.phoneNumber!,
                                         widget.name!,
                                         widget.profileURL!,
                                         selectedMale ? 'Male' : 'Female',
@@ -303,10 +304,10 @@ class _BMIReg extends State<BMIReg> {
                               } else {
                                 BlocProvider.of<AuthCubit>(context).register(
                                     UserModel(
-                                        _auth!.uid,
-                                        _auth.email!,
-                                        _auth.displayName!,
-                                        _auth.photoURL!,
+                                        auth!.uid,
+                                        auth.email!,
+                                        auth.displayName!,
+                                        auth.photoURL!,
                                         selectedMale ? 'Male' : 'Female',
                                         height.toString(),
                                         weight.toString(),
