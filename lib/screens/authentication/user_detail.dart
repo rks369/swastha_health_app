@@ -19,6 +19,8 @@ class UserDetail extends StatefulWidget {
 
 class _UserDetailState extends State<UserDetail> {
   final TextEditingController name = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   File? image;
   AndroidUiSettings androidUiSettingsLocked() => AndroidUiSettings(
         toolbarTitle: 'Crop Image',
@@ -99,39 +101,59 @@ class _UserDetailState extends State<UserDetail> {
                 const SizedBox(
                   height: 28,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 5.0, horizontal: 15.0),
-                  child: TextFormField(
-                    controller: name,
-                    keyboardType: TextInputType.name,
-                    onChanged: (value) {},
-                    decoration: kTextFieldDecoration.copyWith(
-                        prefixIcon: const Icon(
-                          Icons.person,
-                          color: kPrimaryColor,
-                        ),
-                        hintText: 'Enter Your Name',
-                        labelText: 'Enter Your Name'),
+                Form(
+                  key: formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 5.0, horizontal: 15.0),
+                    child: TextFormField(
+                      controller: name,
+                      keyboardType: TextInputType.name,
+                      onChanged: (value) {},
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please Enter Your Name';
+                        }
+                        if (value.length < 3) {
+                          return 'Phone Number Should be 3 Letter';
+                        }
+                        return null;
+                      },
+                      decoration: kTextFieldDecoration.copyWith(
+                          prefixIcon: const Icon(
+                            Icons.person,
+                            color: kPrimaryColor,
+                          ),
+                          hintText: 'Enter Your Name',
+                          labelText: 'Enter Your Name'),
+                    ),
                   ),
                 ),
                 RoundedButton(
                     title: 'Continue',
                     colour: kPrimaryColor,
                     onPressed: () async {
-                      if (image != null) {
-                        showProgressDialog(context);
-                        final auth = FirebaseAuth.instance.currentUser;
-                        final displayPicture = FirebaseStorage.instance
-                            .ref('Profile')
-                            .child(auth!.uid)
-                            .putFile(image!)
-                            .snapshot;
+                      if (formKey.currentState!.validate()) {
+                        if (image != null) {
+                          showProgressDialog(context);
+                          final auth = FirebaseAuth.instance.currentUser;
+                          final displayPicture = FirebaseStorage.instance
+                              .ref('Profile')
+                              .child(auth!.uid)
+                              .putFile(image!)
+                              .snapshot;
 
-                        final downloadURL =
-                            await displayPicture.ref.getDownloadURL();
-                        changeScreen(context,
-                            BMIReg(name: name.text, profileURL: downloadURL));
+                          final downloadURL =
+                              await displayPicture.ref.getDownloadURL();
+                          changeScreen(context,
+                              BMIReg(name: name.text, profileURL: downloadURL));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Please Select Profile Picutre'),
+                            ),
+                          );
+                        }
                       }
                     }),
               ],

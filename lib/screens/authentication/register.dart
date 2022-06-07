@@ -4,7 +4,6 @@ import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/screens/authentication/bmi_reg.dart';
 import 'package:swastha/screens/authentication/verify_otp.dart';
 import 'package:swastha/screens/home.dart';
-import 'package:swastha/screens/home/physical_health.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/circular_login_component.dart';

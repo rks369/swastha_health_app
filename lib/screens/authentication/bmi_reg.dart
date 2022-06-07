@@ -7,7 +7,6 @@ import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/models/user_model.dart';
 import 'package:swastha/screens/authentication/user_detail.dart';
 import 'package:swastha/screens/home.dart';
-import 'package:swastha/screens/home/physical_health.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/card.dart';
@@ -40,13 +39,13 @@ class _BMIReg extends State<BMIReg> {
       floatingActionButton: FloatingActionButton(
           backgroundColor: kWhite,
           mini: true,
+          onPressed: (() {
+            Navigator.pop(context);
+          }),
           child: const Icon(
             Icons.arrow_back,
             color: kPrimaryColor,
-          ),
-          onPressed: (() {
-            Navigator.pop(context);
-          })),
+          )),
       body: Container(
         decoration: const BoxDecoration(color: kPrimaryColor),
         child: SafeArea(

@@ -30,49 +30,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
-    final _advancedDrawerController = AdvancedDrawerController();
+    final advancedDrawerController = AdvancedDrawerController();
 
     return AdvancedDrawer(
       backdropColor: kPrimaryColor,
-      controller: _advancedDrawerController,
-      child: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-          floatingActionButton: FloatingActionButton(
-            mini: true,
-            backgroundColor: kWhite,
-            onPressed: () {
-              _advancedDrawerController.showDrawer();
-            },
-            child: ValueListenableBuilder<AdvancedDrawerValue>(
-              valueListenable: _advancedDrawerController,
-              builder: (_, value, __) {
-                return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 250),
-                  child: Icon(
-                    value.visible ? Icons.clear : Icons.menu,
-                    color: kPrimaryColor,
-                    key: ValueKey<bool>(value.visible),
-                  ),
-                );
-              },
-            ),
-          ),
-          body: pages[index],
-          bottomNavigationBar: BottomNavigationBar(
-            onTap: ((value) {
-              setState(() {
-                index = value;
-              });
-            }),
-            currentIndex: index,
-            selectedItemColor: kPrimaryColor,
-            items: const [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.fitness_center), label: 'Physical'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.psychology), label: 'Mental'),
-            ],
-          )),
+      controller: advancedDrawerController,
       drawer: SafeArea(
         child: Container(
           color: kPrimaryColor,
@@ -194,6 +156,44 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
+      child: Scaffold(
+          floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+          floatingActionButton: FloatingActionButton(
+            mini: true,
+            backgroundColor: kWhite,
+            onPressed: () {
+              advancedDrawerController.showDrawer();
+            },
+            child: ValueListenableBuilder<AdvancedDrawerValue>(
+              valueListenable: advancedDrawerController,
+              builder: (_, value, __) {
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  child: Icon(
+                    value.visible ? Icons.clear : Icons.menu,
+                    color: kPrimaryColor,
+                    key: ValueKey<bool>(value.visible),
+                  ),
+                );
+              },
+            ),
+          ),
+          body: pages[index],
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: ((value) {
+              setState(() {
+                index = value;
+              });
+            }),
+            currentIndex: index,
+            selectedItemColor: kPrimaryColor,
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.fitness_center), label: 'Physical'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.psychology), label: 'Mental'),
+            ],
+          )),
     );
   }
 }

@@ -11,13 +11,13 @@ class TermAndCondtion extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           backgroundColor: kWhite,
           mini: true,
+          onPressed: (() {
+            Navigator.pop(context);
+          }),
           child: const Icon(
             Icons.arrow_back,
             color: kPrimaryColor,
-          ),
-          onPressed: (() {
-            Navigator.pop(context);
-          })),
+          )),
       body: Container(
         decoration: const BoxDecoration(color: kPrimaryColor),
         child: SafeArea(
