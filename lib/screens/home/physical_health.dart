@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/screens/home.dart';
@@ -281,21 +282,101 @@ class _AddWaterState extends State<AddWater> {
                   _taken.toString(),
                   style: const TextStyle(fontSize: 15.0, color: kPrimaryColor),
                 ),
-                Slider(
-                    activeColor: kPrimaryColor,
-                    value: _taken.toDouble(),
-                    min: 0.0,
-                    max: 1000.0,
-                    onChanged: (value) {
-                      setState(() {
-                        //  blocProvider.setWaterTaken(_taken + 0.0);
-                        _taken = value.round();
-                      });
-                    })
+                // Slider(
+                //     activeColor: kPrimaryColor,
+                //     value: _taken.toDouble(),
+                //     min: 0.0,
+                //     max: 1000.0,
+                //     onChanged: (value) {
+                //       setState(() {
+                //         //  blocProvider.setWaterTaken(_taken + 0.0);
+                //         _taken = value.round();
+                //       });
+                //     })
               ],
             ),
             onPress: () {},
           ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.local_drink,
+                    color: Colors.blueAccent,
+                    size: 40,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      blocProvider.setWaterTaken(_taken + 0.0);
+                      _taken = 100;
+                    });
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text("100 ml")
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.add_circle,
+                  color: Colors.blueAccent,
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.local_drink,
+                    color: Colors.blueAccent,
+                    size: 50,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      blocProvider.setWaterTaken(_taken + 0.0);
+                      _taken = 200;
+                    });
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text("200 ml"),
+                const Icon(
+                  Icons.remove_circle,
+                  color: Colors.blueAccent,
+                ),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.local_drink,
+                    color: Colors.blueAccent,
+                    size: 60,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      blocProvider.setWaterTaken(_taken + 0.0);
+                      _taken = 250;
+                    });
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  "250 ml",
+                  style: TextStyle(),
+                  textAlign: TextAlign.end,
+                )
+              ],
+            ),
+          ]),
           Center(
             child: RoundedButton(
                 title: "Done",
@@ -308,16 +389,6 @@ class _AddWaterState extends State<AddWater> {
                     Navigator.pop(context);
                   });
                   changeScreen(context, const Home());
-                }),
-          ),
-          Center(
-            child: RoundedButton(
-                title: "Exit",
-                colour: kPrimaryColor,
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
                 }),
           ),
         ],
