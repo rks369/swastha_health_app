@@ -27,6 +27,8 @@ dependencies:
   syncfusion_flutter_gauges: ^20.1.56
   shared_preferences: ^2.0.15
   google_sign_in: ^5.3.1
+  sqflite: ^2.0.2+1
+  path_provider: ^2.0.11
 
 dev_dependencies:
   flutter_test:
