@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
+import 'package:swastha/database/database_helper.dart';
 import 'package:swastha/screens/home.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
@@ -198,9 +199,14 @@ class _AddWaterState extends State<AddWater> {
                 title: "Done",
                 colour: kPrimaryColor,
                 onPressed: () {
-                  setState(() {
+                  setState(() async {
                     blocProvider.setWaterTaken(
                         _taken + 0.0 + blocProvider.waterModel.takenwater);
+                    await DataBaseHelper.instance
+                        .insert({DataBaseHelper.columnname: _taken});
+                    List<Map<String, dynamic>> queryrows =
+                        await DataBaseHelper.instance.queryAll();
+                    print(queryrows);
                     Navigator.pop(context);
                     Navigator.pop(context);
                   });
