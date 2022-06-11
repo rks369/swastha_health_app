@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/database_helper.dart';
 import 'package:swastha/screens/home.dart';
+import 'package:swastha/screens/home/sql_helper.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/card.dart';
@@ -198,18 +201,25 @@ class _AddWaterState extends State<AddWater> {
             child: RoundedButton(
                 title: "Done",
                 colour: kPrimaryColor,
-                onPressed: () {
-                  setState(() async {
-                    blocProvider.setWaterTaken(
-                        _taken + 0.0 + blocProvider.waterModel.takenwater);
-                    await DataBaseHelper.instance
-                        .insert({DataBaseHelper.columnname: _taken});
-                    List<Map<String, dynamic>> queryrows =
-                        await DataBaseHelper.instance.queryAll();
-                    print(queryrows);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  });
+                onPressed: () async {
+                  int res = await SQLHelper.createItem(
+                      100, DateFormat('dd/MM/yyyy').format(DateTime.now()));
+                  print(res);
+                  List resList = await SQLHelper.getItem(
+                      DateFormat('dd/MM/yyyy').format(DateTime.now()));
+                  print(resList);
+                  // setState(() async {
+
+                  //   blocProvider.setWaterTaken(
+                  //       _taken + 0.0 + blocProvider.waterModel.takenwater);
+                  //   await DataBaseHelper.instance
+                  //       .insert({DataBaseHelper.columnname: _taken});
+                  //   List<Map<String, dynamic>> queryrows =
+                  //       await DataBaseHelper.instance.queryAll();
+                  //   print(queryrows);
+                  //   Navigator.pop(context);
+                  //   Navigator.pop(context);
+                  // });
                   changeScreen(context, const Home());
                 }),
           ),
