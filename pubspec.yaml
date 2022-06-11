@@ -30,6 +30,7 @@ dependencies:
   sqflite: ^2.0.2+1
   path_provider: ^2.0.11
   sensors_plus: ^1.3.2
+  fl_chart: ^0.51.0
 
 dev_dependencies:
   flutter_test:
