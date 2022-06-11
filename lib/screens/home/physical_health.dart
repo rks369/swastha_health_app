@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
+import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/screens/home.dart';
 import 'package:swastha/screens/home/add_water.dart';
 import 'package:swastha/services/change_screen.dart';
@@ -32,6 +34,20 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
   int steps = 0;
   double previousDistacne = 0.0;
   double distance = 0.0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    settaken();
+    super.initState();
+  }
+
+  void settaken() async {
+    final blocProvider = BlocProvider.of<AuthCubit>(context);
+    List resList = await SQLHelper.getItem(
+        DateFormat('dd/MM/yyyy').format(DateTime.now()));
+    blocProvider.setWaterTaken(resList[0]['waterTaken'] * 1.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     final blocProvider = BlocProvider.of<AuthCubit>(context);

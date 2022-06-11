@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/database_helper.dart';
 import 'package:swastha/screens/home.dart';
-import 'package:swastha/screens/home/sql_helper.dart';
+import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/card.dart';
@@ -203,10 +203,12 @@ class _AddWaterState extends State<AddWater> {
                 colour: kPrimaryColor,
                 onPressed: () async {
                   int res = await SQLHelper.createItem(
-                      100, DateFormat('dd/MM/yyyy').format(DateTime.now()));
+                      _taken, DateFormat('dd/MM/yyyy').format(DateTime.now()));
                   print(res);
                   List resList = await SQLHelper.getItem(
                       DateFormat('dd/MM/yyyy').format(DateTime.now()));
+
+                  blocProvider.setWaterTaken((resList[0]['waterTaken'] * 1.0));
                   print(resList);
                   // setState(() async {
 
