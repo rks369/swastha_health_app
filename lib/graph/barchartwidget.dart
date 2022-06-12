@@ -28,7 +28,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
 
     for (int i = 0; i < result.length; i++) {
       dataList.add(GraphData(
-          name: result[i]['date'],
+          name: weekday[int.parse(result[i]['day']) - 1],
           id: i,
           y: result[i]['waterTaken'] * 1.0,
           color: barColor[i % 7]));
@@ -43,7 +43,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
   Widget build(BuildContext context) {
     return BarChart(BarChartData(
       alignment: BarChartAlignment.center,
-      maxY: 1200,
+      maxY: 3000,
       minY: 0,
       groupsSpace: 36,
       barTouchData: BarTouchData(enabled: true),

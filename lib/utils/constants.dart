@@ -9,3 +9,5 @@ const List<Color> barColor = [
   Color(0xffffdd80),
   Color(0xffff4d94)
 ];
+
+const List<String> weekday = ["Mon", "Tue", "Wed", "Thus", "Fri", "Sat", "Sun"];
