@@ -13,6 +13,7 @@ import 'package:swastha/screens/home/add_water.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/card.dart';
+import 'package:swastha/widgets/dashboard_tile.dart';
 import 'package:swastha/widgets/round_button.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -206,7 +207,33 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                         builder: (builder) {
                                           return const SetWaterGoal();
                                         });
-                                  })
+                                  }),
+                              DashboardTile(
+                                icon: Icons.water_drop,
+                                title: "Water: ",
+                                RangeTitle:
+                                    "${blocProvider.waterModel.takenwater / 1000}L/${blocProvider.waterModel.goalwater.toInt()}L",
+                                maxrange: blocProvider.waterModel.goalwater,
+                                interval: blocProvider.waterModel.goalwater / 3,
+                                valuerange:
+                                    blocProvider.waterModel.takenwater / 1000,
+                              ),
+                              DashboardTile(
+                                icon: Icons.directions_run,
+                                title: "Steps: ",
+                                RangeTitle: "1000/6000",
+                                maxrange: 6000.0,
+                                interval: 2000.0,
+                                valuerange: 1000.0,
+                              ),
+                              DashboardTile(
+                                icon: Icons.hotel,
+                                title: "Sleep: ",
+                                RangeTitle: "3h/9h",
+                                maxrange: 9.0,
+                                interval: 3.0,
+                                valuerange: 3.0,
+                              )
                             ],
                           ),
                         ),
