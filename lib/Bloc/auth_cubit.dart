@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/models/user_model.dart';
 import 'package:swastha/models/water_model.dart';
 
@@ -45,6 +46,11 @@ class AuthCubit extends Cubit<authstate> {
     } else {
       emit(authstate.loggedOut);
     }
+  }
+
+  void dbisNull() async {
+    var result = await SQLHelper.getItems();
+    if (result.length == 0) {}
   }
 
   String? _verificationId;

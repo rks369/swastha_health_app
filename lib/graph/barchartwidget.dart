@@ -35,6 +35,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
     }
     setState(() {
       print(dataList);
+      print(result.length);
     });
   }
 

@@ -7,7 +7,8 @@ class SQLHelper {
     await database.execute("""CREATE TABLE water(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         waterTaken INTEGER,
-        date TEXT
+        date TEXT,
+        day TEXTs
       )
       """);
   }
@@ -26,15 +27,15 @@ class SQLHelper {
   }
 
   // Create new item (journal)
-  static Future<int> createItem(int waterTaken, String date) async {
+  static Future<int> createItem(int waterTaken, String date, String day) async {
     final db = await SQLHelper.db();
     final list = await SQLHelper.getItem(date);
     if (list.length == 1) {
       final result = await SQLHelper.updateItem(
-          date, waterTaken + (list[0]['waterTaken'] as int));
+          date, waterTaken + (list[0]['waterTaken'] as int), day);
       return result;
     } else {
-      final data = {'waterTaken': waterTaken, 'date': date};
+      final data = {'waterTaken': waterTaken, 'date': date, 'day': day};
       final id = await db.insert('water', data,
           conflictAlgorithm: sql.ConflictAlgorithm.replace);
       return id;
@@ -56,15 +57,10 @@ class SQLHelper {
   }
 
   // Update an item by id
-  static Future<int> updateItem(
-    String date,
-    int waterTaken,
-  ) async {
+  static Future<int> updateItem(String date, int waterTaken, String day) async {
     final db = await SQLHelper.db();
 
-    final data = {
-      'waterTaken': waterTaken,
-    };
+    final data = {'waterTaken': waterTaken, 'day': day};
 
     final result =
         await db.update('water', data, where: "date = ?", whereArgs: [date]);

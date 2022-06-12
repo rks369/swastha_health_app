@@ -201,7 +201,9 @@ class _AddWaterState extends State<AddWater> {
                 colour: kPrimaryColor,
                 onPressed: () async {
                   int res = await SQLHelper.createItem(
-                      _taken, DateFormat('dd/MM/yyyy').format(DateTime.now()));
+                      _taken,
+                      DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                      DateTime.now().weekday.toString());
                   print(res);
                   List resList = await SQLHelper.getItem(
                       DateFormat('dd/MM/yyyy').format(DateTime.now()));
