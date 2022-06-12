@@ -233,6 +233,14 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                 maxrange: 9.0,
                                 interval: 3.0,
                                 valuerange: 3.0,
+                              ),
+                              DashboardTile(
+                                icon: Icons.hotel,
+                                title: "Calorie: ",
+                                RangeTitle: "2000/3000",
+                                maxrange: 3000.0,
+                                interval: 1000.0,
+                                valuerange: 2000.0,
                               )
                             ],
                           ),
