@@ -221,10 +221,10 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                               DashboardTile(
                                 icon: Icons.directions_run,
                                 title: "Steps: ",
-                                RangeTitle: "1000/6000",
-                                maxrange: 6000.0,
+                                RangeTitle: "$steps/6000",
+                                maxrange: 100.0,
                                 interval: 2000.0,
-                                valuerange: 1000.0,
+                                valuerange: steps * 1.0,
                               ),
                               DashboardTile(
                                 icon: Icons.hotel,
@@ -235,7 +235,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                 valuerange: 3.0,
                               ),
                               DashboardTile(
-                                icon: Icons.hotel,
+                                icon: Icons.local_dining,
                                 title: "Calorie: ",
                                 RangeTitle: "2000/3000",
                                 maxrange: 3000.0,
