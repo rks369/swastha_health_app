@@ -1,9 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
-import 'package:swastha/database/database_helper.dart';
 import 'package:swastha/screens/home.dart';
 import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/services/change_screen.dart';
