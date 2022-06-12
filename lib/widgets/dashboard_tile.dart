@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 class DashboardTile extends StatelessWidget {
   final IconData icon;
   final String title;
-  final String RangeTitle;
+  final String rangeTitle;
   final double maxrange;
   final double interval;
   final double valuerange;
@@ -13,7 +13,7 @@ class DashboardTile extends StatelessWidget {
       {Key? key,
       required this.icon,
       required this.title,
-      required this.RangeTitle,
+      required this.rangeTitle,
       required this.maxrange,
       required this.interval,
       required this.valuerange})
@@ -44,19 +44,44 @@ class DashboardTile extends StatelessWidget {
                         children: [
                           Text(
                             title,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: kPrimaryColor,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            RangeTitle,
-                            style:
-                                TextStyle(color: kPrimaryColor, fontSize: 20),
+                            rangeTitle,
+                            style: const TextStyle(
+                                color: kPrimaryColor, fontSize: 20),
                           ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: valuerange == maxrange
+                                    ? Colors.green
+                                    : valuerange <= maxrange / 3
+                                        ? Colors.red
+                                        : Colors.orange,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5))),
+                            height: 20,
+                            width: 50,
+                            child: Center(
+                                child: Text(
+                              valuerange == maxrange / 2
+                                  ? "Done"
+                                  : valuerange <= maxrange / 3
+                                      ? "Alert"
+                                      : "Good",
+                              style: TextStyle(color: kWhite),
+                            )),
+                          )
                         ],
                       ),
                       Container(
+                        // ignore: sort_child_properties_last
                         child: SfLinearGauge(
                             showTicks: false,
                             interval: interval,
@@ -73,15 +98,16 @@ class DashboardTile extends StatelessWidget {
                                 edgeStyle: LinearEdgeStyle.bothCurve,
                               )
                             ],
-                            majorTickStyle: LinearTickStyle(length: 10),
-                            axisLabelStyle:
-                                TextStyle(fontSize: 12.0, color: Colors.black),
+                            majorTickStyle: const LinearTickStyle(length: 10),
+                            axisLabelStyle: const TextStyle(
+                                fontSize: 12.0, color: Colors.black),
+                            // ignore: prefer_const_constructors
                             axisTrackStyle: LinearAxisTrackStyle(
                                 color: kGrey,
                                 edgeStyle: LinearEdgeStyle.bothCurve,
                                 thickness: 15.0,
                                 borderColor: Colors.grey)),
-                        margin: EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
                       )
                     ],
                   )

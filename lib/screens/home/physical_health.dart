@@ -211,7 +211,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                               DashboardTile(
                                 icon: Icons.water_drop,
                                 title: "Water: ",
-                                RangeTitle:
+                                rangeTitle:
                                     "${blocProvider.waterModel.takenwater / 1000}L/${blocProvider.waterModel.goalwater.toInt()}L",
                                 maxrange: blocProvider.waterModel.goalwater,
                                 interval: blocProvider.waterModel.goalwater / 3,
@@ -221,7 +221,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                               DashboardTile(
                                 icon: Icons.directions_run,
                                 title: "Steps: ",
-                                RangeTitle: "$steps/6000",
+                                rangeTitle: "$steps/6000",
                                 maxrange: 100.0,
                                 interval: 2000.0,
                                 valuerange: steps * 1.0,
@@ -229,15 +229,15 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                               DashboardTile(
                                 icon: Icons.hotel,
                                 title: "Sleep: ",
-                                RangeTitle: "3h/9h",
+                                rangeTitle: "4h/9h",
                                 maxrange: 9.0,
                                 interval: 3.0,
-                                valuerange: 3.0,
+                                valuerange: 4.0,
                               ),
                               DashboardTile(
                                 icon: Icons.local_dining,
                                 title: "Calorie: ",
-                                RangeTitle: "2000/3000",
+                                rangeTitle: "2000/3000",
                                 maxrange: 3000.0,
                                 interval: 1000.0,
                                 valuerange: 2000.0,
