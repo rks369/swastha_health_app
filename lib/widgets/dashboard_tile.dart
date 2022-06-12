@@ -59,23 +59,23 @@ class DashboardTile extends StatelessWidget {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                                color: valuerange == maxrange
+                                color: valuerange >= maxrange
                                     ? Colors.green
                                     : valuerange <= maxrange / 3
                                         ? Colors.red
                                         : Colors.orange,
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
+                                    const BorderRadius.all(Radius.circular(5))),
                             height: 20,
                             width: 50,
                             child: Center(
                                 child: Text(
-                              valuerange == maxrange / 2
+                              valuerange >= maxrange
                                   ? "Done"
                                   : valuerange <= maxrange / 3
                                       ? "Alert"
                                       : "Good",
-                              style: TextStyle(color: kWhite),
+                              style: const TextStyle(color: kWhite),
                             )),
                           )
                         ],

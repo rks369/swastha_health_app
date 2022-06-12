@@ -8,6 +8,7 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/sql_helper.dart';
+import 'package:swastha/screens/dashboards/water_dashboard.dart';
 import 'package:swastha/screens/home.dart';
 import 'package:swastha/screens/home/add_water.dart';
 import 'package:swastha/services/change_screen.dart';
@@ -54,53 +55,58 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
     double taken = blocProvider.waterModel.takenwater;
     taken = taken / 1000;
-    return StreamBuilder<AccelerometerEvent>(
-        stream: SensorsPlatform.instance.accelerometerEvents,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            x = snapshot.data!.x;
-            y = snapshot.data!.y;
-            z = snapshot.data!.z;
-            distance = getValue(x, y, z);
-            if (distance > 6) {
-              steps++;
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+          backgroundColor: kPrimaryColor,
+          child: const Icon(Icons.add),
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (builder) {
+                  return AddWater();
+                });
+          }),
+      body: StreamBuilder<AccelerometerEvent>(
+          stream: SensorsPlatform.instance.accelerometerEvents,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              x = snapshot.data!.x;
+              y = snapshot.data!.y;
+              z = snapshot.data!.z;
+              distance = getValue(x, y, z);
+              if (distance > 6) {
+                steps++;
+              }
+              calories = calculateCalories(steps);
+              duration = calculateDuration(steps);
+              miles = calculateMiles(steps);
             }
-            calories = calculateCalories(steps);
-            duration = calculateDuration(steps);
-            miles = calculateMiles(steps);
-          }
-          return Container(
-            decoration: const BoxDecoration(color: kPrimaryColor),
-            child: SafeArea(
-              child: Column(children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                Image.asset(
-                  'assets/images/logo.png',
-                  width: 100,
-                  height: 100,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  'Physical Health',
-                  style: TextStyle(
-                      color: kWhite, fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    decoration: const BoxDecoration(
-                        color: kGrey,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30),
-                            topRight: Radius.circular(30))),
+            return Container(
+              decoration: const BoxDecoration(color: kPrimaryColor),
+              child: SafeArea(
+                child: Column(children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Image.asset(
+                    'assets/images/logo.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    'Physical Health',
+                    style: TextStyle(
+                        color: kWhite,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
                     child: Container(
                       width: double.infinity,
                       height: double.infinity,
@@ -109,150 +115,151 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(30),
                               topRight: Radius.circular(30))),
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: MediaQuery.of(context).size.width / 2,
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: SfRadialGauge(
-                                    enableLoadingAnimation: true,
-                                    axes: <RadialAxis>[
-                                      RadialAxis(
+                      child: Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        decoration: const BoxDecoration(
+                            color: kGrey,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30))),
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: MediaQuery.of(context).size.width / 2,
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  child: SfRadialGauge(
+                                      enableLoadingAnimation: true,
+                                      axes: <RadialAxis>[
+                                        RadialAxis(
+                                            startAngle: 90,
+                                            endAngle: 90,
+                                            canScaleToFit: false,
+                                            minimum: 0,
+                                            maximum: blocProvider
+                                                    .waterModel.goalwater +
+                                                0.1,
+                                            showLabels: false,
+                                            showTicks: false,
+                                            axisLineStyle: AxisLineStyle(
+                                              thickness: 0.1,
+                                              cornerStyle:
+                                                  CornerStyle.bothCurve,
+                                              color:
+                                                  Colors.blue.withOpacity(0.3),
+                                              thicknessUnit:
+                                                  GaugeSizeUnit.factor,
+                                            ),
+                                            pointers: <GaugePointer>[
+                                              RangePointer(
+                                                value: taken + 0.0,
+                                                cornerStyle:
+                                                    CornerStyle.bothCurve,
+                                                width: 0.1,
+                                                sizeUnit: GaugeSizeUnit.factor,
+                                                color: Colors.blue,
+                                              ),
+                                            ],
+                                            annotations: <GaugeAnnotation>[
+                                              GaugeAnnotation(
+                                                positionFactor: 0.1,
+                                                angle: 90,
+                                                widget: Text('$steps/100',
+                                                    style: kHeadingTextStyle
+                                                        .copyWith(
+                                                            color: Colors.blue,
+                                                            fontSize: 24.0)),
+                                              ),
+                                            ]),
+                                        RadialAxis(
                                           startAngle: 90,
                                           endAngle: 90,
+                                          radiusFactor: .80,
                                           canScaleToFit: false,
                                           minimum: 0,
-                                          maximum: blocProvider
-                                                  .waterModel.goalwater +
-                                              0.1,
+                                          maximum: 100.0,
                                           showLabels: false,
                                           showTicks: false,
                                           axisLineStyle: AxisLineStyle(
                                             thickness: 0.1,
                                             cornerStyle: CornerStyle.bothCurve,
-                                            color: Colors.blue.withOpacity(0.3),
+                                            color:
+                                                Colors.green.withOpacity(0.3),
                                             thicknessUnit: GaugeSizeUnit.factor,
                                           ),
                                           pointers: <GaugePointer>[
                                             RangePointer(
-                                              value: taken + 0.0,
+                                              value: steps * 1.0,
                                               cornerStyle:
                                                   CornerStyle.bothCurve,
                                               width: 0.1,
                                               sizeUnit: GaugeSizeUnit.factor,
-                                              color: Colors.blue,
+                                              color: Colors.green,
                                             ),
                                           ],
-                                          annotations: <GaugeAnnotation>[
-                                            GaugeAnnotation(
-                                              positionFactor: 0.1,
-                                              angle: 90,
-                                              widget: Text('$steps/100',
-                                                  style: kHeadingTextStyle
-                                                      .copyWith(
-                                                          color: Colors.blue,
-                                                          fontSize: 24.0)),
-                                            )
-                                          ]),
-                                      RadialAxis(
-                                        startAngle: 90,
-                                        endAngle: 90,
-                                        radiusFactor: .80,
-                                        canScaleToFit: false,
-                                        minimum: 0,
-                                        maximum: 100.0,
-                                        showLabels: false,
-                                        showTicks: false,
-                                        axisLineStyle: AxisLineStyle(
-                                          thickness: 0.1,
-                                          cornerStyle: CornerStyle.bothCurve,
-                                          color: Colors.green.withOpacity(0.3),
-                                          thicknessUnit: GaugeSizeUnit.factor,
-                                        ),
-                                        pointers: <GaugePointer>[
-                                          RangePointer(
-                                            value: steps * 1.0,
-                                            cornerStyle: CornerStyle.bothCurve,
-                                            width: 0.1,
-                                            sizeUnit: GaugeSizeUnit.factor,
-                                            color: Colors.green,
-                                          ),
-                                        ],
-                                      )
-                                    ]),
-                              ),
-                              Text(
-                                  "taken : ${blocProvider.waterModel.takenwater}"),
-                              Text(
-                                  " Goal: ${blocProvider.waterModel.goalwater}"),
-                              RoundedButton(
-                                  title: 'Add Water',
-                                  colour: kPrimaryColor,
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                        context: context,
-                                        builder: (builder) {
-                                          return const AddWater();
-                                        });
-                                  }),
-                              RoundedButton(
-                                  title: 'Set Goal',
-                                  colour: kPrimaryColor,
-                                  onPressed: () {
-                                    showBottomSheet(
-                                        context: context,
-                                        builder: (builder) {
-                                          return const SetWaterGoal();
-                                        });
-                                  }),
-                              DashboardTile(
-                                icon: Icons.water_drop,
-                                title: "Water: ",
-                                rangeTitle:
-                                    "${blocProvider.waterModel.takenwater / 1000}L/${blocProvider.waterModel.goalwater.toInt()}L",
-                                maxrange: blocProvider.waterModel.goalwater,
-                                interval: blocProvider.waterModel.goalwater / 3,
-                                valuerange:
-                                    blocProvider.waterModel.takenwater / 1000,
-                              ),
-                              DashboardTile(
-                                icon: Icons.directions_run,
-                                title: "Steps: ",
-                                rangeTitle: "$steps/6000",
-                                maxrange: 100.0,
-                                interval: 2000.0,
-                                valuerange: steps * 1.0,
-                              ),
-                              DashboardTile(
-                                icon: Icons.hotel,
-                                title: "Sleep: ",
-                                rangeTitle: "4h/9h",
-                                maxrange: 9.0,
-                                interval: 3.0,
-                                valuerange: 4.0,
-                              ),
-                              DashboardTile(
-                                icon: Icons.local_dining,
-                                title: "Calorie: ",
-                                rangeTitle: "2000/3000",
-                                maxrange: 3000.0,
-                                interval: 1000.0,
-                                valuerange: 2000.0,
-                              )
-                            ],
+                                        )
+                                      ]),
+                                ),
+                                Text(
+                                    "taken : ${blocProvider.waterModel.takenwater}"),
+                                Text(
+                                    " Goal: ${blocProvider.waterModel.goalwater}"),
+                                InkWell(
+                                  child: DashboardTile(
+                                    icon: Icons.water_drop,
+                                    title: "Water: ",
+                                    rangeTitle:
+                                        "${blocProvider.waterModel.takenwater / 1000}L/${blocProvider.waterModel.goalwater.toInt()}L",
+                                    maxrange: blocProvider.waterModel.goalwater,
+                                    interval:
+                                        blocProvider.waterModel.goalwater / 3,
+                                    valuerange:
+                                        blocProvider.waterModel.takenwater /
+                                            1000,
+                                  ),
+                                  onTap: () {
+                                    changeScreen(context, WaterDashboard());
+                                  },
+                                ),
+                                DashboardTile(
+                                  icon: Icons.directions_run,
+                                  title: "Steps: ",
+                                  rangeTitle: "$steps/6000",
+                                  maxrange: 100.0,
+                                  interval: 2000.0,
+                                  valuerange: steps * 1.0,
+                                ),
+                                DashboardTile(
+                                  icon: Icons.hotel,
+                                  title: "Sleep: ",
+                                  rangeTitle: "4h/9h",
+                                  maxrange: 9.0,
+                                  interval: 3.0,
+                                  valuerange: 4.0,
+                                ),
+                                DashboardTile(
+                                  icon: Icons.local_dining,
+                                  title: "Calorie: ",
+                                  rangeTitle: "2000/3000",
+                                  maxrange: 3000.0,
+                                  interval: 1000.0,
+                                  valuerange: 2000.0,
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ]),
-            ),
-          );
-        });
+                ]),
+              ),
+            );
+          }),
+    );
   }
 
   double getValue(double x, double y, double z) {
