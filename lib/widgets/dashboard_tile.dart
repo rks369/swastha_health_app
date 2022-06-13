@@ -90,19 +90,29 @@ class DashboardTile extends StatelessWidget {
                             orientation: LinearGaugeOrientation.horizontal,
                             animateAxis: true,
                             animateRange: true,
-                            barPointers: [
-                              LinearBarPointer(
-                                thickness: 12,
+                            markerPointers: [
+                              LinearShapePointer(
                                 value: valuerange,
                                 color: kPrimaryColor,
-                                edgeStyle: LinearEdgeStyle.bothCurve,
-                              )
+                              ),
                             ],
+                            // barPointers: [
+                            //   LinearBarPointer(
+                            //     thickness: 12,
+                            //     value: valuerange,
+                            //     color: Colors.green,
+                            //     edgeStyle: LinearEdgeStyle.bothCurve,
+                            //   )
+                            // ],
                             majorTickStyle: const LinearTickStyle(length: 10),
                             axisLabelStyle: const TextStyle(
                                 fontSize: 12.0, color: Colors.black),
                             // ignore: prefer_const_constructors
                             axisTrackStyle: LinearAxisTrackStyle(
+                                gradient: const LinearGradient(colors: [
+                                  Colors.lightBlue,
+                                  kPrimaryColor,
+                                ]),
                                 color: kGrey,
                                 edgeStyle: LinearEdgeStyle.bothCurve,
                                 thickness: 15.0,

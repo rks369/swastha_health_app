@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -45,18 +44,19 @@ class _BarChartWidgetState extends State<BarChartWidget> {
       alignment: BarChartAlignment.center,
       maxY: 3000,
       minY: 0,
-      groupsSpace: 36,
+      groupsSpace: 28,
       barTouchData: BarTouchData(enabled: true),
       titlesData: FlTitlesData(
         show: true,
-        // rightTitles: AxisTitles(
-        //     sideTitles: SideTitles(
-        //         showTitles: true,
-        //         getTitlesWidget: ((value, meta) {
-        //           return Text((dataList[(value.toInt())].y.toString()),
-        //               style: const TextStyle(color: kWhite));
-        //         }))),
+        rightTitles: AxisTitles(
+            sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: ((value, meta) {
+                  return Text(value.toInt().toString(),
+                      style: const TextStyle(color: kWhite));
+                }))),
         bottomTitles: AxisTitles(
+            axisNameSize: 50,
             sideTitles: SideTitles(
                 showTitles: true,
                 getTitlesWidget: ((value, meta) {

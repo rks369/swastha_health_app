@@ -7,11 +7,12 @@ import 'package:swastha/firebase_options.dart';
 import 'package:swastha/screens/authentication/user_detail.dart';
 import 'package:swastha/screens/home.dart';
 import 'package:swastha/screens/on_boarding.dart';
+import 'package:swastha/services/background_services.dart';
 import 'package:swastha/utils/styles.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await initializeService();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MyApp());

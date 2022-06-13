@@ -39,8 +39,16 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
   @override
   void initState() {
     // TODO: implement initState
-    settaken();
+    getData();
     super.initState();
+  }
+
+  void getData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    steps = pref.getInt("steps") ?? 0;
+    setState(() {
+      print(steps);
+    });
   }
 
   void settaken() async {
@@ -67,7 +75,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                 });
           }),
       body: StreamBuilder<AccelerometerEvent>(
-          stream: SensorsPlatform.instance.accelerometerEvents,
+          stream: null,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               x = snapshot.data!.x;
