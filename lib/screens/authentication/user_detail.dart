@@ -144,7 +144,9 @@ class _UserDetailState extends State<UserDetail> {
                               .snapshot;
 
                           final downloadURL =
-                              await displayPicture.ref.getDownloadURL();
+                              await displayPicture.ref.getDownloadURL().then((value) {
+                                
+                              });
                           changeScreen(context,
                               BMIReg(name: name.text, profileURL: downloadURL));
                         } else {

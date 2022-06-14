@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'package:swastha/models/quote.dart';
-import 'package:swastha/screens/home/mental_health/just_breath.dart';
-import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 

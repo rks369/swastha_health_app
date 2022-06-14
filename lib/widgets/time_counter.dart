@@ -4,7 +4,6 @@ import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:swastha/models/quote.dart';
 import 'package:swastha/screens/home/mental_health/completion_screen.dart';
-import 'package:swastha/screens/home/mental_health/just_breath.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/extensions.dart';
 import 'package:swastha/utils/styles.dart';

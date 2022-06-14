@@ -1,6 +1,10 @@
+import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -8,14 +12,107 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/screens/dashboards/water_dashboard.dart';
-import 'package:swastha/screens/home.dart';
 import 'package:swastha/screens/home/add_water.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
-import 'package:swastha/widgets/card.dart';
 import 'package:swastha/widgets/dashboard_tile.dart';
-import 'package:swastha/widgets/round_button.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
+
+double x = 0.0;
+double y = 0.0;
+double z = 0.0;
+
+int steps = 0;
+double previousDistacne = 0.0;
+double distance = 0.0;
+
+Future<void> initializeService() async {
+  final service = FlutterBackgroundService();
+  await service.configure(
+    androidConfiguration: AndroidConfiguration(
+      // this will executed when app is in foreground or background in separated isolate
+      onStart: onStart,
+
+      // auto start service
+      autoStart: true,
+      isForegroundMode: true,
+    ),
+    iosConfiguration: IosConfiguration(
+      // auto start service
+      autoStart: true,
+
+      // this will executed when app is in foreground in separated isolate
+      onForeground: onStart,
+
+      // you have to enable background fetch capability on xcode project
+      onBackground: onIosBackground,
+    ),
+  );
+  service.startService();
+}
+
+bool onIosBackground(ServiceInstance service) {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  return true;
+}
+
+void onStart(ServiceInstance service) async {
+  // Only available for flutter 3.0.0 and later
+  DartPluginRegistrant.ensureInitialized();
+
+  // For flutter prior to version 3.0.0
+  // We have to register the plugin manually
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+
+  if (service is AndroidServiceInstance) {
+    service.on('setAsForeground').listen((event) {
+      service.setAsForegroundService();
+    });
+
+    service.on('setAsBackground').listen((event) {
+      service.setAsBackgroundService();
+    });
+  }
+
+  service.on('stopService').listen((event) {
+    service.stopSelf();
+  });
+
+  double getValue(double x, double y, double z) {
+    double magnitude = sqrt(x * x + y * y + z * z);
+    previousDistacne = preferences.getDouble("preValue") ?? 0.0;
+    double modDistance = magnitude - previousDistacne;
+    preferences.setDouble("preValue", magnitude);
+    return modDistance;
+  }
+
+  // bring to foreground
+  Timer.periodic(const Duration(seconds: 1), (timer) async {
+    SensorsPlatform.instance.accelerometerEvents.listen((event) {
+      x = event.x;
+      y = event.y;
+      z = event.z;
+      distance = getValue(x, y, z);
+      if (distance > 6) {
+        steps++;
+      }
+      preferences.setInt('steps', steps);
+    });
+
+    if (service is AndroidServiceInstance) {
+      service.setForegroundNotificationInfo(
+        title: "Steps Count $steps",
+        content: "Keep Moving",
+      );
+      service.setAsForegroundService();
+    }
+
+    /// you can see this log in logcat
+
+    // test using external plugin
+  });
+}
 
 class PhysicalHealth extends StatefulWidget {
   const PhysicalHealth({Key? key}) : super(key: key);
@@ -25,28 +122,10 @@ class PhysicalHealth extends StatefulWidget {
 }
 
 class _PhysicalHealthState extends State<PhysicalHealth> {
-  double x = 0.0;
-  double y = 0.0;
-  double z = 0.0;
-  double miles = 0.0;
-  double duration = 0.0;
-  double calories = 0.0;
-  double addValue = 0.025;
-  int steps = 0;
-  double previousDistacne = 0.0;
-  double distance = 0.0;
   @override
   void initState() {
-    getData();
     settaken();
     super.initState();
-  }
-
-  void getData() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    steps = pref.getInt("steps") ?? 0;
-    setState(() {
-    });
   }
 
   void settaken() async {
@@ -75,18 +154,6 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
       body: StreamBuilder<AccelerometerEvent>(
           stream: null,
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              x = snapshot.data!.x;
-              y = snapshot.data!.y;
-              z = snapshot.data!.z;
-              distance = getValue(x, y, z);
-              if (distance > 6) {
-                steps++;
-              }
-              calories = calculateCalories(steps);
-              duration = calculateDuration(steps);
-              miles = calculateMiles(steps);
-            }
             return Container(
               decoration: const BoxDecoration(color: kPrimaryColor),
               child: SafeArea(
@@ -227,7 +294,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             1000,
                                   ),
                                   onTap: () {
-                                    changeScreen(context, const WaterDashboard());
+                                    changeScreen(
+                                        context, const WaterDashboard());
                                   },
                                 ),
                                 DashboardTile(
@@ -265,123 +333,6 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
               ),
             );
           }),
-    );
-  }
-
-  double getValue(double x, double y, double z) {
-    double magnitude = sqrt(x * x + y * y + z * z);
-    getPreviousValue();
-    double modDistance = magnitude - previousDistacne;
-    setPreviousValue(magnitude);
-    return modDistance;
-  }
-
-  void setPreviousValue(double distance) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setDouble("preValue", distance);
-  }
-
-  void getPreviousValue() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    setState(() {
-      previousDistacne = pref.getDouble("preValue") ?? 0.0;
-    });
-  }
-
-  // void calculate data
-  double calculateMiles(int steps) {
-    double milesValue = (2.2 * steps) / 5280;
-    return milesValue;
-  }
-
-  double calculateDuration(int steps) {
-    double durationValue = (steps * 1 / 1000);
-    return durationValue;
-  }
-
-  double calculateCalories(int steps) {
-    double caloriesValue = (steps * 0.0566);
-    return caloriesValue;
-  }
-}
-
-class SetWaterGoal extends StatefulWidget {
-  const SetWaterGoal({Key? key}) : super(key: key);
-
-  @override
-  State<SetWaterGoal> createState() => _SetWaterGoalState();
-}
-
-class _SetWaterGoalState extends State<SetWaterGoal> {
-  int _goal = 3;
-  @override
-  Widget build(BuildContext context) {
-    final blocProvider = BlocProvider.of<AuthCubit>(context);
-    return Container(
-      color: kWhite,
-      height: 350,
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          const Text(
-            "Enter Amount of Water: ",
-            style: kSubHeadingTextStyle,
-          ),
-          UserCard(
-            colour: kWhite,
-            cardChild: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  "Amount (in L)",
-                  style: TextStyle(fontSize: 20.0, color: kPrimaryColor),
-                ),
-                Text(
-                  _goal.toString(),
-                  style: const TextStyle(fontSize: 15.0, color: kPrimaryColor),
-                ),
-                Slider(
-                    activeColor: kPrimaryColor,
-                    value: _goal.toDouble(),
-                    min: 0.0,
-                    max: 10.0,
-                    onChanged: (value) {
-                      setState(() {
-                        // blocProvider.setWaterGoal(_goal + 0.0);
-                        _goal = value.round();
-                      });
-                    })
-              ],
-            ),
-            onPress: () {},
-          ),
-          Center(
-            child: RoundedButton(
-                title: "Done",
-                colour: kPrimaryColor,
-                onPressed: () {
-                  setState(() {
-                    blocProvider.setWaterGoal(_goal + 0.0);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  });
-                  changeScreen(context, const Home());
-                }),
-          ),
-          Center(
-            child: RoundedButton(
-                title: "Exit",
-                colour: kPrimaryColor,
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
-                }),
-          ),
-        ],
-      ),
     );
   }
 }
