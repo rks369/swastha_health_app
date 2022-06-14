@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -38,7 +37,6 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
   double distance = 0.0;
   @override
   void initState() {
-    // TODO: implement initState
     getData();
     settaken();
     super.initState();
@@ -48,7 +46,6 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
     SharedPreferences pref = await SharedPreferences.getInstance();
     steps = pref.getInt("steps") ?? 0;
     setState(() {
-      print(steps);
     });
   }
 
@@ -72,7 +69,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
             showModalBottomSheet(
                 context: context,
                 builder: (builder) {
-                  return AddWater();
+                  return const AddWater();
                 });
           }),
       body: StreamBuilder<AccelerometerEvent>(
@@ -230,7 +227,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             1000,
                                   ),
                                   onTap: () {
-                                    changeScreen(context, WaterDashboard());
+                                    changeScreen(context, const WaterDashboard());
                                   },
                                 ),
                                 DashboardTile(
@@ -241,7 +238,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                   interval: 2000.0,
                                   valuerange: steps * 1.0,
                                 ),
-                                DashboardTile(
+                                const DashboardTile(
                                   icon: Icons.hotel,
                                   title: "Sleep: ",
                                   rangeTitle: "4h/9h",
@@ -249,7 +246,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                   interval: 3.0,
                                   valuerange: 4.0,
                                 ),
-                                DashboardTile(
+                                const DashboardTile(
                                   icon: Icons.local_dining,
                                   title: "Calorie: ",
                                   rangeTitle: "2000/3000",

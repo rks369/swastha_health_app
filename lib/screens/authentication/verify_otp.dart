@@ -12,7 +12,7 @@ class VerifyOTP extends StatefulWidget {
   const VerifyOTP({Key? key}) : super(key: key);
 
   @override
-  _VerifyOTPState createState() => _VerifyOTPState();
+  State<VerifyOTP> createState() => _VerifyOTPState();
 }
 
 class _VerifyOTPState extends State<VerifyOTP> {
@@ -65,13 +65,13 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 const SizedBox(
                   height: 18,
                 ),
-                BlocConsumer<AuthCubit, authstate>(
+                BlocConsumer<AuthCubit, Authstate>(
                   listener: ((context, state) {
-                    if (state == authstate.loggedIn) {
+                    if (state == Authstate.loggedIn) {
                       changeScreenReplacement(context, const Home());
-                    } else if (state == authstate.unRegistered) {
+                    } else if (state == Authstate.unRegistered) {
                       changeScreenReplacement(context, const UserDetail());
-                    } else if (state == authstate.error) {
+                    } else if (state == Authstate.error) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Some Error Occured'),

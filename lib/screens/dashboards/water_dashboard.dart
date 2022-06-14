@@ -19,7 +19,6 @@ class WaterDashboard extends StatefulWidget {
 class _WaterDashboardState extends State<WaterDashboard> {
   @override
   void initState() {
-    // TODO: implement initState
     settaken();
     super.initState();
   }
@@ -74,7 +73,7 @@ class _WaterDashboardState extends State<WaterDashboard> {
                     topRight: Radius.circular(30))),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Center(

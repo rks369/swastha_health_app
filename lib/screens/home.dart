@@ -128,16 +128,16 @@ class _HomeState extends State<Home> {
                     changeScreen(context, const TermAndCondtion());
                   },
                 ),
-                BlocConsumer<AuthCubit, authstate>(
+                BlocConsumer<AuthCubit, Authstate>(
                   listener: (context, state) {
-                    if (state == authstate.loggedIn) {
+                    if (state == Authstate.loggedIn) {
                       changeScreenReplacement(context, const PhysicalHealth());
-                    } else if (state == authstate.loggedOut) {
+                    } else if (state == Authstate.loggedOut) {
                       changeScreenReplacement(context, const Register());
                     }
                   },
                   builder: (context, state) {
-                    if (state == authstate.loading) {
+                    if (state == Authstate.loading) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );

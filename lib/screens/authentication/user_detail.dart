@@ -14,7 +14,7 @@ class UserDetail extends StatefulWidget {
   const UserDetail({Key? key}) : super(key: key);
 
   @override
-  _UserDetailState createState() => _UserDetailState();
+  State<UserDetail> createState() => _UserDetailState();
 }
 
 class _UserDetailState extends State<UserDetail> {

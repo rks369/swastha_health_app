@@ -20,16 +20,16 @@ class Register extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: BlocConsumer<AuthCubit, authstate>(
+          child: BlocConsumer<AuthCubit, Authstate>(
             listener: ((context, state) {
-              if (state == authstate.loggedIn) {
+              if (state == Authstate.loggedIn) {
                 changeScreenReplacement(context, const Home());
               }
-              if (state == authstate.otpSend) {
+              if (state == Authstate.otpSend) {
                 changeScreenReplacement(context, const VerifyOTP());
-              } else if (state == authstate.unRegistered) {
+              } else if (state == Authstate.unRegistered) {
                 changeScreenReplacement(context, const BMIReg());
-              } else if (state == authstate.error) {
+              } else if (state == Authstate.error) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Some Error Occured'),

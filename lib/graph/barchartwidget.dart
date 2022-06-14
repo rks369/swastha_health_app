@@ -32,8 +32,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
           color: barColor[i % 7]));
     }
     setState(() {
-      print(dataList);
-      print(result.length);
+    
     });
   }
 
