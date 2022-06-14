@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:swastha/utils/styles.dart';
 
 class CountdownCircle extends StatefulWidget {
-   const CountdownCircle({Key? key, required this.duration}) : super(key: key);
+  const CountdownCircle({Key? key, required this.duration}) : super(key: key);
   final Duration duration;
   @override
   State<CountdownCircle> createState() => _CountdownCircleState();
@@ -38,7 +38,7 @@ class _CountdownCircleState extends State<CountdownCircle>
         child: CustomPaint(
           painter: _CircleCountdownPainter(
               thinRing: kPrimaryColor,
-              tickerRing: kSecondaryColor,
+              tickerRing: kPrimaryColor,
               animation: Tween<double>(begin: 0.0, end: pi * 2).animate(
                   CurvedAnimation(parent: _controller, curve: Curves.linear))),
           size: Size.infinite,
@@ -49,7 +49,10 @@ class _CountdownCircleState extends State<CountdownCircle>
 }
 
 class _CircleCountdownPainter extends CustomPainter {
-  _CircleCountdownPainter({required this.animation, required this.thinRing, required this.tickerRing})
+  _CircleCountdownPainter(
+      {required this.animation,
+      required this.thinRing,
+      required this.tickerRing})
       : fillerPaint = Paint()
           ..color = kPrimaryColor
           ..style = PaintingStyle.stroke
@@ -86,11 +89,7 @@ class _CircleCountdownPainter extends CustomPainter {
     final Gradient gradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-      colors: <Color>[
-      kPrimaryColor,
-        tickerRing,
-        Colors.blue
-      ],
+      colors: <Color>[kPrimaryColor, tickerRing, Colors.blue],
       stops: const [0.0, 0.5, 1.0],
     );
 

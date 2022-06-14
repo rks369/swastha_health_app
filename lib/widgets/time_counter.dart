@@ -105,7 +105,7 @@ class _TimerCountdown extends State<TimerCountdown> {
     });
 
     if (cancelled) {
-      changeScreen(context, const MainScreen());
+      Navigator.pop(context);
     } else {
       Quote quote = getQuote();
       changeScreen(context, CompletionScreen(quote: quote));
@@ -131,7 +131,7 @@ class _TimerCountdown extends State<TimerCountdown> {
                     ),
                     Text(
                       _display,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: kHeadingTextStyle,
                     ),
                   ],
                 ),

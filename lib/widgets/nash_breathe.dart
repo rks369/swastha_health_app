@@ -40,7 +40,7 @@ class _CupertinoBreatheState extends State<CupertinoBreathe>
                 parent: _controller,
                 curve: Curves.easeOutQuart,
                 reverseCurve: Curves.easeOutQuart),
-            count: 6,
+            count: 12,
           ),
           size: Size.infinite,
         ),
@@ -55,7 +55,7 @@ class _BreathePainter extends CustomPainter {
     required this.count,
   })  : circlePaint = Paint()
           ..color = kPrimaryColor
-          ..blendMode = BlendMode.screen,
+          ..blendMode = BlendMode.modulate,
         super(repaint: animation);
 
   final Animation<double> animation;

@@ -14,6 +14,7 @@ const List<Color> barColor = [
 const List<String> weekday = ["Mon", "Tue", "Wed", "Thus", "Fri", "Sat", "Sun"];
 
 const List<Duration> kPresetTimers = <Duration>[
+  Duration(minutes: 1),
   Duration(minutes: 5),
   Duration(minutes: 10),
   Duration(minutes: 15),

@@ -33,11 +33,14 @@ class CompletionScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.subtitle1,
               ),
               const SizedBox(height: 36.0),
-              RoundedButton(title: 'Home', colour: kPrimaryColor, onPressed: (){
-                    changeScreenReplacement(context, const MainScreen());
-
-              })
-              ],
+              RoundedButton(
+                  title: 'Home',
+                  colour: kPrimaryColor,
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  })
+            ],
           ).padding(horizontal: 48.0),
         ),
       ),
