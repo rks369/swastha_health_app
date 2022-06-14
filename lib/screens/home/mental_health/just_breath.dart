@@ -10,14 +10,14 @@ import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 import 'package:swastha/widgets/setting_card.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+class JustBreath extends StatefulWidget {
+  const JustBreath({Key? key}) : super(key: key);
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<JustBreath> createState() => _JustBreathState();
 }
 
-class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
+class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
   late AnimationController _scaffold;
   late AnimationController _logo;
   late Animation<Offset> _animation;

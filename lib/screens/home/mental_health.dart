@@ -30,7 +30,7 @@ class MentalHealth extends StatelessWidget {
               color: kGrey,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-          child: const MainScreen(),
+          child: const JustBreath(),
         )),
       ])),
     );
