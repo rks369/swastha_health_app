@@ -40,6 +40,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
   void initState() {
     // TODO: implement initState
     getData();
+    settaken();
     super.initState();
   }
 

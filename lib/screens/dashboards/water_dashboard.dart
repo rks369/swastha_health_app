@@ -1,18 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
+import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/graph/barchartwidget.dart';
 import 'package:swastha/screens/home/physical_health.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
-class WaterDashboard extends StatelessWidget {
+class WaterDashboard extends StatefulWidget {
   const WaterDashboard({Key? key}) : super(key: key);
+
+  @override
+  State<WaterDashboard> createState() => _WaterDashboardState();
+}
+
+class _WaterDashboardState extends State<WaterDashboard> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    settaken();
+    super.initState();
+  }
+
+  void settaken() async {
+    final blocProvider = BlocProvider.of<AuthCubit>(context);
+    List resList = await SQLHelper.getItem(
+        DateFormat('dd/MM/yyyy').format(DateTime.now()));
+    blocProvider.setWaterTaken(resList[0]['waterTaken'] * 1.0);
+  }
 
   @override
   Widget build(BuildContext context) {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
+    double taken = blocProvider.waterModel.takenwater;
+    taken = taken / 1000;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton(
@@ -51,6 +74,9 @@ class WaterDashboard extends StatelessWidget {
                     topRight: Radius.circular(30))),
             child: Column(
               children: [
+                SizedBox(
+                  height: 10,
+                ),
                 Center(
                   child: SizedBox(
                     height: MediaQuery.of(context).size.width / 2,
@@ -67,16 +93,16 @@ class WaterDashboard extends StatelessWidget {
                               showLabels: false,
                               showTicks: false,
                               axisLineStyle: AxisLineStyle(
-                                thickness: 0.1,
+                                thickness: 0.2,
                                 cornerStyle: CornerStyle.bothCurve,
                                 color: Colors.blue.withOpacity(0.3),
                                 thicknessUnit: GaugeSizeUnit.factor,
                               ),
                               pointers: <GaugePointer>[
                                 RangePointer(
-                                  value: 20 + 0.0,
+                                  value: taken + 0.0,
                                   cornerStyle: CornerStyle.bothCurve,
-                                  width: 0.1,
+                                  width: 0.2,
                                   sizeUnit: GaugeSizeUnit.factor,
                                   color: Colors.blue,
                                 ),
@@ -85,7 +111,8 @@ class WaterDashboard extends StatelessWidget {
                                 GaugeAnnotation(
                                   positionFactor: 0.1,
                                   angle: 90,
-                                  widget: Text('1/100',
+                                  widget: Text(
+                                      '${taken}L/${blocProvider.waterModel.goalwater}L',
                                       style: kHeadingTextStyle.copyWith(
                                           color: Colors.blue, fontSize: 24.0)),
                                 ),
@@ -103,6 +130,13 @@ class WaterDashboard extends StatelessWidget {
                             return const SetWaterGoal();
                           });
                     }),
+                const Text(
+                  "Weekly Static:",
+                  style: TextStyle(fontSize: 20),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 SizedBox(
                   height: 300,
                   child: Card(

@@ -1,4 +1,3 @@
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:swastha/database/sql_helper.dart';
@@ -51,6 +50,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
         rightTitles: AxisTitles(
             sideTitles: SideTitles(
                 showTitles: true,
+                reservedSize: 40,
                 getTitlesWidget: ((value, meta) {
                   return Text(value.toInt().toString(),
                       style: const TextStyle(color: kWhite));
