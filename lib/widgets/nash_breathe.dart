@@ -54,7 +54,7 @@ class _BreathePainter extends CustomPainter {
     this.animation, {
     required this.count,
   })  : circlePaint = Paint()
-          ..color = kPrimaryColor
+          ..color = kActiveSelect
           ..blendMode = BlendMode.modulate,
         super(repaint: animation);
 
