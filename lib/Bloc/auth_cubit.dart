@@ -6,7 +6,7 @@ import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/models/user_model.dart';
 import 'package:swastha/models/water_model.dart';
 
-enum authstate {
+enum Authstate {
   init,
   loading,
   otpSend,
@@ -18,7 +18,7 @@ enum authstate {
   error
 }
 
-class AuthCubit extends Cubit<authstate> {
+class AuthCubit extends Cubit<Authstate> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -29,7 +29,7 @@ class AuthCubit extends Cubit<authstate> {
 
   WaterModel waterModel = WaterModel(0.0, 0.0);
 
-  AuthCubit() : super(authstate.init) {
+  AuthCubit() : super(Authstate.init) {
     user = _auth.currentUser;
     if (user != null) {
       _firestore.collection('users').doc(user!.uid).get().then((value) {
@@ -38,36 +38,36 @@ class AuthCubit extends Cubit<authstate> {
 
           userModel = userModelFromJSON(data!);
 
-          emit(authstate.loggedIn);
+          emit(Authstate.loggedIn);
         } else {
-          emit(authstate.unRegistered);
+          emit(Authstate.unRegistered);
         }
       });
     } else {
-      emit(authstate.loggedOut);
+      emit(Authstate.loggedOut);
     }
   }
 
   void dbisNull() async {
     var result = await SQLHelper.getItems();
-    if (result.length == 0) {}
+    if (result.isEmpty) {}
   }
 
   String? _verificationId;
 
   void sendOTP(String phoneNumber) async {
-    emit(authstate.loading);
+    emit(Authstate.loading);
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       codeSent: (verificationId, forceResendingToken) {
         _verificationId = verificationId;
-        emit(authstate.otpSend);
+        emit(Authstate.otpSend);
       },
       verificationCompleted: (phoneAuthCredential) {
         signInWithPhone(phoneAuthCredential);
       },
       verificationFailed: (error) {
-        emit(authstate.error);
+        emit(Authstate.error);
       },
       codeAutoRetrievalTimeout: (verificationId) {
         _verificationId = verificationId;
@@ -76,7 +76,7 @@ class AuthCubit extends Cubit<authstate> {
   }
 
   void verifyOTP(String otp) async {
-    emit(authstate.loading);
+    emit(Authstate.loading);
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: _verificationId!, smsCode: otp);
 
@@ -89,7 +89,7 @@ class AuthCubit extends Cubit<authstate> {
         .collection('users')
         .doc(user!.uid)
         .set(userModel.toJSON())
-        .then((value) => {emit(authstate.loggedIn)});
+        .then((value) => {emit(Authstate.loggedIn)});
   }
 
   void signInWithPhone(PhoneAuthCredential credential) async {
@@ -104,9 +104,9 @@ class AuthCubit extends Cubit<authstate> {
             final data = value.data();
 
             userModel = userModelFromJSON(data!);
-            emit(authstate.loggedIn);
+            emit(Authstate.loggedIn);
           } else {
-            emit(authstate.unRegistered);
+            emit(Authstate.unRegistered);
           }
         });
       }
@@ -140,9 +140,9 @@ class AuthCubit extends Cubit<authstate> {
             final data = value.data();
 
             userModel = userModelFromJSON(data!);
-            emit(authstate.loggedIn);
+            emit(Authstate.loggedIn);
           } else {
-            emit(authstate.unRegistered);
+            emit(Authstate.unRegistered);
           }
         });
       }
@@ -153,7 +153,7 @@ class AuthCubit extends Cubit<authstate> {
 
   void logOut() async {
     await _auth.signOut();
-    emit(authstate.loggedOut);
+    emit(Authstate.loggedOut);
   }
 
   void setWaterGoal(double goal) {

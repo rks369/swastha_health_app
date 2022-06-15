@@ -19,7 +19,7 @@ class BMIReg extends StatefulWidget {
   const BMIReg({Key? key, this.name, this.profileURL}) : super(key: key);
 
   @override
-  _BMIReg createState() => _BMIReg();
+  State<BMIReg> createState() => _BMIReg();
 }
 
 late double _bmi;
@@ -261,13 +261,13 @@ class _BMIReg extends State<BMIReg> {
                         ],
                       ),
                     ),
-                    BlocConsumer<AuthCubit, authstate>(
+                    BlocConsumer<AuthCubit, Authstate>(
                       listener: ((context, state) {
-                        if (state == authstate.loggedIn) {
+                        if (state == Authstate.loggedIn) {
                           changeScreenReplacement(context, const Home());
-                        } else if (state == authstate.unRegistered) {
+                        } else if (state == Authstate.unRegistered) {
                           changeScreenReplacement(context, const UserDetail());
-                        } else if (state == authstate.error) {
+                        } else if (state == Authstate.error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Some Error Occured'),
@@ -276,7 +276,7 @@ class _BMIReg extends State<BMIReg> {
                         }
                       }),
                       builder: ((context, state) {
-                        if (state == authstate.loading) {
+                        if (state == Authstate.loading) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );

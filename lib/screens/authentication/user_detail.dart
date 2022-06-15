@@ -14,7 +14,7 @@ class UserDetail extends StatefulWidget {
   const UserDetail({Key? key}) : super(key: key);
 
   @override
-  _UserDetailState createState() => _UserDetailState();
+  State<UserDetail> createState() => _UserDetailState();
 }
 
 class _UserDetailState extends State<UserDetail> {
@@ -144,7 +144,9 @@ class _UserDetailState extends State<UserDetail> {
                               .snapshot;
 
                           final downloadURL =
-                              await displayPicture.ref.getDownloadURL();
+                              await displayPicture.ref.getDownloadURL().then((value) {
+                                
+                              });
                           changeScreen(context,
                               BMIReg(name: name.text, profileURL: downloadURL));
                         } else {

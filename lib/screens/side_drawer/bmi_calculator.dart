@@ -13,7 +13,7 @@ class BMICalculator extends StatefulWidget {
       : super(key: key);
 
   @override
-  _BMICalculatorState createState() => _BMICalculatorState();
+  State<BMICalculator> createState() => _BMICalculatorState();
 }
 
 late double _bmi;

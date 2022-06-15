@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/graph/barchartwidget.dart';
-import 'package:swastha/screens/home/physical_health.dart';
+import 'package:swastha/screens/home/physical/set_water_goal.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
@@ -19,7 +19,6 @@ class WaterDashboard extends StatefulWidget {
 class _WaterDashboardState extends State<WaterDashboard> {
   @override
   void initState() {
-    // TODO: implement initState
     settaken();
     super.initState();
   }
@@ -74,7 +73,7 @@ class _WaterDashboardState extends State<WaterDashboard> {
                     topRight: Radius.circular(30))),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Center(
