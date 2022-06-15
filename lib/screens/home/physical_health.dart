@@ -166,8 +166,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                   ),
                   Image.asset(
                     'assets/images/logo.png',
-                    width: 100,
-                    height: 100,
+                    width: 50,
+                    height: 50,
                   ),
                   const SizedBox(
                     height: 20,
@@ -243,20 +243,20 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                               GaugeAnnotation(
                                                 positionFactor: 0.1,
                                                 angle: 90,
-                                                widget: Text('$steps/100',
+                                                widget: Text('30%',
                                                     style: kHeadingTextStyle
                                                         .copyWith(
-                                                            color: Colors.blue,
-                                                            fontSize: 24.0)),
+                                                            color: Colors.red,
+                                                            fontSize: 30.0)),
                                               ),
                                             ]),
                                         RadialAxis(
                                           startAngle: 90,
                                           endAngle: 90,
-                                          radiusFactor: .80,
+                                          radiusFactor: .83,
                                           canScaleToFit: false,
                                           minimum: 0,
-                                          maximum: 100.0,
+                                          maximum: 6000.0,
                                           showLabels: false,
                                           showTicks: false,
                                           axisLineStyle: AxisLineStyle(
@@ -268,12 +268,65 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                           ),
                                           pointers: <GaugePointer>[
                                             RangePointer(
-                                              value: steps * 1.0,
+                                              value: steps * 1.0 + 1000,
                                               cornerStyle:
                                                   CornerStyle.bothCurve,
                                               width: 0.1,
                                               sizeUnit: GaugeSizeUnit.factor,
                                               color: Colors.green,
+                                            ),
+                                          ],
+                                        ),
+                                        RadialAxis(
+                                          startAngle: 90,
+                                          endAngle: 90,
+                                          radiusFactor: .73,
+                                          canScaleToFit: false,
+                                          minimum: 0,
+                                          maximum: 9.0,
+                                          showLabels: false,
+                                          showTicks: false,
+                                          axisLineStyle: AxisLineStyle(
+                                            thickness: 0.1,
+                                            cornerStyle: CornerStyle.bothCurve,
+                                            color: Colors.red.withOpacity(0.3),
+                                            thicknessUnit: GaugeSizeUnit.factor,
+                                          ),
+                                          pointers: const <GaugePointer>[
+                                            RangePointer(
+                                              value: 4,
+                                              cornerStyle:
+                                                  CornerStyle.bothCurve,
+                                              width: 0.1,
+                                              sizeUnit: GaugeSizeUnit.factor,
+                                              color: Colors.red,
+                                            ),
+                                          ],
+                                        ),
+                                        RadialAxis(
+                                          startAngle: 90,
+                                          endAngle: 90,
+                                          radiusFactor: .63,
+                                          canScaleToFit: false,
+                                          minimum: 0,
+                                          maximum: 3000.0,
+                                          showLabels: false,
+                                          showTicks: false,
+                                          axisLineStyle: AxisLineStyle(
+                                            thickness: 0.1,
+                                            cornerStyle: CornerStyle.bothCurve,
+                                            color: Color(0xffffdd80)
+                                                .withOpacity(0.3),
+                                            thicknessUnit: GaugeSizeUnit.factor,
+                                          ),
+                                          pointers: const <GaugePointer>[
+                                            RangePointer(
+                                              value: 2000,
+                                              cornerStyle:
+                                                  CornerStyle.bothCurve,
+                                              width: 0.1,
+                                              sizeUnit: GaugeSizeUnit.factor,
+                                              color: Color(0xffffdd80),
                                             ),
                                           ],
                                         )
@@ -291,6 +344,9 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     valuerange:
                                         blocProvider.waterModel.takenwater /
                                             1000,
+                                    colorshade1:
+                                        Colors.blueAccent.withOpacity(0.4),
+                                    colorshade2: Colors.blueAccent,
                                   ),
                                   onTap: () {
                                     changeScreen(
@@ -305,6 +361,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     maxrange: 100.0,
                                     interval: 2000.0,
                                     valuerange: steps * 1.0,
+                                    colorshade1: Colors.green.withOpacity(0.4),
+                                    colorshade2: Colors.green,
                                   ),
                                   onTap: () {
                                     changeScreen(context, StepDashboard());
@@ -318,6 +376,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     maxrange: 9.0,
                                     interval: 3.0,
                                     valuerange: 4.0,
+                                    colorshade1: Colors.red.withOpacity(0.4),
+                                    colorshade2: Colors.red,
                                   ),
                                   onTap: () {
                                     changeScreen(context, SleepDashboard());
@@ -331,6 +391,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     maxrange: 3000.0,
                                     interval: 1000.0,
                                     valuerange: 2000.0,
+                                    colorshade1: Colors.yellow.withOpacity(0.4),
+                                    colorshade2: Colors.yellow,
                                   ),
                                   onTap: () {
                                     changeScreen(context, CalorieDashboard());

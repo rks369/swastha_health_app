@@ -81,7 +81,7 @@ class _SleepDashboardState extends State<SleepDashboard> {
                               endAngle: 90,
                               canScaleToFit: false,
                               minimum: 0,
-                              maximum: 6000 + 0.1,
+                              maximum: 9 + 0.1,
                               showLabels: false,
                               showTicks: false,
                               axisLineStyle: AxisLineStyle(
@@ -92,7 +92,7 @@ class _SleepDashboardState extends State<SleepDashboard> {
                               ),
                               pointers: <GaugePointer>[
                                 RangePointer(
-                                  value: 3000 + 0.0,
+                                  value: 4 + 0.0,
                                   cornerStyle: CornerStyle.bothCurve,
                                   width: 0.2,
                                   sizeUnit: GaugeSizeUnit.factor,
@@ -103,7 +103,7 @@ class _SleepDashboardState extends State<SleepDashboard> {
                                 GaugeAnnotation(
                                   positionFactor: 0.1,
                                   angle: 90,
-                                  widget: Text('3000/6000',
+                                  widget: Text('4h/9h',
                                       style: kHeadingTextStyle.copyWith(
                                           color: Colors.blue, fontSize: 24.0)),
                                 ),

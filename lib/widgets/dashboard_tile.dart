@@ -9,6 +9,8 @@ class DashboardTile extends StatelessWidget {
   final double maxrange;
   final double interval;
   final double valuerange;
+  final Color colorshade1;
+  final Color colorshade2;
   const DashboardTile(
       {Key? key,
       required this.icon,
@@ -16,7 +18,9 @@ class DashboardTile extends StatelessWidget {
       required this.rangeTitle,
       required this.maxrange,
       required this.interval,
-      required this.valuerange})
+      required this.valuerange,
+      required this.colorshade1,
+      required this.colorshade2})
       : super(key: key);
 
   @override
@@ -109,9 +113,9 @@ class DashboardTile extends StatelessWidget {
                                 fontSize: 12.0, color: Colors.black),
                             // ignore: prefer_const_constructors
                             axisTrackStyle: LinearAxisTrackStyle(
-                                gradient: const LinearGradient(colors: [
-                                  Colors.lightBlue,
-                                  kPrimaryColor,
+                                gradient: LinearGradient(colors: [
+                                  colorshade1,
+                                  colorshade2,
                                 ]),
                                 color: kGrey,
                                 edgeStyle: LinearEdgeStyle.bothCurve,
