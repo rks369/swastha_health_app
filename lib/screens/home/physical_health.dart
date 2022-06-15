@@ -8,6 +8,9 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/sql_helper.dart';
+import 'package:swastha/screens/dashboards/calorie_dashboard.dart';
+import 'package:swastha/screens/dashboards/sleep_dashboard.dart';
+import 'package:swastha/screens/dashboards/steps_dashboard.dart';
 import 'package:swastha/screens/dashboards/water_dashboard.dart';
 import 'package:swastha/screens/home.dart';
 import 'package:swastha/screens/home/add_water.dart';
@@ -212,10 +215,6 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                         )
                                       ]),
                                 ),
-                                Text(
-                                    "taken : ${blocProvider.waterModel.takenwater}"),
-                                Text(
-                                    " Goal: ${blocProvider.waterModel.goalwater}"),
                                 InkWell(
                                   child: DashboardTile(
                                     icon: Icons.water_drop,
@@ -233,29 +232,44 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     changeScreen(context, WaterDashboard());
                                   },
                                 ),
-                                DashboardTile(
-                                  icon: Icons.directions_run,
-                                  title: "Steps: ",
-                                  rangeTitle: "$steps/6000",
-                                  maxrange: 100.0,
-                                  interval: 2000.0,
-                                  valuerange: steps * 1.0,
+                                InkWell(
+                                  child: DashboardTile(
+                                    icon: Icons.directions_run,
+                                    title: "Steps: ",
+                                    rangeTitle: "$steps/6000",
+                                    maxrange: 100.0,
+                                    interval: 2000.0,
+                                    valuerange: steps * 1.0,
+                                  ),
+                                  onTap: () {
+                                    changeScreen(context, StepDashboard());
+                                  },
                                 ),
-                                DashboardTile(
-                                  icon: Icons.hotel,
-                                  title: "Sleep: ",
-                                  rangeTitle: "4h/9h",
-                                  maxrange: 9.0,
-                                  interval: 3.0,
-                                  valuerange: 4.0,
+                                InkWell(
+                                  child: DashboardTile(
+                                    icon: Icons.hotel,
+                                    title: "Sleep: ",
+                                    rangeTitle: "4h/9h",
+                                    maxrange: 9.0,
+                                    interval: 3.0,
+                                    valuerange: 4.0,
+                                  ),
+                                  onTap: () {
+                                    changeScreen(context, SleepDashboard());
+                                  },
                                 ),
-                                DashboardTile(
-                                  icon: Icons.local_dining,
-                                  title: "Calorie: ",
-                                  rangeTitle: "2000/3000",
-                                  maxrange: 3000.0,
-                                  interval: 1000.0,
-                                  valuerange: 2000.0,
+                                InkWell(
+                                  child: DashboardTile(
+                                    icon: Icons.local_dining,
+                                    title: "Calorie: ",
+                                    rangeTitle: "2000/3000",
+                                    maxrange: 3000.0,
+                                    interval: 1000.0,
+                                    valuerange: 2000.0,
+                                  ),
+                                  onTap: () {
+                                    changeScreen(context, CalorieDashboard());
+                                  },
                                 )
                               ],
                             ),

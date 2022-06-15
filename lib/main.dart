@@ -12,7 +12,7 @@ import 'package:swastha/utils/styles.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initializeService();
+  //await initializeService();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(const MyApp());
