@@ -102,74 +102,70 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
               const SizedBox(
                 height: 20,
               ),
-              Expanded(
-                flex: 5,
-                child: Column(
-                  children: <Widget>[
-                    SettingsCard(
-                        start: true,
-                        title: Text(
-                          'Duration',
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                        leading: const Icon(Icons.hourglass_bottom,
-                            color: kPrimaryColor),
-                        trailing: DropdownButton<Duration>(
-                          underline: Container(),
-                          items: kPresetTimers.map((preset) {
-                            return DropdownMenuItem<Duration>(
-                              value: preset,
-                              child: Text(
-                                "${preset.inMinutes} minutes",
-                                textAlign: TextAlign.right,
-                                style: kSubHeadingTextStyle,
-                              ),
-                            );
-                          }).toList(),
-                          value: blocProvider.duration,
-                          onChanged: (value) {
-                            blocProvider.setDuration(value as Duration);
-                            setState(() {});
-                          },
-                        )),
-                    SettingsCard(
+              Column(
+                children: <Widget>[
+                  SettingsCard(
+                      start: true,
                       title: Text(
-                        'Play Sounds',
+                        'Duration',
                         style: Theme.of(context).textTheme.subtitle1,
                       ),
-                      leading:
-                          const Icon(Icons.music_note, color: kPrimaryColor),
-                      trailing: cupertino.CupertinoSwitch(
-                        activeColor: kPrimaryColor,
+                      leading: const Icon(Icons.hourglass_bottom,
+                          color: kPrimaryColor),
+                      trailing: DropdownButton<Duration>(
+                        underline: Container(),
+                        items: kPresetTimers.map((preset) {
+                          return DropdownMenuItem<Duration>(
+                            value: preset,
+                            child: Text(
+                              "${preset.inMinutes} minutes",
+                              textAlign: TextAlign.right,
+                              style: kSubHeadingTextStyle,
+                            ),
+                          );
+                        }).toList(),
+                        value: blocProvider.duration,
                         onChanged: (value) {
-                          blocProvider.togglePlaySounds();
+                          blocProvider.setDuration(value as Duration);
                           setState(() {});
                         },
-                        value: blocProvider.playSounds,
-                      ),
+                      )),
+                  SettingsCard(
+                    title: Text(
+                      'Play Sounds',
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
-                    SettingsCard(
-                      end: true,
-                      title: Text(
-                        'Zen Mode',
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
-                      leading: const Icon(
-                        Icons.favorite,
-                        color: kPrimaryColor,
-                      ),
-                      // ignore: missing_required_param
-                      trailing: cupertino.CupertinoSwitch(
-                        activeColor: kPrimaryColor,
-                        onChanged: (_) {
-                          blocProvider.toggleZenMode();
-                          setState(() {});
-                        },
-                        value: blocProvider.isZenMode,
-                      ),
+                    leading: const Icon(Icons.music_note, color: kPrimaryColor),
+                    trailing: cupertino.CupertinoSwitch(
+                      activeColor: kPrimaryColor,
+                      onChanged: (value) {
+                        blocProvider.togglePlaySounds();
+                        setState(() {});
+                      },
+                      value: blocProvider.playSounds,
                     ),
-                  ],
-                ),
+                  ),
+                  SettingsCard(
+                    end: true,
+                    title: Text(
+                      'Zen Mode',
+                      style: Theme.of(context).textTheme.subtitle1,
+                    ),
+                    leading: const Icon(
+                      Icons.favorite,
+                      color: kPrimaryColor,
+                    ),
+                    // ignore: missing_required_param
+                    trailing: cupertino.CupertinoSwitch(
+                      activeColor: kPrimaryColor,
+                      onChanged: (_) {
+                        blocProvider.toggleZenMode();
+                        setState(() {});
+                      },
+                      value: blocProvider.isZenMode,
+                    ),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.all(12.0),
