@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/profile_tile.dart';
+import 'package:swastha/widgets/round_button.dart';
 
 class MyAccount extends StatelessWidget {
   const MyAccount({Key? key}) : super(key: key);
@@ -10,6 +12,7 @@ class MyAccount extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
+    final controller = TextEditingController();
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
@@ -82,7 +85,16 @@ class MyAccount extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 8, left: 8),
                     child: ProfileTile(
                       title: blocProvider.userModel.name,
-                      ontap: () {},
+                      ontap: () {
+                        showDialog(
+                            context: context,
+                            builder: (builder) {
+                              return editDialog(
+                                  title: "Edit your name:",
+                                  tlabel: "Name",
+                                  onupdate: () {});
+                            });
+                      },
                     ),
                   ),
                   Padding(
@@ -96,21 +108,48 @@ class MyAccount extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 8, left: 8),
                     child: ProfileTile(
                       title: "Water Goal: ${blocProvider.userModel.goalWater}L",
-                      ontap: () {},
+                      ontap: () {
+                        showDialog(
+                            context: context,
+                            builder: (builder) {
+                              return editDialog(
+                                  title: "Edit your water goal (in L):",
+                                  tlabel: "Water Goal",
+                                  onupdate: () {});
+                            });
+                      },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 8, left: 8),
                     child: ProfileTile(
                       title: "Step Goal: ${blocProvider.userModel.goalSteps}",
-                      ontap: () {},
+                      ontap: () {
+                        showDialog(
+                            context: context,
+                            builder: (builder) {
+                              return editDialog(
+                                  title: "Edit your step goal:",
+                                  tlabel: "Step Goal",
+                                  onupdate: () {});
+                            });
+                      },
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 8, left: 8),
                     child: ProfileTile(
                       title: "Sleep Goal: ${blocProvider.userModel.goalSleep}h",
-                      ontap: () {},
+                      ontap: () {
+                        showDialog(
+                            context: context,
+                            builder: (builder) {
+                              return editDialog(
+                                  title: "Edit your sleep goal (in h):",
+                                  tlabel: "Sleep Goal",
+                                  onupdate: () {});
+                            });
+                      },
                     ),
                   ),
                   Padding(
@@ -118,7 +157,23 @@ class MyAccount extends StatelessWidget {
                     child: ProfileTile(
                       title:
                           "Calorie Goal: ${blocProvider.userModel.goalCalorie}",
-                      ontap: () {},
+                      ontap: () {
+                        showDialog(
+                            context: context,
+                            builder: (builder) {
+                              return editDialog(
+                                  title: "Edit your calorie goal (in L):",
+                                  tlabel: "Calorie Goal",
+                                  onupdate: () {
+                                    // FirebaseFirestore.instance
+                                    //     .collection(blocProvider.userModel.uid)
+                                    //     .doc()
+                                    //     .update({
+                                    //       'goalCalorie':
+                                    //     });
+                                  });
+                            });
+                      },
                     ),
                   )
                 ],
@@ -127,6 +182,38 @@ class MyAccount extends StatelessWidget {
           )),
         ])),
       ),
+    );
+  }
+}
+
+class editDialog extends StatelessWidget {
+  final String title;
+  final String tlabel;
+  final onupdate;
+  const editDialog(
+      {Key? key,
+      required this.title,
+      required this.tlabel,
+      required this.onupdate})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(title),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: TextFormField(
+            decoration: kTextFieldDecoration.copyWith(
+                label: Text(tlabel), counter: const Offstage()),
+          ),
+        ),
+        Center(
+          child: RoundedButton(
+              title: "Update", colour: kPrimaryColor, onPressed: onupdate),
+        )
+      ],
     );
   }
 }
