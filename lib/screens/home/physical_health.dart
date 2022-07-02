@@ -256,7 +256,9 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                           radiusFactor: .83,
                                           canScaleToFit: false,
                                           minimum: 0,
-                                          maximum: 6000.0,
+                                          maximum: int.parse(blocProvider
+                                                  .userModel.goalSteps) +
+                                              0.0,
                                           showLabels: false,
                                           showTicks: false,
                                           axisLineStyle: AxisLineStyle(
@@ -283,7 +285,9 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                           radiusFactor: .73,
                                           canScaleToFit: false,
                                           minimum: 0,
-                                          maximum: 9.0,
+                                          maximum: int.parse(blocProvider
+                                                  .userModel.goalSleep) +
+                                              0.0,
                                           showLabels: false,
                                           showTicks: false,
                                           axisLineStyle: AxisLineStyle(
@@ -309,7 +313,9 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                           radiusFactor: .63,
                                           canScaleToFit: false,
                                           minimum: 0,
-                                          maximum: 3000.0,
+                                          maximum: int.parse(blocProvider
+                                                  .userModel.goalCalorie) +
+                                              0.0,
                                           showLabels: false,
                                           showTicks: false,
                                           axisLineStyle: AxisLineStyle(
@@ -337,10 +343,11 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     icon: Icons.water_drop,
                                     title: "Water: ",
                                     rangeTitle:
-                                        "${blocProvider.waterModel.takenwater / 1000}L/${blocProvider.waterModel.goalwater.toInt()}L",
+                                        "${blocProvider.waterModel.takenwater / 1000}L/${int.parse(blocProvider.userModel.goalWater)}L",
                                     maxrange: blocProvider.waterModel.goalwater,
-                                    interval:
-                                        blocProvider.waterModel.goalwater / 3,
+                                    interval: int.parse(
+                                            blocProvider.userModel.goalWater) +
+                                        0.0 / 3,
                                     valuerange:
                                         blocProvider.waterModel.takenwater /
                                             1000,
@@ -357,7 +364,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                   child: DashboardTile(
                                     icon: Icons.directions_run,
                                     title: "Steps: ",
-                                    rangeTitle: "$steps/6000",
+                                    rangeTitle:
+                                        "$steps/${blocProvider.userModel.goalSteps}",
                                     maxrange: 100.0,
                                     interval: 2000.0,
                                     valuerange: steps * 1.0,
@@ -372,7 +380,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                   child: DashboardTile(
                                     icon: Icons.hotel,
                                     title: "Sleep: ",
-                                    rangeTitle: "4h/9h",
+                                    rangeTitle:
+                                        "4h/${blocProvider.userModel.goalSleep}h",
                                     maxrange: 9.0,
                                     interval: 3.0,
                                     valuerange: 4.0,
@@ -387,7 +396,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                   child: DashboardTile(
                                     icon: Icons.local_dining,
                                     title: "Calorie: ",
-                                    rangeTitle: "2000/3000",
+                                    rangeTitle:
+                                        "2000/${blocProvider.userModel.goalCalorie}",
                                     maxrange: 3000.0,
                                     interval: 1000.0,
                                     valuerange: 2000.0,
