@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
+import 'package:swastha/models/data_model.dart';
 import 'package:swastha/screens/home.dart';
 import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/services/change_screen.dart';
@@ -200,23 +201,31 @@ class _AddWaterState extends State<AddWater> {
                 title: "Done",
                 colour: kPrimaryColor,
                 onPressed: () async {
-                  List resList = await SQLHelper.getItem(
-                      DateFormat('dd/MM/yyyy').format(DateTime.now()));
+                  // List resList = await SQLHelper.getItem(
+                  //     DateFormat('dd/MM/yyyy').format(DateTime.now()));
 
-                  blocProvider.setWaterTaken((resList[0]['waterTaken'] * 1.0));
-                  // setState(() async {
+                  // blocProvider.setWaterTaken((resList[0]['waterTaken'] * 1.0));
+                  setState(() async {
+                    blocProvider.setWaterTaken(
+                        _taken + 0.0 + blocProvider.waterModel.takenwater);
 
-                  //   blocProvider.setWaterTaken(
-                  //       _taken + 0.0 + blocProvider.waterModel.takenwater);
-                  //   await DataBaseHelper.instance
-                  //       .insert({DataBaseHelper.columnname: _taken});
-                  //   List<Map<String, dynamic>> queryrows =
-                  //       await DataBaseHelper.instance.queryAll();
-                  //   print(queryrows);
-                  //   Navigator.pop(context);
-                  //   Navigator.pop(context);
-                  // });
-                  changeScreen(context, const Home());
+                    SQLHelper.insertData(DataModel(
+                        DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                        _taken,
+                        0,
+                        0,
+                        0));
+                    final result = await SQLHelper.getItems();
+
+                    print(result);
+                    // SQLHelper.createItem(waterTaken, date, day)
+                    // await DataBaseHelper.instance
+                    //     .insert({DataBaseHelper.columnname: _taken});
+                    // List<Map<String, dynamic>> queryrows =
+                    //     await DataBaseHelper.instance.queryAll();
+                    // print(queryrows);
+                    Navigator.pop(context);
+                  });
                 }),
           ),
         ],
