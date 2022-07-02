@@ -8,9 +8,25 @@ class UserModel {
   final String weight;
   final String age;
   final String bmi;
+  final String goalWater;
+  final String goalSteps;
+  final String goalSleep;
+  final String goalCalorie;
 
-  UserModel(this.uid, this.mobile, this.name, this.profileURL, this.gender,
-      this.height, this.weight, this.age, this.bmi);
+  UserModel(
+      this.uid,
+      this.mobile,
+      this.name,
+      this.profileURL,
+      this.gender,
+      this.height,
+      this.weight,
+      this.age,
+      this.bmi,
+      this.goalWater,
+      this.goalSteps,
+      this.goalSleep,
+      this.goalCalorie);
 
   Map<String, String> toJSON() {
     return {
@@ -22,20 +38,29 @@ class UserModel {
       'height': height,
       'weight': weight,
       'age': age,
-      'bmi': bmi
+      'bmi': bmi,
+      'goalWater': goalWater,
+      'goalSteps': goalSteps,
+      'goalSleep': goalSleep,
+      'goalCalorie': goalCalorie,
     };
   }
 }
 
 UserModel userModelFromJSON(Map<String, dynamic> data) {
   return UserModel(
-      data['uid'],
-      data['mobile'],
-      data['name'],
-      data['profileURL'],
-      data['gender'],
-      data['height'],
-      data['weight'],
-      data['age'],
-      data['bmi']);
+    data['uid'],
+    data['mobile'],
+    data['name'],
+    data['profileURL'],
+    data['gender'],
+    data['height'],
+    data['weight'],
+    data['age'],
+    data['bmi'],
+    data['goalWater'],
+    data['goalSteps'],
+    data['goalSleep'],
+    data['goalCalorie'],
+  );
 }

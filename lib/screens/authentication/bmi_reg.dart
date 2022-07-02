@@ -286,7 +286,7 @@ class _BMIReg extends State<BMIReg> {
                             colour: kPrimaryColor,
                             onPressed: () {
                               showProgressDialog(context);
-                              print("url is" + widget.profileURL.toString());
+
                               final auth = FirebaseAuth.instance.currentUser;
 
                               if (widget.name != null) {
@@ -300,7 +300,11 @@ class _BMIReg extends State<BMIReg> {
                                         height.toString(),
                                         weight.toString(),
                                         age.toString(),
-                                        calculateBMI()));
+                                        calculateBMI(),
+                                        '3',
+                                        getGaolSteps(),
+                                        getGaolSleep(),
+                                        getGoalCalorie()));
                               } else {
                                 BlocProvider.of<AuthCubit>(context).register(
                                     UserModel(
@@ -312,7 +316,11 @@ class _BMIReg extends State<BMIReg> {
                                         height.toString(),
                                         weight.toString(),
                                         age.toString(),
-                                        calculateBMI()));
+                                        calculateBMI(),
+                                        '3',
+                                        getGaolSteps(),
+                                        getGaolSleep(),
+                                        getGoalCalorie()));
                               }
                             });
                       }),
@@ -350,5 +358,45 @@ class _BMIReg extends State<BMIReg> {
     } else {
       return 'You have a lower than normal body weight. You can eat a bit more.';
     }
+  }
+
+  String getGaolSteps() {
+    if (_bmi >= 25) {
+      return '9000';
+    } else if (_bmi > 18.5) {
+      return '6000';
+    } else {
+      return '4000';
+    }
+    return '6000';
+  }
+
+  String getGaolSleep() {
+    if (age < 18) {
+      return '9';
+    } else if (age >= 18 && age <= 30) {
+      return '8';
+    }
+    return '7';
+  }
+
+  String getGoalCalorie() {
+    if (selectedMale) {
+      if (age < 30) {
+        return '2600';
+      } else if (age >= 30 && age <= 50) {
+        return '2400';
+      } else {
+        return '2200';
+      }
+    } else {
+      if (age < 30) return '2200';
+      if (age >= 30 && age <= 50) {
+        return '2000';
+      } else {
+        return '1900';
+      }
+    }
+    return '2200';
   }
 }
