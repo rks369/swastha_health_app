@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
               return const OnBoardingScreen();
             } else if (state == Authstate.unRegistered) {
               return const UserDetail();
-              
             } else {
               return const Scaffold(
                 body: Center(
