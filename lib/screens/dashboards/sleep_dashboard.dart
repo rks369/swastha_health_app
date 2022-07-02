@@ -87,7 +87,7 @@ class _SleepDashboardState extends State<SleepDashboard> {
                               axisLineStyle: AxisLineStyle(
                                 thickness: 0.2,
                                 cornerStyle: CornerStyle.bothCurve,
-                                color: Colors.blue.withOpacity(0.3),
+                                color: Colors.red.withOpacity(0.3),
                                 thicknessUnit: GaugeSizeUnit.factor,
                               ),
                               pointers: <GaugePointer>[
@@ -96,7 +96,7 @@ class _SleepDashboardState extends State<SleepDashboard> {
                                   cornerStyle: CornerStyle.bothCurve,
                                   width: 0.2,
                                   sizeUnit: GaugeSizeUnit.factor,
-                                  color: Colors.blue,
+                                  color: Colors.red,
                                 ),
                               ],
                               annotations: <GaugeAnnotation>[
@@ -105,7 +105,7 @@ class _SleepDashboardState extends State<SleepDashboard> {
                                   angle: 90,
                                   widget: Text('4h/9h',
                                       style: kHeadingTextStyle.copyWith(
-                                          color: Colors.blue, fontSize: 24.0)),
+                                          color: Colors.red, fontSize: 24.0)),
                                 ),
                               ]),
                         ]),

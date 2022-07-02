@@ -87,7 +87,7 @@ class _StepDashboardState extends State<StepDashboard> {
                               axisLineStyle: AxisLineStyle(
                                 thickness: 0.2,
                                 cornerStyle: CornerStyle.bothCurve,
-                                color: Colors.blue.withOpacity(0.3),
+                                color: Colors.green.withOpacity(0.3),
                                 thicknessUnit: GaugeSizeUnit.factor,
                               ),
                               pointers: <GaugePointer>[
@@ -96,7 +96,7 @@ class _StepDashboardState extends State<StepDashboard> {
                                   cornerStyle: CornerStyle.bothCurve,
                                   width: 0.2,
                                   sizeUnit: GaugeSizeUnit.factor,
-                                  color: Colors.blue,
+                                  color: Colors.green,
                                 ),
                               ],
                               annotations: <GaugeAnnotation>[
@@ -105,7 +105,7 @@ class _StepDashboardState extends State<StepDashboard> {
                                   angle: 90,
                                   widget: Text('3000/6000',
                                       style: kHeadingTextStyle.copyWith(
-                                          color: Colors.blue, fontSize: 24.0)),
+                                          color: Colors.green, fontSize: 24.0)),
                                 ),
                               ]),
                         ]),
