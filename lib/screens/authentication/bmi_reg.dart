@@ -141,7 +141,7 @@ class _BMIReg extends State<BMIReg> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           const Text(
-                            "Height",
+                            "Height (in cm)",
                             style:
                                 TextStyle(fontSize: 20.0, color: kPrimaryColor),
                           ),
@@ -218,7 +218,7 @@ class _BMIReg extends State<BMIReg> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   const Text(
-                                    "Weight",
+                                    "Weight (in Kg)",
                                     style: TextStyle(
                                         fontSize: 20.0,
                                         color: kPrimaryColor,
@@ -286,6 +286,7 @@ class _BMIReg extends State<BMIReg> {
                             colour: kPrimaryColor,
                             onPressed: () {
                               showProgressDialog(context);
+                              print("url is" + widget.profileURL.toString());
                               final auth = FirebaseAuth.instance.currentUser;
 
                               if (widget.name != null) {

@@ -143,16 +143,16 @@ class _UserDetailState extends State<UserDetail> {
                               .putFile(image!)
                               .snapshot;
 
-                          final downloadURL =
-                              await displayPicture.ref.getDownloadURL().then((value) {
-                                
-                              });
-                          changeScreen(context,
-                              BMIReg(name: name.text, profileURL: downloadURL));
+                          await displayPicture.ref
+                              .getDownloadURL()
+                              .then((value) {
+                            changeScreen(context,
+                                BMIReg(name: name.text, profileURL: value));
+                          });
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Please Select Profile Picutre'),
+                              content: Text('Please Select Profile Picture'),
                             ),
                           );
                         }
