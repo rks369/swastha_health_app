@@ -248,9 +248,9 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             endAngle: 90,
                                             canScaleToFit: false,
                                             minimum: 0,
-                                            maximum: blocProvider
-                                                    .waterModel.goalwater +
-                                                0.1,
+                                            maximum: int.parse(blocProvider
+                                                    .userModel.goalWater) +
+                                                0.0,
                                             showLabels: false,
                                             showTicks: false,
                                             axisLineStyle: AxisLineStyle(
@@ -377,13 +377,16 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     title: "Water: ",
                                     rangeTitle:
                                         "${blocProvider.waterModel.takenwater / 1000}L/${int.parse(blocProvider.userModel.goalWater)}L",
-                                    maxrange: blocProvider.waterModel.goalwater,
+                                    maxrange: int.parse(
+                                            blocProvider.userModel.goalWater) +
+                                        0.0,
                                     interval: int.parse(
                                             blocProvider.userModel.goalWater) +
                                         0.0 / 3,
                                     valuerange:
-                                        blocProvider.waterModel.takenwater /
-                                            1000,
+                                        (blocProvider.waterModel.takenwater /
+                                                1000) +
+                                            0.0,
                                     colorshade1:
                                         Colors.blueAccent.withOpacity(0.4),
                                     colorshade2: Colors.blueAccent,
