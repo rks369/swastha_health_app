@@ -7,7 +7,6 @@ import 'package:swastha/Bloc/breath_cubit.dart';
 import 'package:swastha/firebase_options.dart';
 import 'package:swastha/screens/authentication/user_detail.dart';
 import 'package:swastha/screens/home.dart';
-import 'package:swastha/screens/home/physical_health.dart';
 import 'package:swastha/screens/on_boarding.dart';
 import 'package:swastha/utils/styles.dart';
 

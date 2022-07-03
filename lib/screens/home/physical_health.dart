@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_speed_dial/simple_speed_dial.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/screens/dashboards/calorie_dashboard.dart';
@@ -16,6 +17,7 @@ import 'package:swastha/screens/dashboards/sleep_dashboard.dart';
 import 'package:swastha/screens/dashboards/steps_dashboard.dart';
 import 'package:swastha/screens/dashboards/water_dashboard.dart';
 import 'package:swastha/screens/home/add_water.dart';
+import 'package:swastha/screens/home/physical/add_calories.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/dashboard_tile.dart';
@@ -144,16 +146,47 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
     double taken = blocProvider.waterModel.takenwater;
     taken = taken / 1000;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: kPrimaryColor,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (builder) {
-                  return const AddWater();
-                });
-          }),
+      floatingActionButton: SpeedDial(
+        closedForegroundColor: kWhite,
+        openForegroundColor: kPrimaryColor,
+        closedBackgroundColor: kPrimaryColor,
+        openBackgroundColor: kWhite,
+        labelsBackgroundColor: kPrimaryColor,
+        labelsStyle: kSubHeadingTextStyle.copyWith(color: kWhite),
+        speedDialChildren: [
+          SpeedDialChild(
+              child: const Icon(Icons.water_drop),
+              foregroundColor: Colors.white,
+              backgroundColor: kPrimaryColor,
+              label: 'Add Water',
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (builder) {
+                      return const AddWater();
+                    });
+              }),
+          SpeedDialChild(
+              child: const Icon(Icons.hotel),
+              foregroundColor: Colors.white,
+              backgroundColor: kPrimaryColor,
+              label: 'Add Sleep',
+              onPressed: () {}),
+          SpeedDialChild(
+              child: const Icon(Icons.local_dining),
+              foregroundColor: Colors.white,
+              backgroundColor: kPrimaryColor,
+              label: 'Add Calories',
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (builder) {
+                      return const AddCalories();
+                    });
+              })
+        ],
+        child: const Icon(Icons.add),
+      ),
       body: StreamBuilder<AccelerometerEvent>(
           stream: null,
           builder: (context, snapshot) {

@@ -40,11 +40,18 @@ class SQLHelper {
             'swastha', {'water': (list[0]['water'] as int) + dataModel.water},
             where: "date = ?", whereArgs: [date]);
         return result;
-      } else {
+      } else if (dataModel.sleep != 0) {
         final result = await db.update(
-            'swastha', {'sleep': (list[0]['water'] as int) + dataModel.water},
+            'swastha', {'sleep': (list[0]['sleep'] as int) + dataModel.sleep},
             where: "date = ?", whereArgs: [date]);
         return result;
+      } else if (dataModel.calories != 0) {
+        final result = await db.update('swastha',
+            {'calories': (list[0]['calories'] as int) + dataModel.calories},
+            where: "date = ?", whereArgs: [date]);
+        return result;
+      } else {
+        return 0;
       }
     } else {
       final id = await db.insert('swastha', dataModel.toMap(),
