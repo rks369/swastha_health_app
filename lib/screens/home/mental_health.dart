@@ -117,7 +117,11 @@ class MentalHealth extends StatelessWidget {
                 width: 60,
               ),
               RoundedButton(
-                  title: 'Resources', colour: kPrimaryColor, onPressed: () {})
+                  title: 'Resources',
+                  colour: kPrimaryColor,
+                  onPressed: () {
+                    changeScreen(context, const Resources());
+                  })
             ],
           ),
         )),

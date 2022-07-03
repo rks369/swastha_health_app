@@ -98,9 +98,13 @@ class ResrouceTile extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             const Padding(
               padding: EdgeInsets.all(5.0),
-              child: Icon(
-                Icons.language,
-                color: kWhite,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.language,
+                  color: kWhite,
+                  size: 48,
+                ),
               ),
             ),
             Column(
@@ -124,6 +128,7 @@ class ResrouceTile extends StatelessWidget {
               child: Icon(
                 Icons.trending_up,
                 color: kWhite,
+                size: 36,
               ),
             ),
           ]),
