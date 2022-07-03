@@ -51,6 +51,10 @@ class SQLHelper {
             {'calories': (list[0]['calories'] as int) + dataModel.calories},
             where: "date = ?", whereArgs: [date]);
         return result;
+      } else if (dataModel.steps != 0) {
+        final result = await db.update('swastha', {'steps': dataModel.steps},
+            where: "date = ?", whereArgs: [date]);
+        return result;
       } else {
         return 0;
       }

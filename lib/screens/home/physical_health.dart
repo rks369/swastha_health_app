@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
+import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/models/data_model.dart';
 import 'package:swastha/screens/dashboards/calorie_dashboard.dart';
 import 'package:swastha/screens/dashboards/sleep_dashboard.dart';
@@ -86,9 +88,9 @@ void onStart(ServiceInstance service) async {
 
   double getValue(double x, double y, double z) {
     double magnitude = sqrt(x * x + y * y + z * z);
-    previousDistacne = preferences.getDouble("preValue") ?? 0.0;
     double modDistance = magnitude - previousDistacne;
-    preferences.setDouble("preValue", magnitude);
+    previousDistacne = magnitude;
+
     return modDistance;
   }
 
@@ -102,7 +104,6 @@ void onStart(ServiceInstance service) async {
       if (distance > 6) {
         steps++;
       }
-      preferences.setInt('steps', steps);
     });
 
     if (service is AndroidServiceInstance) {
@@ -112,6 +113,14 @@ void onStart(ServiceInstance service) async {
       );
       service.setAsForegroundService();
     }
+
+    SQLHelper.insertData(DataModel(
+        DateFormat('dd/MM/yyyy').format(DateTime.now()),
+        DateTime.now().weekday,
+        0,
+        0,
+        0,
+        steps));
 
     /// you can see this log in logcat
 
