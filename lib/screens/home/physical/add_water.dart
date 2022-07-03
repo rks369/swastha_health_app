@@ -202,20 +202,14 @@ class _AddWaterState extends State<AddWater> {
                 title: "Done",
                 colour: kPrimaryColor,
                 onPressed: () async {
-                  // List resList = await SQLHelper.getItem(
-                  //     DateFormat('dd/MM/yyyy').format(DateTime.now()));
-
-                  // blocProvider.setWaterTaken((resList[0]['waterTaken'] * 1.0));
-
-                  SQLHelper.insertData(DataModel(
+                  await SQLHelper.insertData(DataModel(
                       DateFormat('dd/MM/yyyy').format(DateTime.now()),
                       _taken,
                       0,
                       0,
                       0));
-                  final result = await SQLHelper.getItems();
 
-                  changeScreenReplacement(context, PhysicalHealth());
+                  changeScreenReplacement(context, const Home());
                 }),
           ),
         ],

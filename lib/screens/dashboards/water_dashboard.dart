@@ -4,9 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/graph/barchartwidget.dart';
-import 'package:swastha/screens/home/physical/set_water_goal.dart';
 import 'package:swastha/utils/styles.dart';
-import 'package:swastha/widgets/round_button.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class WaterDashboard extends StatefulWidget {

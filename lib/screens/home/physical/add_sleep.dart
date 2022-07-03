@@ -8,19 +8,19 @@ import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 
-class AddCalories extends StatefulWidget {
-  const AddCalories({Key? key}) : super(key: key);
+class AddSleep extends StatefulWidget {
+  const AddSleep({Key? key}) : super(key: key);
 
   @override
-  State<AddCalories> createState() => _AddCaloriesState();
+  State<AddSleep> createState() => _AddSleepState();
 }
 
-class _AddCaloriesState extends State<AddCalories> {
+class _AddSleepState extends State<AddSleep> {
+  final List<int> items = [1, 2, 3, 4, 5, 6, 7, 8];
   int _taken = 0;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-
     return Container(
       color: kWhite,
       height: 450,
@@ -30,33 +30,29 @@ class _AddCaloriesState extends State<AddCalories> {
             height: 10,
           ),
           const Text(
-            "Enter Amount of Calories : ",
+            "Enter Sleep Taken In Hours",
             style: kSubHeadingTextStyle,
           ),
           Form(
               key: _formKey,
               child: Padding(
-                padding: const EdgeInsets.all(48.0),
-                child: TextFormField(
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  initialValue: '100',
-                  keyboardType: TextInputType.number,
-                  decoration: kTextFieldDecoration.copyWith(
-                      labelText: 'Enter Caloreis', hintText: 'Caloreis'),
-                  onChanged: (value) {
-                    _taken = int.parse(value);
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "It Can't Be Empty";
-                    } else if (int.parse(value) > 1000) {
-                      return 'it must be less than 1000';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-              )),
+                  padding: const EdgeInsets.all(48.0),
+                  child: DropdownButtonFormField(
+                    decoration: kTextFieldDecoration,
+                    iconEnabledColor: kPrimaryColor,
+                    iconDisabledColor: kPrimaryColor,
+                    items: items.map((int items) {
+                      return DropdownMenuItem(
+                        alignment: Alignment.center,
+                        value: items,
+                        child: Text('$items Hr.',
+                            style: kHeadingTextStyle.copyWith(fontSize: 18)),
+                      );
+                    }).toList(),
+                    onChanged: (dynamic v) {
+                      _taken = int.parse(v.toString());
+                    },
+                  ))),
           Center(
             child: RoundedButton(
                 title: "Done",
@@ -67,9 +63,11 @@ class _AddCaloriesState extends State<AddCalories> {
                       await SQLHelper.insertData(DataModel(
                           DateFormat('dd/MM/yyyy').format(DateTime.now()),
                           0,
-                          _taken,
                           0,
+                          _taken,
                           0));
+                      final result = await SQLHelper.getItems();
+                      print(result);
                       changeScreenReplacement(context, Home());
                     });
                   }

@@ -17,7 +17,8 @@ import 'package:swastha/screens/dashboards/calorie_dashboard.dart';
 import 'package:swastha/screens/dashboards/sleep_dashboard.dart';
 import 'package:swastha/screens/dashboards/steps_dashboard.dart';
 import 'package:swastha/screens/dashboards/water_dashboard.dart';
-import 'package:swastha/screens/home/add_water.dart';
+import 'package:swastha/screens/home/physical/add_sleep.dart';
+import 'package:swastha/screens/home/physical/add_water.dart';
 import 'package:swastha/screens/home/physical/add_calories.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
@@ -174,7 +175,11 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
               foregroundColor: Colors.white,
               backgroundColor: kPrimaryColor,
               label: 'Add Sleep',
-              onPressed: () {}),
+              onPressed: () {showModalBottomSheet(
+                    context: context,
+                    builder: (builder) {
+                      return const AddSleep();
+                    });}),
           SpeedDialChild(
               child: const Icon(Icons.local_dining),
               foregroundColor: Colors.white,
