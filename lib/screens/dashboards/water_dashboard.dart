@@ -88,7 +88,9 @@ class _WaterDashboardState extends State<WaterDashboard> {
                               endAngle: 90,
                               canScaleToFit: false,
                               minimum: 0,
-                              maximum: blocProvider.waterModel.goalwater + 0.1,
+                              maximum:
+                                  int.parse(blocProvider.userModel.goalWater) +
+                                      0.0,
                               showLabels: false,
                               showTicks: false,
                               axisLineStyle: AxisLineStyle(
@@ -111,7 +113,7 @@ class _WaterDashboardState extends State<WaterDashboard> {
                                   positionFactor: 0.1,
                                   angle: 90,
                                   widget: Text(
-                                      '${taken}L/${blocProvider.waterModel.goalwater}L',
+                                      '${taken}/${blocProvider.userModel.goalWater}L',
                                       style: kHeadingTextStyle.copyWith(
                                           color: Colors.blue, fontSize: 24.0)),
                                 ),
@@ -119,16 +121,6 @@ class _WaterDashboardState extends State<WaterDashboard> {
                         ]),
                   ),
                 ),
-                RoundedButton(
-                    title: 'Set Goal',
-                    colour: kPrimaryColor,
-                    onPressed: () {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (builder) {
-                            return const SetWaterGoal();
-                          });
-                    }),
                 const Text(
                   "Weekly Static:",
                   style: TextStyle(fontSize: 20),

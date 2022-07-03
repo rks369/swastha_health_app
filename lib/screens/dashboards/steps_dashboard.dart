@@ -26,7 +26,7 @@ class _StepDashboardState extends State<StepDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    // final blocProvider = BlocProvider.of<AuthCubit>(context);
+    final blocProvider = BlocProvider.of<AuthCubit>(context);
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
@@ -81,7 +81,9 @@ class _StepDashboardState extends State<StepDashboard> {
                               endAngle: 90,
                               canScaleToFit: false,
                               minimum: 0,
-                              maximum: 6000 + 0.1,
+                              maximum:
+                                  int.parse(blocProvider.userModel.goalSteps) +
+                                      0.0,
                               showLabels: false,
                               showTicks: false,
                               axisLineStyle: AxisLineStyle(
@@ -103,7 +105,8 @@ class _StepDashboardState extends State<StepDashboard> {
                                 GaugeAnnotation(
                                   positionFactor: 0.1,
                                   angle: 90,
-                                  widget: Text('3000/6000',
+                                  widget: Text(
+                                      '3000/${blocProvider.userModel.goalSteps}',
                                       style: kHeadingTextStyle.copyWith(
                                           color: Colors.green, fontSize: 24.0)),
                                 ),

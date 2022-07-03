@@ -26,7 +26,7 @@ class _SleepDashboardState extends State<SleepDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    // final blocProvider = BlocProvider.of<AuthCubit>(context);
+    final blocProvider = BlocProvider.of<AuthCubit>(context);
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
@@ -81,7 +81,9 @@ class _SleepDashboardState extends State<SleepDashboard> {
                               endAngle: 90,
                               canScaleToFit: false,
                               minimum: 0,
-                              maximum: 9 + 0.1,
+                              maximum:
+                                  int.parse(blocProvider.userModel.goalSleep) +
+                                      0.0,
                               showLabels: false,
                               showTicks: false,
                               axisLineStyle: AxisLineStyle(
@@ -103,7 +105,8 @@ class _SleepDashboardState extends State<SleepDashboard> {
                                 GaugeAnnotation(
                                   positionFactor: 0.1,
                                   angle: 90,
-                                  widget: Text('4h/9h',
+                                  widget: Text(
+                                      '4/${blocProvider.userModel.goalSleep}h',
                                       style: kHeadingTextStyle.copyWith(
                                           color: Colors.red, fontSize: 24.0)),
                                 ),

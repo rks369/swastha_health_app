@@ -26,7 +26,7 @@ class _CalorieDashboardState extends State<CalorieDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    // final blocProvider = BlocProvider.of<AuthCubit>(context);
+    final blocProvider = BlocProvider.of<AuthCubit>(context);
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
@@ -81,7 +81,9 @@ class _CalorieDashboardState extends State<CalorieDashboard> {
                               endAngle: 90,
                               canScaleToFit: false,
                               minimum: 0,
-                              maximum: 3000 + 0.001,
+                              maximum: int.parse(
+                                      blocProvider.userModel.goalCalorie) +
+                                  0.0,
                               showLabels: false,
                               showTicks: false,
                               axisLineStyle: AxisLineStyle(
@@ -103,7 +105,8 @@ class _CalorieDashboardState extends State<CalorieDashboard> {
                                 GaugeAnnotation(
                                   positionFactor: 0.1,
                                   angle: 90,
-                                  widget: Text('2000/3000',
+                                  widget: Text(
+                                      '2000/${blocProvider.userModel.goalCalorie}',
                                       style: kHeadingTextStyle.copyWith(
                                           color: Colors.yellow,
                                           fontSize: 24.0)),
