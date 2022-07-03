@@ -1,6 +1,11 @@
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:swastha/Bloc/auth_cubit.dart';
+import 'package:swastha/screens/home.dart';
+import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/card.dart';
 import 'package:swastha/widgets/circle_button.dart';
@@ -28,6 +33,7 @@ class _BMICalculatorState extends State<BMICalculator> {
   int height = 170;
   @override
   Widget build(BuildContext context) {
+    final blocProvider = BlocProvider.of<AuthCubit>(context);
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
       floatingActionButton: FloatingActionButton(
@@ -291,11 +297,29 @@ class _BMICalculatorState extends State<BMICalculator> {
                                             textAlign: TextAlign.center,
                                             style: kNormalTextStyle,
                                           ),
+                                          RoundedButton(
+                                              title: "Update BMI info.",
+                                              colour: kPrimaryColor,
+                                              onPressed: () {
+                                                showProgressDialog(context);
+                                                FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .doc(blocProvider
+                                                        .userModel.uid)
+                                                    .update({
+                                                  'bmi': calculateBMI(),
+                                                }).then((value) {
+                                                  blocProvider.updatebmi(
+                                                      calculateBMI());
+                                                  changeScreenReplacement(
+                                                      context, Home());
+                                                });
+                                              })
                                         ]),
                                   );
                                 });
                           }),
-                    )
+                    ),
                   ],
                 ),
               ),

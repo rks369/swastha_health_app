@@ -163,4 +163,18 @@ class AuthCubit extends Cubit<Authstate> {
   void setWaterTaken(double taken) {
     waterModel.takenwater = taken;
   }
+
+  void UpdateUserDetails(String name, String bmi, String watergoal,
+      String stepgoal, String sleepgoal, String caloriegoal) {
+    userModel.name = name;
+    userModel.bmi = bmi;
+    userModel.goalWater = watergoal;
+    userModel.goalSteps = stepgoal;
+    userModel.goalSleep = sleepgoal;
+    userModel.goalCalorie = caloriegoal;
+  }
+
+  void updatebmi(String bmi) {
+    userModel.bmi = bmi;
+  }
 }

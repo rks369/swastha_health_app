@@ -1,17 +1,17 @@
 class UserModel {
   final String uid;
   final String mobile;
-  final String name;
+  String name;
   final String profileURL;
   final String gender;
   final String height;
   final String weight;
   final String age;
-  final String bmi;
-  final String goalWater;
-  final String goalSteps;
-  final String goalSleep;
-  final String goalCalorie;
+  String bmi;
+  String goalWater;
+  String goalSteps;
+  String goalSleep;
+  String goalCalorie;
 
   UserModel(
       this.uid,
