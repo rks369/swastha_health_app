@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/models/data_model.dart';
@@ -38,6 +37,7 @@ class _AddSleepState extends State<AddSleep> {
               child: Padding(
                   padding: const EdgeInsets.all(48.0),
                   child: DropdownButtonFormField(
+                    value: 1,
                     decoration: kTextFieldDecoration,
                     iconEnabledColor: kPrimaryColor,
                     iconDisabledColor: kPrimaryColor,

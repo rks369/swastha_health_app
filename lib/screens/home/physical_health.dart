@@ -129,6 +129,7 @@ class PhysicalHealth extends StatefulWidget {
 }
 
 class _PhysicalHealthState extends State<PhysicalHealth> {
+  late double percentage;
   @override
   void initState() {
     getData();
@@ -140,6 +141,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
     final DataModel data = await blocProvider.getDataFromSQL();
     blocProvider.setDataModel(data);
+    percentage = 10;
     setState(() {});
     print(blocProvider.dataModel.toMap());
   }
@@ -175,11 +177,13 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
               foregroundColor: Colors.white,
               backgroundColor: kPrimaryColor,
               label: 'Add Sleep',
-              onPressed: () {showModalBottomSheet(
+              onPressed: () {
+                showModalBottomSheet(
                     context: context,
                     builder: (builder) {
                       return const AddSleep();
-                    });}),
+                    });
+              }),
           SpeedDialChild(
               child: const Icon(Icons.local_dining),
               foregroundColor: Colors.white,
@@ -272,8 +276,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             pointers: <GaugePointer>[
                                               RangePointer(
                                                 value: blocProvider
-                                                        .dataModel.water *
-                                                    1.0,
+                                                        .dataModel.water +
+                                                    0.0,
                                                 cornerStyle:
                                                     CornerStyle.bothCurve,
                                                 width: 0.1,
@@ -285,7 +289,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                               GaugeAnnotation(
                                                 positionFactor: 0.1,
                                                 angle: 90,
-                                                widget: Text('30%',
+                                                widget: Text('${percentage}%',
                                                     style: kHeadingTextStyle
                                                         .copyWith(
                                                             color: Colors.red,
@@ -313,8 +317,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                           pointers: <GaugePointer>[
                                             RangePointer(
                                               value:
-                                                  blocProvider.dataModel.steps *
-                                                      1.0,
+                                                  blocProvider.dataModel.steps +
+                                                      0.0,
                                               cornerStyle:
                                                   CornerStyle.bothCurve,
                                               width: 0.1,
@@ -343,8 +347,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                           pointers: <GaugePointer>[
                                             RangePointer(
                                               value:
-                                                  blocProvider.dataModel.sleep *
-                                                      1.0,
+                                                  blocProvider.dataModel.sleep +
+                                                      0.0,
                                               cornerStyle:
                                                   CornerStyle.bothCurve,
                                               width: 0.1,
@@ -373,13 +377,13 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                           pointers: <GaugePointer>[
                                             RangePointer(
                                               value: blocProvider
-                                                      .dataModel.calories *
-                                                  1.0,
+                                                      .dataModel.calories +
+                                                  0.0,
                                               cornerStyle:
                                                   CornerStyle.bothCurve,
                                               width: 0.1,
                                               sizeUnit: GaugeSizeUnit.factor,
-                                              color: Color(0xffffdd80),
+                                              color: const Color(0xffffdd80),
                                             ),
                                           ],
                                         )
@@ -419,12 +423,13 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             blocProvider.userModel.goalSteps) /
                                         4,
                                     valuerange:
-                                        blocProvider.dataModel.steps * 1.0,
+                                        blocProvider.dataModel.steps + 0.0,
                                     colorshade1: Colors.green.withOpacity(0.4),
                                     colorshade2: Colors.green,
                                   ),
                                   onTap: () {
-                                    changeScreen(context, StepDashboard());
+                                    changeScreen(
+                                        context, const StepDashboard());
                                   },
                                 ),
                                 InkWell(
@@ -445,7 +450,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     colorshade2: Colors.red,
                                   ),
                                   onTap: () {
-                                    changeScreen(context, SleepDashboard());
+                                    changeScreen(
+                                        context, const SleepDashboard());
                                   },
                                 ),
                                 InkWell(
@@ -453,19 +459,20 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     icon: Icons.local_dining,
                                     title: "Calorie: ",
                                     rangeTitle:
-                                        "2000/${blocProvider.userModel.goalCalorie}",
+                                        "${blocProvider.dataModel.calories}/${blocProvider.userModel.goalCalorie}",
                                     maxrange: double.parse(
                                         blocProvider.userModel.goalCalorie),
                                     interval: double.parse(blocProvider
                                             .userModel.goalCalorie) /
                                         4,
                                     valuerange:
-                                        blocProvider.dataModel.calories * 1.0,
+                                        blocProvider.dataModel.calories + 0.0,
                                     colorshade1: Colors.yellow.withOpacity(0.4),
                                     colorshade2: Colors.yellow,
                                   ),
                                   onTap: () {
-                                    changeScreen(context, CalorieDashboard());
+                                    changeScreen(
+                                        context, const CalorieDashboard());
                                   },
                                 )
                               ],

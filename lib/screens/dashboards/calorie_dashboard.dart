@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
-import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/graph/barchartwidget.dart';
-import 'package:swastha/screens/home/physical_health.dart';
 import 'package:swastha/utils/styles.dart';
-import 'package:swastha/widgets/round_button.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class CalorieDashboard extends StatefulWidget {
@@ -81,9 +77,8 @@ class _CalorieDashboardState extends State<CalorieDashboard> {
                               endAngle: 90,
                               canScaleToFit: false,
                               minimum: 0,
-                              maximum: int.parse(
-                                      blocProvider.userModel.goalCalorie) +
-                                  0.0,
+                              maximum: double.parse(
+                                  blocProvider.userModel.goalCalorie),
                               showLabels: false,
                               showTicks: false,
                               axisLineStyle: AxisLineStyle(
@@ -94,7 +89,7 @@ class _CalorieDashboardState extends State<CalorieDashboard> {
                               ),
                               pointers: <GaugePointer>[
                                 RangePointer(
-                                  value: 2000 + 0.0,
+                                  value: blocProvider.dataModel.calories + 0.0,
                                   cornerStyle: CornerStyle.bothCurve,
                                   width: 0.2,
                                   sizeUnit: GaugeSizeUnit.factor,
@@ -106,7 +101,7 @@ class _CalorieDashboardState extends State<CalorieDashboard> {
                                   positionFactor: 0.1,
                                   angle: 90,
                                   widget: Text(
-                                      '2000/${blocProvider.userModel.goalCalorie}',
+                                      '${blocProvider.dataModel.calories}/${blocProvider.userModel.goalCalorie}',
                                       style: kHeadingTextStyle.copyWith(
                                           color: Colors.yellow,
                                           fontSize: 24.0)),
