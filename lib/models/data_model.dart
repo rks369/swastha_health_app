@@ -16,3 +16,8 @@ class DataModel {
     };
   }
 }
+
+DataModel dataModelFromJson(Map<String, dynamic> data) {
+  return DataModel(data['date'], data['water'], data['calories'], data['sleep'],
+      data['steps']);
+}

@@ -83,6 +83,13 @@ class SQLHelper {
     return db.query('swastha', orderBy: "id");
   }
 
+  static Future<List<Map<String, dynamic>>> getTodayData() async {
+    final db = await SQLHelper.db();
+    final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
+
+    return db.query('swastha', where: "date = ?", whereArgs: [date], limit: 1);
+  }
+
   // Read a single item by id
   // The app doesn't use this method but I put here in case you want to see it
   static Future<List<Map<String, dynamic>>> getItem(String date) async {

@@ -97,7 +97,7 @@ class DashboardTile extends StatelessWidget {
                             markerPointers: [
                               LinearShapePointer(
                                 value: valuerange,
-                                color: kPrimaryColor,
+                                color: colorshade2,
                               ),
                             ],
                             // barPointers: [

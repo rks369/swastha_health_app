@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/sql_helper.dart';
+import 'package:swastha/models/data_model.dart';
 import 'package:swastha/screens/dashboards/calorie_dashboard.dart';
 import 'package:swastha/screens/dashboards/sleep_dashboard.dart';
 import 'package:swastha/screens/dashboards/steps_dashboard.dart';
@@ -129,15 +130,17 @@ class PhysicalHealth extends StatefulWidget {
 class _PhysicalHealthState extends State<PhysicalHealth> {
   @override
   void initState() {
-    settaken();
+    getData();
+
     super.initState();
   }
 
-  void settaken() async {
+  void getData() async {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
-    List resList = await SQLHelper.getItem(
-        DateFormat('dd/MM/yyyy').format(DateTime.now()));
-    blocProvider.setWaterTaken(resList[0]['waterTaken'] * 1.0);
+    final DataModel data = await blocProvider.getDataFromSQL();
+    blocProvider.setDataModel(data);
+    setState(() {});
+    print(blocProvider.dataModel.toMap());
   }
 
   @override
@@ -248,9 +251,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             endAngle: 90,
                                             canScaleToFit: false,
                                             minimum: 0,
-                                            maximum: int.parse(blocProvider
-                                                    .userModel.goalWater) +
-                                                0.0,
+                                            maximum: double.parse(blocProvider
+                                                .userModel.goalWater),
                                             showLabels: false,
                                             showTicks: false,
                                             axisLineStyle: AxisLineStyle(
@@ -264,7 +266,9 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             ),
                                             pointers: <GaugePointer>[
                                               RangePointer(
-                                                value: taken + 0.0,
+                                                value: blocProvider
+                                                        .dataModel.water *
+                                                    1.0,
                                                 cornerStyle:
                                                     CornerStyle.bothCurve,
                                                 width: 0.1,
@@ -303,7 +307,9 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                           ),
                                           pointers: <GaugePointer>[
                                             RangePointer(
-                                              value: steps * 1.0 + 1000,
+                                              value:
+                                                  blocProvider.dataModel.steps *
+                                                      1.0,
                                               cornerStyle:
                                                   CornerStyle.bothCurve,
                                               width: 0.1,
@@ -329,9 +335,11 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             color: Colors.red.withOpacity(0.3),
                                             thicknessUnit: GaugeSizeUnit.factor,
                                           ),
-                                          pointers: const <GaugePointer>[
+                                          pointers: <GaugePointer>[
                                             RangePointer(
-                                              value: 4,
+                                              value:
+                                                  blocProvider.dataModel.sleep *
+                                                      1.0,
                                               cornerStyle:
                                                   CornerStyle.bothCurve,
                                               width: 0.1,
@@ -346,21 +354,22 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                           radiusFactor: .63,
                                           canScaleToFit: false,
                                           minimum: 0,
-                                          maximum: int.parse(blocProvider
-                                                  .userModel.goalCalorie) +
-                                              0.0,
+                                          maximum: double.parse(blocProvider
+                                              .userModel.goalCalorie),
                                           showLabels: false,
                                           showTicks: false,
                                           axisLineStyle: AxisLineStyle(
                                             thickness: 0.1,
                                             cornerStyle: CornerStyle.bothCurve,
-                                            color: Color(0xffffdd80)
+                                            color: const Color(0xffffdd80)
                                                 .withOpacity(0.3),
                                             thicknessUnit: GaugeSizeUnit.factor,
                                           ),
-                                          pointers: const <GaugePointer>[
+                                          pointers: <GaugePointer>[
                                             RangePointer(
-                                              value: 2000,
+                                              value: blocProvider
+                                                      .dataModel.calories *
+                                                  1.0,
                                               cornerStyle:
                                                   CornerStyle.bothCurve,
                                               width: 0.1,
@@ -376,18 +385,14 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     icon: Icons.water_drop,
                                     title: "Water: ",
                                     rangeTitle:
-                                        "${blocProvider.waterModel.takenwater / 1000}L/${int.parse(blocProvider.userModel.goalWater)}L",
-                                    maxrange: int.parse(
-                                            blocProvider.userModel.goalWater) +
-                                        0.0,
-                                    interval: (int.parse(blocProvider
-                                                .userModel.goalWater) +
-                                            0.0) /
-                                        3,
+                                        "${blocProvider.dataModel.water / 1000}L/${int.parse(blocProvider.userModel.goalWater)}L",
+                                    maxrange: double.parse(
+                                        blocProvider.userModel.goalWater),
+                                    interval: double.parse(
+                                            blocProvider.userModel.goalWater) /
+                                        4,
                                     valuerange:
-                                        (blocProvider.waterModel.takenwater /
-                                                1000) +
-                                            0.0,
+                                        blocProvider.dataModel.water / 1000,
                                     colorshade1:
                                         Colors.blueAccent.withOpacity(0.4),
                                     colorshade2: Colors.blueAccent,
@@ -402,15 +407,14 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     icon: Icons.directions_run,
                                     title: "Steps: ",
                                     rangeTitle:
-                                        "$steps/${blocProvider.userModel.goalSteps}",
-                                    maxrange: int.parse(
-                                            blocProvider.userModel.goalSteps) +
-                                        0.0,
-                                    interval: (int.parse(blocProvider
-                                                .userModel.goalSteps) +
-                                            0.0) /
-                                        3,
-                                    valuerange: steps * 1.0,
+                                        "${blocProvider.dataModel.steps}/${int.parse(blocProvider.userModel.goalSteps)}",
+                                    maxrange: double.parse(
+                                        blocProvider.userModel.goalSteps),
+                                    interval: double.parse(
+                                            blocProvider.userModel.goalSteps) /
+                                        4,
+                                    valuerange:
+                                        blocProvider.dataModel.steps * 1.0,
                                     colorshade1: Colors.green.withOpacity(0.4),
                                     colorshade2: Colors.green,
                                   ),
@@ -423,15 +427,15 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     icon: Icons.hotel,
                                     title: "Sleep: ",
                                     rangeTitle:
-                                        "4h/${blocProvider.userModel.goalSleep}h",
-                                    maxrange: int.parse(
-                                            blocProvider.userModel.goalSleep) +
-                                        0.0,
-                                    interval: (int.parse(blocProvider
-                                                .userModel.goalSleep) +
-                                            0.0) /
-                                        2,
-                                    valuerange: 4.0,
+                                        "${blocProvider.dataModel.sleep}hr/${int.parse(blocProvider.userModel.goalSleep)}h",
+                                    maxrange: double.parse(
+                                        blocProvider.userModel.goalSleep),
+                                    interval: double.parse(
+                                            blocProvider.userModel.goalSleep) /
+                                        4,
+                                    valuerange: double.parse(blocProvider
+                                        .dataModel.sleep
+                                        .toString()),
                                     colorshade1: Colors.red.withOpacity(0.4),
                                     colorshade2: Colors.red,
                                   ),
@@ -445,14 +449,13 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     title: "Calorie: ",
                                     rangeTitle:
                                         "2000/${blocProvider.userModel.goalCalorie}",
-                                    maxrange: int.parse(blocProvider
-                                            .userModel.goalCalorie) +
-                                        0.0,
-                                    interval: (int.parse(blocProvider
-                                                .userModel.goalSteps) +
-                                            0.0) /
+                                    maxrange: double.parse(
+                                        blocProvider.userModel.goalCalorie),
+                                    interval: double.parse(blocProvider
+                                            .userModel.goalCalorie) /
                                         4,
-                                    valuerange: 2000.0,
+                                    valuerange:
+                                        blocProvider.dataModel.calories * 1.0,
                                     colorshade1: Colors.yellow.withOpacity(0.4),
                                     colorshade2: Colors.yellow,
                                   ),
