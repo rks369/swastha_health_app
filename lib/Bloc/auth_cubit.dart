@@ -52,7 +52,6 @@ class AuthCubit extends Cubit<Authstate> {
 
   Future<DataModel> getDataFromSQL() async {
     final result = await SQLHelper.getTodayData();
-    print(result);
     return dataModelFromJson(result[0]);
   }
 
@@ -171,7 +170,7 @@ class AuthCubit extends Cubit<Authstate> {
     dataModel.water = int.parse(taken.toString());
   }
 
-  void UpdateUserDetails(String name, String bmi, String watergoal,
+  void updateUserDetails(String name, String bmi, String watergoal,
       String stepgoal, String sleepgoal, String caloriegoal) {
     userModel.name = name;
     userModel.bmi = bmi;

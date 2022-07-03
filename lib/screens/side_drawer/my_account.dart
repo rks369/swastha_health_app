@@ -4,9 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/screens/home.dart';
 import 'package:swastha/services/change_screen.dart';
-import 'package:swastha/services/custom_snackbar.dart';
 import 'package:swastha/utils/styles.dart';
-import 'package:swastha/widgets/profile_tile.dart';
 import 'package:swastha/widgets/round_button.dart';
 
 class MyAccount extends StatelessWidget {
@@ -116,7 +114,7 @@ class MyAccount extends StatelessWidget {
                               'goalSleep': controllerSleepG.text.toString(),
                               'goalCalorie': controllerCalorieG.text.toString(),
                             }).then((value) {
-                              blocProvider.UpdateUserDetails(
+                              blocProvider.updateUserDetails(
                                   controllerName.text.toString(),
                                   controllerBmi.text.toString(),
                                   controllerWaterG.text.toString(),
@@ -256,11 +254,11 @@ class MyAccount extends StatelessWidget {
   }
 }
 
-class editDialog extends StatelessWidget {
+class EditDialog extends StatelessWidget {
   final String title;
   final String tlabel;
-  final onupdate;
-  const editDialog(
+  final VoidCallback onupdate;
+  const EditDialog(
       {Key? key,
       required this.title,
       required this.tlabel,

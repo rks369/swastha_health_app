@@ -149,7 +149,7 @@ class _WaterDashboardState extends State<WaterDashboard> {
                     ),
                     color: const Color(0xff020227),
                     child: Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: BarChart(BarChartData(
                         alignment: BarChartAlignment.center,
                         maxY: maxTaken + 500,

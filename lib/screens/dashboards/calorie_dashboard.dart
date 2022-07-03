@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/sql_helper.dart';
-import 'package:swastha/graph/barchartwidget.dart';
 import 'package:swastha/models/graph_data.dart';
 import 'package:swastha/utils/constants.dart';
 import 'package:swastha/utils/styles.dart';
@@ -85,7 +84,7 @@ class _CalorieDashboardState extends State<CalorieDashboard> {
                     topRight: Radius.circular(30))),
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Center(
@@ -149,7 +148,7 @@ class _CalorieDashboardState extends State<CalorieDashboard> {
                     ),
                     color: const Color(0xff020227),
                     child: Padding(
-                      padding: EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(8),
                       child: BarChart(BarChartData(
                         alignment: BarChartAlignment.center,
                         maxY: maxTaken + 500,

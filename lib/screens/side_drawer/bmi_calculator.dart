@@ -312,7 +312,7 @@ class _BMICalculatorState extends State<BMICalculator> {
                                                   blocProvider.updatebmi(
                                                       calculateBMI());
                                                   changeScreenReplacement(
-                                                      context, Home());
+                                                      context, const Home());
                                                 });
                                               })
                                         ]),

@@ -67,9 +67,7 @@ class _AddSleepState extends State<AddSleep> {
                           0,
                           _taken,
                           0));
-                      final result = await SQLHelper.getWeeklyData();
-                      print(result);
-                      changeScreenReplacement(context, Home());
+                      changeScreenReplacement(context, const Home());
                     });
                   }
                 }),

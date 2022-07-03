@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 
 class ProfileTile extends StatelessWidget {
   final String title;
-  final ontap;
+  final VoidCallback ontap;
 
   const ProfileTile({
     Key? key,

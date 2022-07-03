@@ -6,12 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
-import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/models/data_model.dart';
 import 'package:swastha/screens/dashboards/calorie_dashboard.dart';
 import 'package:swastha/screens/dashboards/sleep_dashboard.dart';
@@ -141,7 +139,6 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
     final DataModel data = await blocProvider.getDataFromSQL();
     blocProvider.setDataModel(data);
     setState(() {});
-    print(blocProvider.dataModel.toMap());
   }
 
   @override

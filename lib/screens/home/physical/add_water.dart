@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/models/data_model.dart';
 import 'package:swastha/screens/home.dart';
 import 'package:swastha/database/sql_helper.dart';
-import 'package:swastha/screens/home/physical_health.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/card.dart';
@@ -22,7 +19,6 @@ class _AddWaterState extends State<AddWater> {
   int _taken = 0;
   @override
   Widget build(BuildContext context) {
-    final blocProvider = BlocProvider.of<AuthCubit>(context);
     return Container(
       color: kWhite,
       height: 350,

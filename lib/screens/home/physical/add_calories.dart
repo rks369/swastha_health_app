@@ -70,7 +70,7 @@ class _AddCaloriesState extends State<AddCalories> {
                           _taken,
                           0,
                           0));
-                      changeScreenReplacement(context, Home());
+                      changeScreenReplacement(context, const Home());
                     });
                   }
                 }),

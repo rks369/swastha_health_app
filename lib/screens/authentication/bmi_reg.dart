@@ -368,7 +368,6 @@ class _BMIReg extends State<BMIReg> {
     } else {
       return '4000';
     }
-    return '6000';
   }
 
   String getGaolSleep() {
@@ -397,6 +396,5 @@ class _BMIReg extends State<BMIReg> {
         return '1900';
       }
     }
-    return '2200';
   }
 }
