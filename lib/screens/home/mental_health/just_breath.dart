@@ -63,6 +63,14 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
     return SlideTransition(
       position: _animation,
       child: Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          backgroundColor: kPrimaryColor,
+          child: const Icon(Icons.arrow_back),
+        ),
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

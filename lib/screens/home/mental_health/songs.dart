@@ -35,7 +35,7 @@ class SongWidget extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Text(
-                          '${songList[index].title}\n${songList[index].description}\n${songList[index].duration}',
+                          '${songList[index].title}\n${songList[index].duration}',
                           style: kSubHeadingTextStyle,
                         ),
                       ),
