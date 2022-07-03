@@ -145,6 +145,21 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
   Widget build(BuildContext context) {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
     double taken = blocProvider.waterModel.takenwater;
+    // ignore: division_optimization
+    int overallGoal = ((((blocProvider.dataModel.water / 1000) /
+                        int.parse(blocProvider.userModel.goalWater)) *
+                    100 +
+                (blocProvider.dataModel.sleep /
+                        int.parse(blocProvider.userModel.goalSleep)) *
+                    100 +
+                (blocProvider.dataModel.calories /
+                        int.parse(blocProvider.userModel.goalCalorie)) *
+                    100 +
+                (blocProvider.dataModel.steps /
+                        int.parse(blocProvider.userModel.goalSteps)) *
+                    100) /
+            4)
+        .toInt();
     taken = taken / 1000;
     return Scaffold(
       floatingActionButton: SpeedDial(
@@ -270,8 +285,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             ),
                                             pointers: <GaugePointer>[
                                               RangePointer(
-                                                value: blocProvider
-                                                            .dataModel.water /
+                                                value: (blocProvider
+                                                            .dataModel.water) /
                                                         1000 +
                                                     0.0,
                                                 cornerStyle:
@@ -285,7 +300,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                               GaugeAnnotation(
                                                 positionFactor: 0.1,
                                                 angle: 90,
-                                                widget: Text('${10}%',
+                                                widget: Text('$overallGoal%',
                                                     style: kHeadingTextStyle
                                                         .copyWith(
                                                             color: Colors.red,
