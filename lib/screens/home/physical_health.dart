@@ -248,9 +248,9 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             endAngle: 90,
                                             canScaleToFit: false,
                                             minimum: 0,
-                                            maximum: blocProvider
-                                                    .waterModel.goalwater +
-                                                0.1,
+                                            maximum: int.parse(blocProvider
+                                                    .userModel.goalWater) +
+                                                0.0,
                                             showLabels: false,
                                             showTicks: false,
                                             axisLineStyle: AxisLineStyle(
@@ -377,13 +377,17 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     title: "Water: ",
                                     rangeTitle:
                                         "${blocProvider.waterModel.takenwater / 1000}L/${int.parse(blocProvider.userModel.goalWater)}L",
-                                    maxrange: blocProvider.waterModel.goalwater,
-                                    interval: int.parse(
+                                    maxrange: int.parse(
                                             blocProvider.userModel.goalWater) +
-                                        0.0 / 3,
+                                        0.0,
+                                    interval: (int.parse(blocProvider
+                                                .userModel.goalWater) +
+                                            0.0) /
+                                        3,
                                     valuerange:
-                                        blocProvider.waterModel.takenwater /
-                                            1000,
+                                        (blocProvider.waterModel.takenwater /
+                                                1000) +
+                                            0.0,
                                     colorshade1:
                                         Colors.blueAccent.withOpacity(0.4),
                                     colorshade2: Colors.blueAccent,
@@ -399,8 +403,13 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     title: "Steps: ",
                                     rangeTitle:
                                         "$steps/${blocProvider.userModel.goalSteps}",
-                                    maxrange: 100.0,
-                                    interval: 2000.0,
+                                    maxrange: int.parse(
+                                            blocProvider.userModel.goalSteps) +
+                                        0.0,
+                                    interval: (int.parse(blocProvider
+                                                .userModel.goalSteps) +
+                                            0.0) /
+                                        3,
                                     valuerange: steps * 1.0,
                                     colorshade1: Colors.green.withOpacity(0.4),
                                     colorshade2: Colors.green,
@@ -415,8 +424,13 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     title: "Sleep: ",
                                     rangeTitle:
                                         "4h/${blocProvider.userModel.goalSleep}h",
-                                    maxrange: 9.0,
-                                    interval: 3.0,
+                                    maxrange: int.parse(
+                                            blocProvider.userModel.goalSleep) +
+                                        0.0,
+                                    interval: (int.parse(blocProvider
+                                                .userModel.goalSleep) +
+                                            0.0) /
+                                        2,
                                     valuerange: 4.0,
                                     colorshade1: Colors.red.withOpacity(0.4),
                                     colorshade2: Colors.red,
@@ -431,8 +445,13 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     title: "Calorie: ",
                                     rangeTitle:
                                         "2000/${blocProvider.userModel.goalCalorie}",
-                                    maxrange: 3000.0,
-                                    interval: 1000.0,
+                                    maxrange: int.parse(blocProvider
+                                            .userModel.goalCalorie) +
+                                        0.0,
+                                    interval: (int.parse(blocProvider
+                                                .userModel.goalSteps) +
+                                            0.0) /
+                                        4,
                                     valuerange: 2000.0,
                                     colorshade1: Colors.yellow.withOpacity(0.4),
                                     colorshade2: Colors.yellow,
