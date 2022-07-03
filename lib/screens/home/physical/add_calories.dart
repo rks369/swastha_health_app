@@ -16,11 +16,10 @@ class AddCalories extends StatefulWidget {
 }
 
 class _AddCaloriesState extends State<AddCalories> {
-  int _taken = 0;
+  int _taken = 100;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-
     return Container(
       color: kWhite,
       height: 450,
@@ -66,6 +65,7 @@ class _AddCaloriesState extends State<AddCalories> {
                     setState(() async {
                       await SQLHelper.insertData(DataModel(
                           DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                          DateTime.now().weekday,
                           0,
                           _taken,
                           0,

@@ -1,9 +1,10 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/sql_helper.dart';
-import 'package:swastha/graph/barchartwidget.dart';
+import 'package:swastha/models/graph_data.dart';
+import 'package:swastha/utils/constants.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
@@ -15,17 +16,29 @@ class WaterDashboard extends StatefulWidget {
 }
 
 class _WaterDashboardState extends State<WaterDashboard> {
+  final List<GraphData> dataList = [];
+  int maxTaken = 0;
+
   @override
   void initState() {
-    settaken();
+    loadData();
     super.initState();
   }
 
-  void settaken() async {
-    final blocProvider = BlocProvider.of<AuthCubit>(context);
-    List resList = await SQLHelper.getItem(
-        DateFormat('dd/MM/yyyy').format(DateTime.now()));
-    blocProvider.setWaterTaken(resList[0]['waterTaken'] * 1.0);
+  void loadData() async {
+    final List<Map<String, dynamic>> result = await SQLHelper.getWeeklyData();
+
+    for (int i = 0; i < result.length; i++) {
+      if (result[i]['water'] > maxTaken) {
+        maxTaken = result[i]['water'];
+      }
+      dataList.add(GraphData(
+          name: weekday[result[i]['day'] % 7],
+          id: i,
+          y: result[i]['water'] * 1.0,
+          color: barColor[i % 7]));
+    }
+    setState(() {});
   }
 
   @override
@@ -99,7 +112,8 @@ class _WaterDashboardState extends State<WaterDashboard> {
                               ),
                               pointers: <GaugePointer>[
                                 RangePointer(
-                                  value: taken + 0.0,
+                                  value:
+                                      blocProvider.dataModel.water / 1000 + 0.0,
                                   cornerStyle: CornerStyle.bothCurve,
                                   width: 0.2,
                                   sizeUnit: GaugeSizeUnit.factor,
@@ -111,7 +125,7 @@ class _WaterDashboardState extends State<WaterDashboard> {
                                   positionFactor: 0.1,
                                   angle: 90,
                                   widget: Text(
-                                      '${taken}/${blocProvider.userModel.goalWater}L',
+                                      '${blocProvider.dataModel.water / 1000}L/${blocProvider.userModel.goalWater}L',
                                       style: kHeadingTextStyle.copyWith(
                                           color: Colors.blue, fontSize: 24.0)),
                                 ),
@@ -134,9 +148,55 @@ class _WaterDashboardState extends State<WaterDashboard> {
                       borderRadius: BorderRadius.circular(32),
                     ),
                     color: const Color(0xff020227),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.all(8),
-                      child: BarChartWidget(),
+                      child: BarChart(BarChartData(
+                        alignment: BarChartAlignment.center,
+                        maxY: maxTaken + 500,
+                        minY: 0,
+                        groupsSpace: 28,
+                        barTouchData: BarTouchData(enabled: true),
+                        titlesData: FlTitlesData(
+                          show: true,
+                          rightTitles: AxisTitles(
+                              sideTitles: SideTitles(
+                                  showTitles: true,
+                                  reservedSize: 40,
+                                  getTitlesWidget: ((value, meta) {
+                                    return Text(value.toInt().toString(),
+                                        style: const TextStyle(color: kWhite));
+                                  }))),
+                          bottomTitles: AxisTitles(
+                              axisNameSize: 50,
+                              sideTitles: SideTitles(
+                                  showTitles: true,
+                                  getTitlesWidget: ((value, meta) {
+                                    return Text(dataList[value.toInt()].name,
+                                        style: const TextStyle(color: kWhite));
+                                  }))),
+                        ),
+                        barGroups: dataList.map((data) {
+                          return BarChartGroupData(
+                            x: data.id,
+                            barRods: [
+                              BarChartRodData(
+                                toY: data.y,
+                                width: 12,
+                                color: data.color,
+                                borderRadius: data.y > 0
+                                    ? const BorderRadius.only(
+                                        topLeft: Radius.circular(6),
+                                        topRight: Radius.circular(6),
+                                      )
+                                    : const BorderRadius.only(
+                                        bottomLeft: Radius.circular(6),
+                                        bottomRight: Radius.circular(6),
+                                      ),
+                              ),
+                            ],
+                          );
+                        }).toList(),
+                      )),
                     ),
                   ),
                 ),

@@ -22,7 +22,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
   }
 
   void loadData() async {
-    final List<Map<String, dynamic>> result = await SQLHelper.getItems();
+    final List<Map<String, dynamic>> result = await SQLHelper.getWeeklyData();
 
     for (int i = 0; i < result.length; i++) {
       dataList.add(GraphData(
@@ -31,9 +31,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
           y: result[i]['waterTaken'] * 1.0,
           color: barColor[i % 7]));
     }
-    setState(() {
-    
-    });
+    setState(() {});
   }
 
   @override

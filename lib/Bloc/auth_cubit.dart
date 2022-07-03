@@ -27,7 +27,7 @@ class AuthCubit extends Cubit<Authstate> {
   User? user;
 
   late UserModel userModel;
-  DataModel dataModel = DataModel('', 0, 0, 0, 0);
+  DataModel dataModel = DataModel('', 0, 0, 0, 0, 0);
 
   WaterModel waterModel = WaterModel(0.0, 0.0);
 
@@ -50,13 +50,9 @@ class AuthCubit extends Cubit<Authstate> {
     }
   }
 
-  void dbisNull() async {
-    var result = await SQLHelper.getItems();
-    if (result.isEmpty) {}
-  }
-
   Future<DataModel> getDataFromSQL() async {
     final result = await SQLHelper.getTodayData();
+    print(result);
     return dataModelFromJson(result[0]);
   }
 

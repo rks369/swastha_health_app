@@ -204,6 +204,7 @@ class _AddWaterState extends State<AddWater> {
                 onPressed: () async {
                   await SQLHelper.insertData(DataModel(
                       DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                      DateTime.now().weekday,
                       _taken,
                       0,
                       0,

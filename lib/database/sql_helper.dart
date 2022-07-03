@@ -8,6 +8,7 @@ class SQLHelper {
     await database.execute("""CREATE TABLE swastha(
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         date TEXT,
+        day INTEGER,
         water INTEGRE,
         calories INTEGRE,
         steps INTEGRE,
@@ -76,18 +77,38 @@ class SQLHelper {
     }
   }
 
-  // Read all items (journals)
-  static Future<List<Map<String, dynamic>>> getItems() async {
+  static Future<List<Map<String, dynamic>>> getWeeklyData() async {
     final db = await SQLHelper.db();
+    final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    final result = await db.query('swastha',
+        where: "date = ?", whereArgs: [date], limit: 7);
 
-    return db.query('swastha', orderBy: "id");
+    if (result.isEmpty) {
+      final DataModel dataModel =
+          DataModel(date, DateTime.now().weekday, 0, 0, 0, 0);
+      await db.insert('swastha', dataModel.toMap(),
+          conflictAlgorithm: sql.ConflictAlgorithm.replace);
+      return [dataModel.toMap()];
+    } else {
+      return result;
+    }
   }
 
   static Future<List<Map<String, dynamic>>> getTodayData() async {
     final db = await SQLHelper.db();
     final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    final result = await db.query('swastha',
+        where: "date = ?", whereArgs: [date], limit: 1);
 
-    return db.query('swastha', where: "date = ?", whereArgs: [date], limit: 1);
+    if (result.isEmpty) {
+      final DataModel dataModel =
+          DataModel(date, DateTime.now().weekday, 0, 0, 0, 0);
+      await db.insert('swastha', dataModel.toMap(),
+          conflictAlgorithm: sql.ConflictAlgorithm.replace);
+      return [dataModel.toMap()];
+    } else {
+      return result;
+    }
   }
 
   // Read a single item by id

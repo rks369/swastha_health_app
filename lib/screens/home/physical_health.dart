@@ -129,7 +129,6 @@ class PhysicalHealth extends StatefulWidget {
 }
 
 class _PhysicalHealthState extends State<PhysicalHealth> {
-  late double percentage;
   @override
   void initState() {
     getData();
@@ -141,7 +140,6 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
     final DataModel data = await blocProvider.getDataFromSQL();
     blocProvider.setDataModel(data);
-    percentage = 10;
     setState(() {});
     print(blocProvider.dataModel.toMap());
   }
@@ -276,7 +274,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             pointers: <GaugePointer>[
                                               RangePointer(
                                                 value: blocProvider
-                                                        .dataModel.water +
+                                                            .dataModel.water /
+                                                        1000 +
                                                     0.0,
                                                 cornerStyle:
                                                     CornerStyle.bothCurve,
@@ -289,7 +288,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                               GaugeAnnotation(
                                                 positionFactor: 0.1,
                                                 angle: 90,
-                                                widget: Text('${percentage}%',
+                                                widget: Text('${10}%',
                                                     style: kHeadingTextStyle
                                                         .copyWith(
                                                             color: Colors.red,

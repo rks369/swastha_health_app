@@ -16,7 +16,7 @@ class AddSleep extends StatefulWidget {
 
 class _AddSleepState extends State<AddSleep> {
   final List<int> items = [1, 2, 3, 4, 5, 6, 7, 8];
-  int _taken = 0;
+  int _taken = 1;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -62,11 +62,12 @@ class _AddSleepState extends State<AddSleep> {
                     setState(() async {
                       await SQLHelper.insertData(DataModel(
                           DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                          DateTime.now().weekday,
                           0,
                           0,
                           _taken,
                           0));
-                      final result = await SQLHelper.getItems();
+                      final result = await SQLHelper.getWeeklyData();
                       print(result);
                       changeScreenReplacement(context, Home());
                     });
