@@ -41,6 +41,8 @@ dependencies:
   assets_audio_player: ^3.0.4+3
   simple_speed_dial: ^0.1.7
   custom_floating_action_button: ^0.0.3
+  url_launcher: ^6.1.4
+  
 
 dev_dependencies:
   flutter_test:
