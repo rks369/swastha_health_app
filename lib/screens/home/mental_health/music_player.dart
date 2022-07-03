@@ -17,6 +17,12 @@ class _MusicPlayer extends State<MusicPlayer> {
     setupAudio();
   }
 
+  @override
+  void dispose() {
+    audioManagerInstance.release();
+    super.dispose();
+  }
+
   void setupAudio() {
     audioManagerInstance.onEvents((events, args) {
       switch (events) {
@@ -51,10 +57,14 @@ class _MusicPlayer extends State<MusicPlayer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: kPrimaryColor,
+        title: const Text('Relaxing Music Player'),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Expanded(child: SongWidget()),
+          const Expanded(child: SongWidget()),
           bottomPanel(),
         ],
       ),
