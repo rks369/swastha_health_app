@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swastha/screens/home/mental_health/just_breath.dart';
 import 'package:swastha/screens/home/mental_health/resources.dart';
+import 'package:swastha/screens/home/mental_health/music_player.dart';
 import 'package:swastha/utils/styles.dart';
 
 class MentalHealth extends StatelessWidget {
@@ -31,7 +32,7 @@ class MentalHealth extends StatelessWidget {
               color: kGrey,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-          child: const Resources(),
+          child: MusicPlayer(),
         )),
       ])),
     );

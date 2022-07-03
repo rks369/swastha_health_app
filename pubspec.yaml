@@ -43,6 +43,7 @@ dependencies:
   custom_floating_action_button: ^0.0.3
   url_launcher: ^6.1.4
   
+  audio_manager: ^0.8.2
 
 dev_dependencies:
   flutter_test:
