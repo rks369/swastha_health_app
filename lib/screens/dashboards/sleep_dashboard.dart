@@ -114,8 +114,6 @@ class _SleepDashboardState extends State<SleepDashboard> {
                         ]),
                   ),
                 ),
-                RoundedButton(
-                    title: 'Set Goal', colour: kPrimaryColor, onPressed: () {}),
                 const Text(
                   "Weekly Static:",
                   style: TextStyle(fontSize: 20),
