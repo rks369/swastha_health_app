@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_speed_dial/simple_speed_dial.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/database/sql_helper.dart';
+import 'package:swastha/models/data_model.dart';
 import 'package:swastha/screens/dashboards/calorie_dashboard.dart';
 import 'package:swastha/screens/dashboards/sleep_dashboard.dart';
 import 'package:swastha/screens/dashboards/steps_dashboard.dart';
@@ -129,15 +130,17 @@ class PhysicalHealth extends StatefulWidget {
 class _PhysicalHealthState extends State<PhysicalHealth> {
   @override
   void initState() {
-    settaken();
+    getData();
+
     super.initState();
   }
 
-  void settaken() async {
+  void getData() async {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
-    List resList = await SQLHelper.getItem(
-        DateFormat('dd/MM/yyyy').format(DateTime.now()));
-    blocProvider.setWaterTaken(resList[0]['waterTaken'] * 1.0);
+    final DataModel data = await blocProvider.getDataFromSQL();
+    blocProvider.setDataModel(data);
+    setState(() {});
+    print(blocProvider.dataModel.toMap());
   }
 
   @override
@@ -248,9 +251,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             endAngle: 90,
                                             canScaleToFit: false,
                                             minimum: 0,
-                                            maximum: blocProvider
-                                                    .waterModel.goalwater +
-                                                0.1,
+                                            maximum: 8,
                                             showLabels: false,
                                             showTicks: false,
                                             axisLineStyle: AxisLineStyle(
@@ -264,7 +265,9 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             ),
                                             pointers: <GaugePointer>[
                                               RangePointer(
-                                                value: taken + 0.0,
+                                                value: blocProvider
+                                                        .dataModel.water /
+                                                    1000,
                                                 cornerStyle:
                                                     CornerStyle.bothCurve,
                                                 width: 0.1,
@@ -377,13 +380,12 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     title: "Water: ",
                                     rangeTitle:
                                         "${blocProvider.waterModel.takenwater / 1000}L/${int.parse(blocProvider.userModel.goalWater)}L",
-                                    maxrange: blocProvider.waterModel.goalwater,
+                                    maxrange: 8,
                                     interval: int.parse(
                                             blocProvider.userModel.goalWater) +
                                         0.0 / 3,
                                     valuerange:
-                                        blocProvider.waterModel.takenwater /
-                                            1000,
+                                        blocProvider.dataModel.water / 1000,
                                     colorshade1:
                                         Colors.blueAccent.withOpacity(0.4),
                                     colorshade2: Colors.blueAccent,

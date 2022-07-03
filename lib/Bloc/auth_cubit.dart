@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:swastha/database/sql_helper.dart';
+import 'package:swastha/models/data_model.dart';
 import 'package:swastha/models/user_model.dart';
 import 'package:swastha/models/water_model.dart';
 
@@ -26,6 +27,7 @@ class AuthCubit extends Cubit<Authstate> {
   User? user;
 
   late UserModel userModel;
+  DataModel dataModel = DataModel('', 0, 0, 0, 0);
 
   WaterModel waterModel = WaterModel(0.0, 0.0);
 
@@ -51,6 +53,15 @@ class AuthCubit extends Cubit<Authstate> {
   void dbisNull() async {
     var result = await SQLHelper.getItems();
     if (result.isEmpty) {}
+  }
+
+  Future<DataModel> getDataFromSQL() async {
+    final result = await SQLHelper.getTodayData();
+    return dataModelFromJson(result[0]);
+  }
+
+  void setDataModel(DataModel data) {
+    dataModel = data;
   }
 
   String? _verificationId;
@@ -161,7 +172,7 @@ class AuthCubit extends Cubit<Authstate> {
   }
 
   void setWaterTaken(double taken) {
-    waterModel.takenwater = taken;
+    dataModel.water = int.parse(taken.toString());
   }
 
   void UpdateUserDetails(String name, String bmi, String watergoal,
