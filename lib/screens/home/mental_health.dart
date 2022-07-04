@@ -35,94 +35,96 @@ class MentalHealth extends StatelessWidget {
               color: kGrey,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 25,
-              ),
-              SvgPicture.asset(
-                'assets/images/lotus.svg',
-                semanticsLabel: 'logo logo',
-                color: kPrimaryColor,
-                height: 240,
-              ),
-              const SizedBox(
-                height: 120,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/meditation.gif',
-                                    height: 150,
-                                  ),
-                                  Text(
-                                    'Just Breath',
-                                    style: kHeadingTextStyle.copyWith(
-                                        fontSize: 24),
-                                  ),
-                                ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 25,
+                ),
+                SvgPicture.asset(
+                  'assets/images/lotus.svg',
+                  semanticsLabel: 'logo logo',
+                  color: kPrimaryColor,
+                  height: 240,
+                ),
+                const SizedBox(
+                  height: 120,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: InkWell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/meditation.gif',
+                                      height: 150,
+                                    ),
+                                    Text(
+                                      'Just Breath',
+                                      style: kHeadingTextStyle.copyWith(
+                                          fontSize: 24),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
+                        onTap: () {
+                          changeScreen(context, const JustBreath());
+                        },
                       ),
-                      onTap: () {
-                        changeScreen(context, const JustBreath());
-                      },
                     ),
-                  ),
-                  Expanded(
-                    child: InkWell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Card(
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Image.asset(
-                                    'assets/images/upset.png',
-                                    height: 150,
-                                  ),
-                                  Text(
-                                    'Relax Music',
-                                    style: kHeadingTextStyle.copyWith(
-                                        fontSize: 24),
-                                  ),
-                                ],
+                    Expanded(
+                      child: InkWell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/upset.png',
+                                      height: 150,
+                                    ),
+                                    Text(
+                                      'Relax Music',
+                                      style: kHeadingTextStyle.copyWith(
+                                          fontSize: 24),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
+                        onTap: () {
+                          changeScreen(context, const MusicPlayer());
+                        },
                       ),
-                      onTap: () {
-                        changeScreen(context, const MusicPlayer());
-                      },
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                width: 60,
-              ),
-              RoundedButton(
-                  title: 'Resources',
-                  colour: kPrimaryColor,
-                  onPressed: () {
-                    changeScreen(context, const Resources());
-                  })
-            ],
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  width: 60,
+                ),
+                RoundedButton(
+                    title: 'Resources',
+                    colour: kPrimaryColor,
+                    onPressed: () {
+                      changeScreen(context, Resources());
+                    })
+              ],
+            ),
           ),
         )),
       ])),
