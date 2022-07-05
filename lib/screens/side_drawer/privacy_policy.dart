@@ -42,7 +42,7 @@ class PrivacyPolicy extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30))),
-            child: Column(),
+            child: Column(children: [Text("Privacy policy here")]),
           )),
         ])),
       ),
