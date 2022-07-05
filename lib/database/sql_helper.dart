@@ -84,8 +84,7 @@ class SQLHelper {
   static Future<List<Map<String, dynamic>>> getWeeklyData() async {
     final db = await SQLHelper.db();
     final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
-    final result = await db.query('swastha',
-        where: "date = ?", whereArgs: [date], limit: 7);
+    final result = await db.query('swastha', limit: 7);
 
     if (result.isEmpty) {
       final DataModel dataModel =
