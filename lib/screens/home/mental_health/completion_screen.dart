@@ -28,7 +28,7 @@ class CompletionScreen extends StatelessWidget {
               Text(
                 quote.author,
                 textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: 36.0),
               RoundedButton(

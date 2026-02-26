@@ -36,7 +36,6 @@ class _UserDetailState extends State<UserDetail> {
 
     final imageTemporary = File(image.path);
     final img = await ImageCropper().cropImage(
-      cropStyle: CropStyle.circle,
       sourcePath: imageTemporary.path,
       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
       compressFormat: ImageCompressFormat.jpg,

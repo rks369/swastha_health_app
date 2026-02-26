@@ -116,7 +116,7 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
                       start: true,
                       title: Text(
                         'Duration',
-                        style: Theme.of(context).textTheme.subtitle1,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       leading: const Icon(Icons.hourglass_bottom,
                           color: kPrimaryColor),
@@ -141,7 +141,7 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
                   SettingsCard(
                     title: Text(
                       'Play Sounds',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(Icons.music_note, color: kPrimaryColor),
                     trailing: cupertino.CupertinoSwitch(
@@ -157,7 +157,7 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
                     end: true,
                     title: Text(
                       'Zen Mode',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     leading: const Icon(
                       Icons.favorite,

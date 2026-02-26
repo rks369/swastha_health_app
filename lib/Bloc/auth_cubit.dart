@@ -20,6 +20,20 @@ enum Authstate {
 }
 
 class AuthCubit extends Cubit<Authstate> {
+
+  static GoogleSignIn? __googleSignIn;
+  static Future<GoogleSignIn> get _googleSignIn async {
+
+    if(__googleSignIn == null) {
+      __googleSignIn = GoogleSignIn.instance;
+      await __googleSignIn?.initialize();
+    }
+
+    assert(__googleSignIn != null ,"Google Sign In Can't be Null");
+
+    return __googleSignIn!;
+  }
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -122,39 +136,51 @@ class AuthCubit extends Cubit<Authstate> {
   }
 
   void signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+    GoogleSignInAccount? googleUser;
 
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
+    final GoogleSignIn googleSignIn = await _googleSignIn;
 
     try {
-      user = await _auth
-          .signInWithCredential(credential)
-          .then((value) => value.user);
-
-      if (user != null) {
-        _firestore.collection('users').doc(user!.uid).get().then((value) {
-          if (value.exists) {
-            final data = value.data();
-
-            userModel = userModelFromJSON(data!);
-            emit(Authstate.loggedIn);
-          } else {
-            emit(Authstate.unRegistered);
-          }
-        });
-      }
-    } on FirebaseAuthException catch (e) {
-      error = e.toString();
+      googleUser = await googleSignIn.authenticate(
+          scopeHint: ['profile']
+      );
+    } catch(error) {
+      print(error);
     }
+
+    if(googleUser != null) {
+      final GoogleSignInAuthentication? googleAuth = googleUser.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        idToken: googleAuth?.idToken,
+      );
+
+
+      try {
+        user = await _auth
+            .signInWithCredential(credential)
+            .then((value) => value.user);
+
+        if (user != null) {
+          _firestore.collection('users').doc(user!.uid).get().then((value) {
+            if (value.exists) {
+              final data = value.data();
+
+              userModel = userModelFromJSON(data!);
+              emit(Authstate.loggedIn);
+            } else {
+              emit(Authstate.unRegistered);
+            }
+          });
+        }
+      } on FirebaseAuthException catch (e) {
+        error = e.toString();
+      }
+
+    }
+
   }
 
   void logOut() async {

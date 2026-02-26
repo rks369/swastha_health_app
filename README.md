@@ -1,6 +1,6 @@
 # swastha
 
-A new Flutter project.
+Swastha Health app
 
 ## Getting Started
 
