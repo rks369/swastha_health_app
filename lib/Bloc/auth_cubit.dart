@@ -8,7 +8,6 @@ import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/models/data_model.dart';
 import 'package:swastha/models/user_model.dart';
 import 'package:swastha/models/weight_entry.dart';
-import 'package:swastha/models/water_model.dart';
 import 'package:swastha/utils/body_metrics.dart';
 
 enum Authstate {
@@ -20,25 +19,22 @@ enum Authstate {
   unRegistered,
   loggedIn,
   loggedOut,
-  error
+  error,
+  loadFailed,
 }
 
 class AuthCubit extends Cubit<Authstate> {
+  static GoogleSignIn? _googleSignInInstance;
 
-  static GoogleSignIn? __googleSignIn;
   static Future<GoogleSignIn> get _googleSignIn async {
-
-    if(__googleSignIn == null) {
-      __googleSignIn = GoogleSignIn.instance;
-      await __googleSignIn?.initialize(
-        serverClientId:
-            '1043018008926-tsetgd75rbo8dbaehhebdnos1l2btt1b.apps.googleusercontent.com',
+    if (_googleSignInInstance == null) {
+      final instance = GoogleSignIn.instance;
+      await instance.initialize(
+        serverClientId: '1043018008926-tsetgd75rbo8dbaehhebdnos1l2btt1b.apps.googleusercontent.com',
       );
+      _googleSignInInstance = instance;
     }
-
-    assert(__googleSignIn != null ,"Google Sign In Can't be Null");
-
-    return __googleSignIn!;
+    return _googleSignInInstance!;
   }
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -50,24 +46,39 @@ class AuthCubit extends Cubit<Authstate> {
   late UserModel userModel;
   DataModel dataModel = DataModel('', 0, 0, 0, 0, 0);
 
-  WaterModel waterModel = WaterModel(0.0, 0.0);
+  String? _verificationId;
 
   AuthCubit() : super(Authstate.init) {
     user = _auth.currentUser;
-    if (user != null) {
-      _firestore.collection('users').doc(user!.uid).get().then((value) {
-        if (value.exists) {
-          final data = value.data();
-
-          userModel = userModelFromJSON(data!);
-
-          emit(Authstate.loggedIn);
-        } else {
-          emit(Authstate.unRegistered);
-        }
-      });
-    } else {
+    if (user == null) {
       emit(Authstate.loggedOut);
+    } else {
+      _loadProfile(failureState: Authstate.loadFailed);
+    }
+  }
+
+  void retry() {
+    user = _auth.currentUser;
+    if (user == null) {
+      emit(Authstate.loggedOut);
+    } else {
+      emit(Authstate.init);
+      _loadProfile(failureState: Authstate.loadFailed);
+    }
+  }
+
+  Future<void> _loadProfile({Authstate failureState = Authstate.error}) async {
+    try {
+      final doc = await _firestore.collection('users').doc(user!.uid).get();
+      if (doc.exists) {
+        userModel = userModelFromJSON(doc.data()!);
+        emit(Authstate.loggedIn);
+      } else {
+        emit(Authstate.unRegistered);
+      }
+    } catch (e) {
+      error = e.toString();
+      emit(failureState);
     }
   }
 
@@ -80,9 +91,8 @@ class AuthCubit extends Cubit<Authstate> {
     dataModel = data;
   }
 
-  String? _verificationId;
-
   void sendOTP(String phoneNumber) async {
+    error = null;
     emit(Authstate.loading);
     await _auth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
@@ -93,7 +103,8 @@ class AuthCubit extends Cubit<Authstate> {
       verificationCompleted: (phoneAuthCredential) {
         signInWithPhone(phoneAuthCredential);
       },
-      verificationFailed: (error) {
+      verificationFailed: (e) {
+        error = e.message;
         emit(Authstate.error);
       },
       codeAutoRetrievalTimeout: (verificationId) {
@@ -103,26 +114,46 @@ class AuthCubit extends Cubit<Authstate> {
   }
 
   void verifyOTP(String otp) async {
+    final verificationId = _verificationId;
+    if (verificationId == null) {
+      error = 'Please request a new OTP';
+      emit(Authstate.error);
+      return;
+    }
+    error = null;
     emit(Authstate.loading);
-    PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: _verificationId!, smsCode: otp);
+    final credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: otp,
+    );
 
     signInWithPhone(credential);
   }
 
-  void register(UserModel userModel) async {
-    this.userModel = userModel;
-    await _firestore
-        .collection('users')
-        .doc(user!.uid)
-        .set(userModel.toJSON());
-    await _weightEntries(user!.uid).doc(_todayKey()).set(WeightEntry(
-          date: DateTime.now(),
-          weight: double.parse(userModel.weight),
-          height: double.parse(userModel.height),
-          bmi: double.parse(userModel.bmi),
-        ).toMap());
-    emit(Authstate.loggedIn);
+  Future<void> register(UserModel userModel) async {
+    error = null;
+    emit(Authstate.loading);
+    try {
+      this.userModel = userModel;
+      await _firestore
+          .collection('users')
+          .doc(user!.uid)
+          .set(userModel.toJSON());
+      await _weightEntries(user!.uid)
+          .doc(_todayKey())
+          .set(
+            WeightEntry(
+              date: DateTime.now(),
+              weight: double.parse(userModel.weight),
+              height: double.parse(userModel.height),
+              bmi: double.parse(userModel.bmi),
+            ).toMap(),
+          );
+      emit(Authstate.loggedIn);
+    } catch (e) {
+      error = e.toString();
+      emit(Authstate.error);
+    }
   }
 
   String _todayKey() => DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -134,9 +165,11 @@ class AuthCubit extends Cubit<Authstate> {
     return _weightEntries(userModel.uid)
         .orderBy('date')
         .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => WeightEntry.fromMap(doc.data()))
-            .toList());
+        .map(
+          (snapshot) => snapshot.docs
+              .map((doc) => WeightEntry.fromMap(doc.data()))
+              .toList(),
+        );
   }
 
   Future<void> saveBodyMetrics(double height, double weight) async {
@@ -148,87 +181,61 @@ class AuthCubit extends Cubit<Authstate> {
       'weight': weight.toString(),
       'bmi': bmiText,
     });
-    await _weightEntries(userModel.uid).doc(_todayKey()).set(WeightEntry(
-          date: DateTime.now(),
-          weight: weight,
-          height: height,
-          bmi: double.parse(bmiText),
-        ).toMap());
+    await _weightEntries(userModel.uid)
+        .doc(_todayKey())
+        .set(
+          WeightEntry(
+            date: DateTime.now(),
+            weight: weight,
+            height: height,
+            bmi: double.parse(bmiText),
+          ).toMap(),
+        );
 
     userModel.height = height.toString();
     userModel.weight = weight.toString();
     userModel.bmi = bmiText;
   }
 
-  void signInWithPhone(PhoneAuthCredential credential) async {
+  Future<void> signInWithPhone(PhoneAuthCredential credential) async {
     try {
-      user = await _auth
-          .signInWithCredential(credential)
-          .then((value) => value.user);
-
-      if (user != null) {
-        _firestore.collection('users').doc(user!.uid).get().then((value) {
-          if (value.exists) {
-            final data = value.data();
-
-            userModel = userModelFromJSON(data!);
-            emit(Authstate.loggedIn);
-          } else {
-            emit(Authstate.unRegistered);
-          }
-        });
-      }
+      user = (await _auth.signInWithCredential(credential)).user;
     } on FirebaseAuthException catch (e) {
-      error = e.toString();
+      error = e.message ?? e.code;
+      emit(Authstate.error);
+      return;
     }
+
+    if (user != null) await _loadProfile();
   }
 
-  void signInWithGoogle() async {
-
+  Future<void> signInWithGoogle() async {
     GoogleSignInAccount? googleUser;
 
-    final GoogleSignIn googleSignIn = await _googleSignIn;
+    error = null;
+    emit(Authstate.loading);
+    try {
+      final googleSignIn = await _googleSignIn;
+      googleUser = await googleSignIn.authenticate(scopeHint: ['profile']);
+    } catch (e) {
+      debugPrint(e.toString());
+      emit(Authstate.loggedOut);
+      return;
+    }
+
+    final credential = GoogleAuthProvider.credential(
+      idToken: googleUser.authentication.idToken,
+    );
 
     try {
-      googleUser = await googleSignIn.authenticate(
-          scopeHint: ['profile']
-      );
-    } catch(error) {
-      debugPrint(error.toString());
+      user = (await _auth.signInWithCredential(credential)).user;
+    } on FirebaseAuthException catch (e) {
+      error = e.message ?? e.code;
+      emit(Authstate.error);
+      return;
     }
 
-    if(googleUser != null) {
-      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
-
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken,
-      );
-
-
-      try {
-        user = await _auth
-            .signInWithCredential(credential)
-            .then((value) => value.user);
-
-        if (user != null) {
-          _firestore.collection('users').doc(user!.uid).get().then((value) {
-            if (value.exists) {
-              final data = value.data();
-
-              userModel = userModelFromJSON(data!);
-              emit(Authstate.loggedIn);
-            } else {
-              emit(Authstate.unRegistered);
-            }
-          });
-        }
-      } on FirebaseAuthException catch (e) {
-        error = e.toString();
-      }
-
-    }
-
+    if (user != null) await _loadProfile();
   }
 
   void logOut() async {
@@ -236,16 +243,22 @@ class AuthCubit extends Cubit<Authstate> {
     emit(Authstate.loggedOut);
   }
 
-  void setWaterGoal(double goal) {
-    waterModel.goalwater = goal;
-  }
-
-  void setWaterTaken(double taken) {
-    dataModel.water = int.parse(taken.toString());
-  }
-
-  void updateUserDetails(String name, String bmi, String watergoal,
-      String stepgoal, String sleepgoal, String caloriegoal) {
+  Future<void> updateUserDetails(
+    String name,
+    String bmi,
+    String watergoal,
+    String stepgoal,
+    String sleepgoal,
+    String caloriegoal,
+  ) async {
+    await _firestore.collection('users').doc(userModel.uid).update({
+      'name': name,
+      'bmi': bmi,
+      'goalWater': watergoal,
+      'goalSteps': stepgoal,
+      'goalSleep': sleepgoal,
+      'goalCalorie': caloriegoal,
+    });
     userModel.name = name;
     userModel.bmi = bmi;
     userModel.goalWater = watergoal;

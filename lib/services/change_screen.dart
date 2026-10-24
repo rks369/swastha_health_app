@@ -8,16 +8,22 @@ void changeScreen(BuildContext context, Widget sceeen) {
 
 void changeScreenReplacement(BuildContext context, Widget sceeen) {
   Navigator.pushReplacement(
-      context, MaterialPageRoute(builder: (context) => sceeen));
+    context,
+    MaterialPageRoute(builder: (context) => sceeen),
+  );
+}
+
+void changeScreenClearStack(BuildContext context, Widget screen) {
+  Navigator.pushAndRemoveUntil(
+      context, MaterialPageRoute(builder: (context) => screen), (_) => false);
 }
 
 void showProgressDialog(BuildContext context) {
   showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return const Center(
-          child: SpinKitFadingCube(color: kPrimaryColor),
-        );
-      });
+    barrierDismissible: false,
+    context: context,
+    builder: (context) {
+      return const Center(child: SpinKitFadingCube(color: kPrimaryColor));
+    },
+  );
 }

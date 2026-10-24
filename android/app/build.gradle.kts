@@ -13,7 +13,7 @@ plugins {
 
 android {
     namespace = "com.swastha.health"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

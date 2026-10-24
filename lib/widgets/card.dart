@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class UserCard extends StatelessWidget {
-  const UserCard(
-      {super.key,
-      required this.colour,
-      required this.cardChild,
-      required this.onPress});
+  const UserCard({
+    super.key,
+    required this.colour,
+    required this.cardChild,
+    required this.onPress,
+  });
   final Color colour;
   final Widget cardChild;
   final Function()? onPress;

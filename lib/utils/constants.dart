@@ -8,18 +8,10 @@ const List<Color> barColor = [
   Color(0xffffdd80),
   Color(0xff2bdb90),
   Color(0xffffdd80),
-  Color(0xffff4d94)
+  Color(0xffff4d94),
 ];
 
-const List<String> weekday = [
-  "Sun",
-  "Mon",
-  "Tue",
-  "Wed",
-  "Thus",
-  "Fri",
-  "Sat",
-];
+const List<String> weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const List<Duration> kPresetTimers = <Duration>[
   Duration(minutes: 1),
@@ -44,8 +36,7 @@ List<Quote> kQuote = [
   ),
   Quote(
     author: 'John Miller',
-    body:
-        'People who take the time to be alone usually have depth, originality, and quiet reserve.',
+    body: 'People who take the time to be alone usually have depth, originality, and quiet reserve.',
   ),
   Quote(
     author: 'Giovanni Papini',
@@ -53,8 +44,7 @@ List<Quote> kQuote = [
   ),
   Quote(
     author: 'Oprah Winfrey',
-    body:
-        'Breathe. Let go. And remind yourself that this very moment is the only one you know you have for sure.',
+    body: 'Breathe. Let go. And remind yourself that this very moment is the only one you know you have for sure.',
   ),
   Quote(
     author: 'Thich Nhat Hanh',
@@ -62,8 +52,7 @@ List<Quote> kQuote = [
   ),
   Quote(
     author: 'Dr. Arthur C. Guyton',
-    body:
-        'All chronic pain, suffering, and diseases are caused by a lack of oxygen at the cell level.',
+    body: 'All chronic pain, suffering, and diseases are caused by a lack of oxygen at the cell level.',
   ),
   Quote(
     author: 'Gregory Maguire',
@@ -73,10 +62,7 @@ List<Quote> kQuote = [
     author: 'Lana Parrilla',
     body: 'You are where you need to be. Just take a deep breath.',
   ),
-  Quote(
-    author: 'Unknown',
-    body: 'A healthy miind has an easy breath.',
-  ),
+  Quote(author: 'Unknown', body: 'A healthy miind has an easy breath.'),
   Quote(
     author: 'Proverb',
     body: 'The nose is for breathing, the mouth is for eating.',
@@ -87,12 +73,10 @@ List<Quote> kQuote = [
   ),
   Quote(
     author: 'Peter Matthiessen',
-    body:
-        'In this very breath that we now take lies the secret that all great teachers try to tell us.',
+    body: 'In this very breath that we now take lies the secret that all great teachers try to tell us.',
   ),
   Quote(
     author: 'Sylvia Plath',
-    body:
-        'I took a deep breath and listened to the old bray of my heart: I am, I am, I am.',
+    body: 'I took a deep breath and listened to the old bray of my heart: I am, I am, I am.',
   ),
 ];

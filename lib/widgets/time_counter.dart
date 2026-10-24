@@ -17,8 +17,12 @@ class TimerCountdown extends StatefulWidget {
   final Duration duration;
   final bool zenMode;
   final bool playSounds;
-  const TimerCountdown(this.duration,
-      {required this.zenMode, required this.playSounds, super.key});
+  const TimerCountdown(
+    this.duration, {
+    required this.zenMode,
+    required this.playSounds,
+    super.key,
+  });
 
   @override
   State<TimerCountdown> createState() => _TimerCountdown();
@@ -36,7 +40,9 @@ class _TimerCountdown extends State<TimerCountdown> {
   // Play a sound
   void _playSound() {
     if (widget.playSounds) {
-      AudioPlayer().play(AssetSource('audio/gong.mp3'));
+      final player = AudioPlayer();
+      player.onPlayerComplete.first.then((_) => player.dispose());
+      player.play(AssetSource('audio/gong.mp3'));
     }
   }
 
@@ -52,9 +58,9 @@ class _TimerCountdown extends State<TimerCountdown> {
 
   @override
   void dispose() {
-    super.dispose();
     _timer.cancel();
     _stopwatch.stop();
+    super.dispose();
   }
 
   // This will start the Timer
@@ -119,19 +125,17 @@ class _TimerCountdown extends State<TimerCountdown> {
                   alignment: Alignment.center,
                   children: <Widget>[
                     SizedBox.expand(
-                      child: CountdownCircle(
-                        duration: widget.duration,
-                      ),
+                      child: CountdownCircle(duration: widget.duration),
                     ),
-                    Text(
-                      _display,
-                      style: kHeadingTextStyle,
-                    ),
+                    Text(_display, style: kHeadingTextStyle),
                   ],
                 ),
               ),
         RoundedButton(
-            title: 'End', colour: kPrimaryColor, onPressed: () => stop())
+          title: 'End',
+          colour: kPrimaryColor,
+          onPressed: () => stop(),
+        ),
       ],
     );
   }

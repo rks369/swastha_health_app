@@ -1,144 +1,119 @@
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:swastha/models/data_model.dart';
 
 class SQLHelper {
-  static Future<void> createTables(sql.Database database) async {
-    await database.execute("""CREATE TABLE swastha(
-        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        date TEXT,
-        day INTEGER,
-        water INTEGRE,
-        calories INTEGRE,
-        steps INTEGRE,
-        sleep INTEGRE
+  static sql.Database? _database;
+
+  static String todayKey() => DateFormat('dd/MM/yyyy').format(DateTime.now());
+
+  static Future<void> _createMeta(sql.Database database) async {
+    await database.execute("""CREATE TABLE IF NOT EXISTS meta(
+        key TEXT PRIMARY KEY,
+        value TEXT
       )
       """);
   }
-// id: the id of a item
-// title, waterTaken: name and waterTaken of your activity
-// created_at: the time that the item was created. It will be automatically handled by SQLite
 
   static Future<sql.Database> db() async {
-    return sql.openDatabase(
+    return _database ??= await sql.openDatabase(
       'swastha.db',
-      version: 1,
+      version: 2,
       onCreate: (sql.Database database, int version) async {
-        await createTables(database);
+        await database.execute("""CREATE TABLE swastha(
+        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        date TEXT,
+        day INTEGER,
+        water INTEGER,
+        calories INTEGER,
+        steps INTEGER,
+        sleep INTEGER
+      )
+      """);
+        await _createMeta(database);
+      },
+      onUpgrade: (sql.Database database, int oldVersion, int newVersion) async {
+        if (oldVersion < 2) await _createMeta(database);
       },
     );
   }
 
-  static Future<int> insertData(DataModel dataModel) async {
-    final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
+  static Future<Map<String, dynamic>> _ensureToday() async {
     final db = await SQLHelper.db();
-    final list = await SQLHelper.getItem(date);
+    final date = todayKey();
+    final rows = await db.query(
+      'swastha',
+      where: 'date = ?',
+      whereArgs: [date],
+      limit: 1,
+    );
+    if (rows.isNotEmpty) return rows.first;
 
-    if (list.length == 1) {
-      if (dataModel.water != 0) {
-        final result = await db.update(
-            'swastha', {'water': (list[0]['water'] as int) + dataModel.water},
-            where: "date = ?", whereArgs: [date]);
-        return result;
-      } else if (dataModel.sleep != 0) {
-        final result = await db.update(
-            'swastha', {'sleep': (list[0]['sleep'] as int) + dataModel.sleep},
-            where: "date = ?", whereArgs: [date]);
-        return result;
-      } else if (dataModel.calories != 0) {
-        final result = await db.update('swastha',
-            {'calories': (list[0]['calories'] as int) + dataModel.calories},
-            where: "date = ?", whereArgs: [date]);
-        return result;
-      } else if (dataModel.steps != 0) {
-        final result = await db.update('swastha', {'steps': dataModel.steps},
-            where: "date = ?", whereArgs: [date]);
-        return result;
-      } else {
-        return 0;
-      }
-    } else {
-      final id = await db.insert('swastha', dataModel.toMap(),
-          conflictAlgorithm: sql.ConflictAlgorithm.replace);
-      return id;
-    }
+    final empty = DataModel(date, DateTime.now().weekday, 0, 0, 0, 0);
+    final id = await db.insert('swastha', empty.toMap());
+    return {...empty.toMap(), 'id': id};
   }
 
-  // Create new item (journal)
-  static Future<int> createItem(int waterTaken, String date, String day) async {
+  /// Adds the water, calories and sleep of [delta] to today's totals.
+  static Future<void> addIntake(DataModel delta) async {
     final db = await SQLHelper.db();
-    final list = await SQLHelper.getItem(date);
-    if (list.length == 1) {
-      final result = await SQLHelper.updateItem(
-          date, waterTaken + (list[0]['waterTaken'] as int), day);
-      return result;
-    } else {
-      final data = {'waterTaken': waterTaken, 'date': date, 'day': day};
-      final id = await db.insert('water', data,
-          conflictAlgorithm: sql.ConflictAlgorithm.replace);
-      return id;
+    final today = await _ensureToday();
+    int next(String column, int add) {
+      final value = ((today[column] as int?) ?? 0) + add;
+      return value < 0 ? 0 : value;
     }
+
+    await db.update(
+      'swastha',
+      {
+        'water': next('water', delta.water),
+        'calories': next('calories', delta.calories),
+        'sleep': next('sleep', delta.sleep),
+      },
+      where: 'id = ?',
+      whereArgs: [today['id']],
+    );
   }
 
-  static Future<List<Map<String, dynamic>>> getWeeklyData() async {
+  static Future<void> setSteps(int steps) async {
     final db = await SQLHelper.db();
-    final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
-    final result = await db.query('swastha', limit: 7);
-
-    if (result.isEmpty) {
-      final DataModel dataModel =
-          DataModel(date, DateTime.now().weekday, 0, 0, 0, 0);
-      await db.insert('swastha', dataModel.toMap(),
-          conflictAlgorithm: sql.ConflictAlgorithm.replace);
-      return [dataModel.toMap()];
-    } else {
-      return result;
-    }
+    final today = await _ensureToday();
+    await db.update(
+      'swastha',
+      {'steps': steps},
+      where: 'id = ?',
+      whereArgs: [today['id']],
+    );
   }
 
   static Future<List<Map<String, dynamic>>> getTodayData() async {
-    final db = await SQLHelper.db();
-    final date = DateFormat('dd/MM/yyyy').format(DateTime.now());
-    final result = await db.query('swastha',
-        where: "date = ?", whereArgs: [date], limit: 1);
-
-    if (result.isEmpty) {
-      final DataModel dataModel =
-          DataModel(date, DateTime.now().weekday, 0, 0, 0, 0);
-      await db.insert('swastha', dataModel.toMap(),
-          conflictAlgorithm: sql.ConflictAlgorithm.replace);
-      return [dataModel.toMap()];
-    } else {
-      return result;
-    }
+    return [await _ensureToday()];
   }
 
-  // Read a single item by id
-  // The app doesn't use this method but I put here in case you want to see it
-  static Future<List<Map<String, dynamic>>> getItem(String date) async {
+  /// The most recent seven days, oldest first.
+  static Future<List<Map<String, dynamic>>> getWeeklyData() async {
+    await _ensureToday();
     final db = await SQLHelper.db();
-    return db.query('swastha', where: "date = ?", whereArgs: [date], limit: 1);
+    final rows = await db.query('swastha', orderBy: 'id DESC', limit: 7);
+    return rows.reversed.toList();
   }
 
-  // Update an item by id
-  static Future<int> updateItem(String date, int waterTaken, String day) async {
+  static Future<String?> getMeta(String key) async {
     final db = await SQLHelper.db();
-
-    final data = {'waterTaken': waterTaken, 'day': day};
-
-    final result =
-        await db.update('water', data, where: "date = ?", whereArgs: [date]);
-    return result;
+    final rows = await db.query(
+      'meta',
+      where: 'key = ?',
+      whereArgs: [key],
+      limit: 1,
+    );
+    return rows.isEmpty ? null : rows.first['value'] as String?;
   }
 
-  // Delete
-  static Future<void> deleteItem(int id) async {
+  static Future<void> setMeta(String key, String value) async {
     final db = await SQLHelper.db();
-    try {
-      await db.delete("water", where: "id = ?", whereArgs: [id]);
-    } catch (err) {
-      debugPrint("Something went wrong when deleting an item: $err");
-    }
+    await db.insert('meta', {
+      'key': key,
+      'value': value,
+    }, conflictAlgorithm: sql.ConflictAlgorithm.replace);
   }
 }

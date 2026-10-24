@@ -12,6 +12,7 @@ import 'package:swastha/screens/side_drawer/weight_history.dart';
 import 'package:swastha/screens/side_drawer/term_and_condition.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
+import 'package:swastha/widgets/profile_avatar.dart';
 import 'package:swastha/widgets/drawer_list_tile.dart';
 
 class Home extends StatefulWidget {
@@ -23,15 +24,18 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int index = 0;
+  final advancedDrawerController = AdvancedDrawerController();
 
-  final List<Widget> pages = [
-    const PhysicalHealth(),
-    const MentalHealth(),
-  ];
+  @override
+  void dispose() {
+    advancedDrawerController.dispose();
+    super.dispose();
+  }
+
+  final List<Widget> pages = [const PhysicalHealth(), const MentalHealth()];
   @override
   Widget build(BuildContext context) {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
-    final advancedDrawerController = AdvancedDrawerController();
 
     return AdvancedDrawer(
       backdropColor: kPrimaryColor,
@@ -44,166 +48,174 @@ class _HomeState extends State<Home> {
             iconColor: kWhite,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: kWhite,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(25),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: kWhite,
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                      ),
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 20.0),
+                          ProfileAvatar(
+                            name: blocProvider.userModel.name,
+                            url: blocProvider.userModel.profileURL,
+                            radius: 60,
+                          ),
+                          const SizedBox(height: 15.0),
+                          Text(
+                            blocProvider.userModel.name,
+                            style: kHeadingTextStyle.copyWith(
+                              fontSize: 24.0,
+                              color: kPrimaryColor,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            blocProvider.userModel.bmi,
+                            style: kHeadingTextStyle.copyWith(fontSize: 18.0),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            blocProvider.userModel.mobile,
+                            style: kSubHeadingTextStyle,
+                          ),
+                          const SizedBox(height: 20.0),
+                        ],
+                      ),
                     ),
-                  ),
-                  width: double.infinity,
-                  child: Column(children: [
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    CircleAvatar(
-                      radius: 75.0,
-                      backgroundImage: blocProvider.userModel.profileURL.isEmpty
-                          ? null
-                          : NetworkImage(blocProvider.userModel.profileURL),
-                      child: blocProvider.userModel.profileURL.isEmpty
-                          ? const Icon(Icons.person, size: 50)
-                          : null,
-                    ),
-                    const SizedBox(
-                      height: 15.0,
-                    ),
-                    Text(
-                      blocProvider.userModel.name,
-                      style: kHeadingTextStyle.copyWith(
-                          fontSize: 24.0, color: kPrimaryColor),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      blocProvider.userModel.bmi,
-                      style: kHeadingTextStyle.copyWith(fontSize: 18.0),
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      blocProvider.userModel.mobile,
-                      style: kSubHeadingTextStyle,
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                  ]),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Divider(
-                  color: kWhite,
-                  thickness: 1.5,
-                ),
-                DrawerListTile(
-                  title: 'My Account',
-                  icon: Icons.person,
-                  onPress: () {
-                    changeScreen(context, const MyAccount());
-                  },
-                ),
-                DrawerListTile(
-                  title: 'BMI Calculator',
-                  icon: Icons.monitor_heart,
-                  onPress: () {
-                    changeScreen(context, const BMICalculator());
-                  },
-                ),
-                DrawerListTile(
-                  title: 'Weight & BMI History',
-                  icon: Icons.show_chart,
-                  onPress: () {
-                    changeScreen(context, const WeightHistory());
-                  },
-                ),
-                DrawerListTile(
-                  title: 'Privacy Policy',
-                  icon: Icons.privacy_tip,
-                  onPress: () {
-                    changeScreen(context, const PrivacyPolicy());
-                  },
-                ),
-                DrawerListTile(
-                  title: 'Term & Conditions',
-                  icon: Icons.report,
-                  onPress: () {
-                    changeScreen(context, const TermAndCondtion());
-                  },
-                ),
-                BlocConsumer<AuthCubit, Authstate>(
-                  listener: (context, state) {
-                    if (state == Authstate.loggedIn) {
-                      changeScreenReplacement(context, const PhysicalHealth());
-                    } else if (state == Authstate.loggedOut) {
-                      changeScreenReplacement(context, const Register());
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state == Authstate.loading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-                    return DrawerListTile(
-                      title: 'Logout',
-                      icon: Icons.logout,
+                    const SizedBox(height: 10),
+                    const Divider(color: kWhite, thickness: 1.5),
+                    DrawerListTile(
+                      title: 'My Account',
+                      icon: Icons.person,
                       onPress: () {
-                        blocProvider.logOut();
+                        changeScreen(context, const MyAccount());
                       },
-                    );
-                  },
-                )
-              ]),
+                    ),
+                    DrawerListTile(
+                      title: 'BMI Calculator',
+                      icon: Icons.monitor_heart,
+                      onPress: () {
+                        changeScreen(context, const BMICalculator());
+                      },
+                    ),
+                    DrawerListTile(
+                      title: 'Weight & BMI History',
+                      icon: Icons.show_chart,
+                      onPress: () {
+                        changeScreen(context, const WeightHistory());
+                      },
+                    ),
+                    DrawerListTile(
+                      title: 'Privacy Policy',
+                      icon: Icons.privacy_tip,
+                      onPress: () {
+                        changeScreen(context, const PrivacyPolicy());
+                      },
+                    ),
+                    DrawerListTile(
+                      title: 'Term & Conditions',
+                      icon: Icons.report,
+                      onPress: () {
+                        changeScreen(context, const TermAndCondtion());
+                      },
+                    ),
+                    BlocConsumer<AuthCubit, Authstate>(
+                      listener: (context, state) {
+                        if (state == Authstate.loggedOut) {
+                          changeScreenReplacement(context, const Register());
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state == Authstate.loading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return DrawerListTile(
+                          title: 'Logout',
+                          icon: Icons.logout,
+                          onPress: () async {
+                            final confirmed = await showDialog<bool>(
+                              context: context,
+                              builder: (ctx) => AlertDialog(
+                                title: const Text('Log out?'),
+                                content: const Text(
+                                  'You will need to sign in again.',
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(ctx, false),
+                                    child: const Text('Cancel'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(ctx, true),
+                                    child: const Text('Log out'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            if (confirmed == true) blocProvider.logOut();
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
       ),
       child: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-          floatingActionButton: FloatingActionButton(
-            mini: true,
-            backgroundColor: kWhite,
-            onPressed: () {
-              advancedDrawerController.showDrawer();
+        floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+        floatingActionButton: FloatingActionButton(
+          mini: true,
+          tooltip: 'Menu',
+          backgroundColor: kWhite,
+          onPressed: () {
+            advancedDrawerController.showDrawer();
+          },
+          child: ValueListenableBuilder<AdvancedDrawerValue>(
+            valueListenable: advancedDrawerController,
+            builder: (_, value, _) {
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                child: Icon(
+                  value.visible ? Icons.clear : Icons.menu,
+                  color: kPrimaryColor,
+                  key: ValueKey<bool>(value.visible),
+                ),
+              );
             },
-            child: ValueListenableBuilder<AdvancedDrawerValue>(
-              valueListenable: advancedDrawerController,
-              builder: (_, value, _) {
-                return AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 250),
-                  child: Icon(
-                    value.visible ? Icons.clear : Icons.menu,
-                    color: kPrimaryColor,
-                    key: ValueKey<bool>(value.visible),
-                  ),
-                );
-              },
-            ),
           ),
-          body: pages[index],
-          bottomNavigationBar: BottomNavigationBar(
-            onTap: ((value) {
-              setState(() {
-                index = value;
-              });
-            }),
-            currentIndex: index,
-            selectedItemColor: kPrimaryColor,
-            items: const [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.fitness_center), label: 'Physical'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.psychology), label: 'Mental'),
-            ],
-          )),
+        ),
+        body: pages[index],
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: ((value) {
+            setState(() {
+              index = value;
+            });
+          }),
+          currentIndex: index,
+          selectedItemColor: kPrimaryColor,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.fitness_center),
+              label: 'Physical',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.psychology),
+              label: 'Mental',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -1,133 +1,117 @@
 import 'package:flutter/material.dart';
+import 'package:swastha/models/metric.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class DashboardTile extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String rangeTitle;
-  final double maxrange;
-  final double interval;
-  final double valuerange;
-  final Color colorshade1;
-  final Color colorshade2;
-  const DashboardTile(
-      {super.key,
-      required this.icon,
-      required this.title,
-      required this.rangeTitle,
-      required this.maxrange,
-      required this.interval,
-      required this.valuerange,
-      required this.colorshade1,
-      required this.colorshade2});
+  final Metric metric;
+  final double value;
+  final double goal;
+  final VoidCallback? onTap;
+
+  const DashboardTile({
+    super.key,
+    required this.metric,
+    required this.value,
+    required this.goal,
+    this.onTap,
+  });
+
+  ({String text, Color color, IconData icon}) get status {
+    if (value >= goal) {
+      return (text: 'Done', color: Colors.green, icon: Icons.check_circle);
+    }
+    if (value <= goal / 3) {
+      return (text: 'Low', color: Colors.red, icon: Icons.warning_amber);
+    }
+    return (text: 'Good', color: Colors.orange, icon: Icons.trending_up);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final current = status;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-          decoration: const BoxDecoration(
-              color: kWhite,
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
+      child: Semantics(
+        button: true,
+        label:
+            '${metric.label} ${metric.format(value)} of ${metric.format(goal)}, ${current.text}',
+        child: Material(
+          color: kWhite,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          child: InkWell(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            onTap: onTap,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: [
-                  Icon(
-                    icon,
-                    color: Colors.blueAccent,
-                    size: 30,
-                  ),
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            title,
-                            style: const TextStyle(
-                                color: kPrimaryColor,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            rangeTitle,
-                            style: const TextStyle(
-                                color: kPrimaryColor, fontSize: 20),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: valuerange >= maxrange
-                                    ? Colors.green
-                                    : valuerange <= maxrange / 3
-                                        ? Colors.red
-                                        : Colors.orange,
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(5))),
-                            height: 20,
-                            width: 50,
-                            child: Center(
-                                child: Text(
-                              valuerange >= maxrange
-                                  ? "Done"
-                                  : valuerange <= maxrange / 3
-                                      ? "Alert"
-                                      : "Good",
-                              style: const TextStyle(color: kWhite),
-                            )),
-                          )
-                        ],
-                      ),
-                      Container(
-                        // ignore: sort_child_properties_last
-                        child: SfLinearGauge(
-                            showTicks: false,
-                            interval: interval,
-                            minimum: 0.0,
-                            maximum: maxrange,
-                            orientation: LinearGaugeOrientation.horizontal,
-                            animateAxis: true,
-                            animateRange: true,
-                            markerPointers: [
-                              LinearShapePointer(
-                                value: valuerange,
-                                color: colorshade2,
+                  Icon(metric.icon, color: metric.color, size: 30),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '${metric.label}: '
+                                '${metric.format(value)}/${metric.format(goal)}',
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ],
-                            // barPointers: [
-                            //   LinearBarPointer(
-                            //     thickness: 12,
-                            //     value: valuerange,
-                            //     color: Colors.green,
-                            //     edgeStyle: LinearEdgeStyle.bothCurve,
-                            //   )
-                            // ],
-                            majorTickStyle: const LinearTickStyle(length: 10),
-                            axisLabelStyle: const TextStyle(
-                                fontSize: 12.0, color: Colors.black),
-                            // ignore: prefer_const_constructors
-                            axisTrackStyle: LinearAxisTrackStyle(
-                                gradient: LinearGradient(colors: [
-                                  colorshade1,
-                                  colorshade2,
-                                ]),
-                                color: kGrey,
-                                edgeStyle: LinearEdgeStyle.bothCurve,
-                                thickness: 15.0,
-                                borderColor: Colors.grey)),
-                        margin: const EdgeInsets.all(10),
-                      )
-                    ],
-                  )
+                            ),
+                            Icon(current.icon, color: current.color, size: 16),
+                            const SizedBox(width: 4),
+                            Text(
+                              current.text,
+                              style: TextStyle(
+                                color: current.color,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SfLinearGauge(
+                          showTicks: false,
+                          showLabels: false,
+                          minimum: 0.0,
+                          maximum: goal,
+                          animateAxis: true,
+                          animateRange: true,
+                          markerPointers: [
+                            LinearShapePointer(
+                              value: value.clamp(0, goal).toDouble(),
+                              color: metric.color,
+                            ),
+                          ],
+                          axisTrackStyle: LinearAxisTrackStyle(
+                            gradient: LinearGradient(
+                              colors: [
+                                metric.color.withValues(alpha: 0.4),
+                                metric.color,
+                              ],
+                            ),
+                            color: kGrey,
+                            edgeStyle: LinearEdgeStyle.bothCurve,
+                            thickness: 15.0,
+                            borderColor: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

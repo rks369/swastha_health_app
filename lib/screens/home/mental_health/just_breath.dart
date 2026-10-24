@@ -50,10 +50,15 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
       ),
     );
 
-    if (true) {
-      _scaffold.forward();
-      _logo.forward();
-    }
+    _scaffold.forward();
+    _logo.forward();
+  }
+
+  @override
+  void dispose() {
+    _scaffold.dispose();
+    _logo.dispose();
+    super.dispose();
   }
 
   @override

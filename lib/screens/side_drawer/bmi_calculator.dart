@@ -6,6 +6,7 @@ import 'package:swastha/screens/side_drawer/weight_history.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/body_metrics.dart';
 import 'package:swastha/utils/styles.dart';
+import 'package:swastha/widgets/app_page.dart';
 import 'package:swastha/widgets/body_metrics_input.dart';
 import 'package:swastha/widgets/round_button.dart';
 
@@ -17,99 +18,24 @@ class BMICalculator extends StatefulWidget {
 }
 
 class _BMICalculatorState extends State<BMICalculator> {
-  late double height;
-  late double weight;
+  late final AuthCubit cubit = BlocProvider.of<AuthCubit>(context);
+  late double height = cubit.userModel.heightCm.clamp(120, 220).toDouble();
+  late double weight = cubit.userModel.weightKg.clamp(20, 200).toDouble();
 
-  @override
-  void initState() {
-    super.initState();
-    final user = BlocProvider.of<AuthCubit>(context).userModel;
-    height = (double.tryParse(user.height) ?? 170).clamp(120, 220).toDouble();
-    weight = (double.tryParse(user.weight) ?? 50).clamp(20, 200).toDouble();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final blocProvider = BlocProvider.of<AuthCubit>(context);
-    final user = blocProvider.userModel;
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: kWhite,
-          mini: true,
-          onPressed: (() {
-            Navigator.pop(context);
-          }),
-          child: const Icon(
-            Icons.arrow_back,
-            color: kPrimaryColor,
-          )),
-      body: Container(
-        decoration: const BoxDecoration(color: kPrimaryColor),
-        child: SafeArea(
-          child: Column(children: [
-            const SizedBox(
-              height: 20,
-            ),
-            const Text(
-              'BMI Calculator',
-              style: TextStyle(
-                  color: kWhite, fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 8,
-            ),
-            Text(
-              '${user.gender}, ${user.currentAge} years',
-              style: const TextStyle(color: kWhite),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: const BoxDecoration(
-                    color: kGrey,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Expanded(
-                      child: BodyMetricsInput(
-                        height: height,
-                        weight: weight,
-                        onHeightChanged: (value) =>
-                            setState(() => height = value),
-                        onWeightChanged: (value) =>
-                            setState(() => weight = value),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 2.0, horizontal: 64.0),
-                      child: RoundedButton(
-                          title: 'Calculate BMI',
-                          colour: kPrimaryColor,
-                          onPressed: showResult),
-                    ),
-                    TextButton.icon(
-                      onPressed: () =>
-                          changeScreen(context, const WeightHistory()),
-                      icon: const Icon(Icons.show_chart),
-                      label: const Text('Weight & BMI History'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ]),
-        ),
-      ),
-    );
+  Future<void> save() async {
+    showProgressDialog(context);
+    try {
+      await cubit.saveBodyMetrics(height, weight);
+      if (!mounted) return;
+      Navigator.pop(context);
+      changeScreenClearStack(context, const Home());
+    } catch (_) {
+      if (!mounted) return;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not save. Please try again.')),
+      );
+    }
   }
 
   void showResult() {
@@ -140,17 +66,57 @@ class _BMICalculatorState extends State<BMICalculator> {
                 style: kNormalTextStyle,
               ),
               RoundedButton(
-                  title: "Save to History",
+                  title: 'Save to History',
                   colour: kPrimaryColor,
-                  onPressed: () async {
-                    showProgressDialog(context);
-                    await BlocProvider.of<AuthCubit>(context)
-                        .saveBodyMetrics(height, weight);
-                    if (!context.mounted) return;
-                    changeScreenReplacement(context, const Home());
+                  onPressed: () {
+                    Navigator.pop(ctx);
+                    save();
                   })
             ]),
           );
         });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = cubit.userModel;
+    return AppPage(
+      title: 'BMI Calculator',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Text(
+              '${user.gender}, ${user.currentAge} years',
+              textAlign: TextAlign.center,
+              style: kSubHeadingTextStyle,
+            ),
+          ),
+          Expanded(
+            child: BodyMetricsInput(
+              height: height,
+              weight: weight,
+              onHeightChanged: (value) => setState(() => height = value),
+              onWeightChanged: (value) => setState(() => weight = value),
+            ),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 2.0, horizontal: 64.0),
+            child: RoundedButton(
+                title: 'Calculate BMI',
+                colour: kPrimaryColor,
+                onPressed: showResult),
+          ),
+          TextButton.icon(
+            onPressed: () => changeScreen(context, const WeightHistory()),
+            icon: const Icon(Icons.show_chart),
+            label: const Text('Weight & BMI History'),
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
   }
 }

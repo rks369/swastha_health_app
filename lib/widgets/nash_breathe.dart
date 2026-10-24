@@ -37,9 +37,10 @@ class _CupertinoBreatheState extends State<CupertinoBreathe>
         child: CustomPaint(
           painter: _BreathePainter(
             CurvedAnimation(
-                parent: _controller,
-                curve: Curves.easeOutQuart,
-                reverseCurve: Curves.easeOutQuart),
+              parent: _controller,
+              curve: Curves.easeOutQuart,
+              reverseCurve: Curves.easeOutQuart,
+            ),
             count: 12,
           ),
           size: Size.infinite,
@@ -50,13 +51,11 @@ class _CupertinoBreatheState extends State<CupertinoBreathe>
 }
 
 class _BreathePainter extends CustomPainter {
-  _BreathePainter(
-    this.animation, {
-    required this.count,
-  })  : circlePaint = Paint()
-          ..color = kActiveSelect
-          ..blendMode = BlendMode.modulate,
-        super(repaint: animation);
+  _BreathePainter(this.animation, {required this.count})
+    : circlePaint = Paint()
+        ..color = kActiveSelect
+        ..blendMode = BlendMode.modulate,
+      super(repaint: animation);
 
   final Animation<double> animation;
   final int count;

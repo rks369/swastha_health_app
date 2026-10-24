@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CircularLoginOption extends StatelessWidget {
-  const CircularLoginOption({super.key, required this.icon, required this.onTap});
+  const CircularLoginOption({
+    super.key,
+    required this.icon,
+    required this.onTap,
+  });
 
   final Image icon;
   final VoidCallback onTap;
@@ -13,13 +17,14 @@ class CircularLoginOption extends StatelessWidget {
         child: GestureDetector(
           onTap: onTap,
           child: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      fit: BoxFit.scaleDown, image: icon.image))),
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              image: DecorationImage(fit: BoxFit.scaleDown, image: icon.image),
+            ),
+          ),
         ),
       ),
     );

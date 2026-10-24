@@ -5,7 +5,7 @@ Swastha is a Flutter health and wellness app that brings physical and mental hea
 ## Features
 
 **Physical health**
-- Background step counter using the accelerometer
+- Step counter using the phone's hardware step sensor
 - Water, calorie and sleep tracking with daily dashboards and charts
 - BMI calculator (height and weight only; age and gender come from your profile)
 - Weight and BMI history with a trend chart
@@ -42,9 +42,9 @@ Swastha is a Flutter health and wellness app that brings physical and mental hea
 - State management: `flutter_bloc`
 - Backend: Firebase (Auth, Firestore)
 - Local storage: `sqflite`, `shared_preferences`
-- Background work: `flutter_background_service`, `sensors_plus`
+- Steps: `pedometer`, `permission_handler`
 - Charts and gauges: `fl_chart`, `syncfusion_flutter_gauges`
-- Audio: `audioplayers`, `audio_manager`
+- Audio: `audioplayers`
 
 ## Project Structure
 
@@ -52,12 +52,11 @@ Swastha is a Flutter health and wellness app that brings physical and mental hea
 lib/
 ├── Bloc/        # AuthCubit, BreathCubit
 ├── database/    # SQLite helper
-├── graph/       # Chart widgets
-├── models/      # Data models
+├── models/      # Data models, Metric enum
 ├── screens/     # Authentication, home, dashboards, side drawer
-├── services/    # Snackbars, navigation helpers
-├── utils/       # Styles, constants, extensions
-└── widgets/     # Reusable widgets
+├── services/    # Step tracker, navigation helpers
+├── utils/       # Styles, constants, BMI/age helpers
+└── widgets/     # Reusable widgets (AppPage, rings, quick-add sheet)
 ```
 
 ## Getting Started
@@ -91,4 +90,14 @@ flutter build apk --release
 
 ## Permissions (Android)
 
-The step counter runs as a foreground service, so the app declares `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE` and `POST_NOTIFICATIONS`.
+`ACTIVITY_RECOGNITION` is requested at runtime so the step sensor can be read. Steps are counted from the sensor's total since boot, with a per-day baseline kept in SQLite, so steps taken while the app is closed are included the next time it opens.
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md).
+
+## Tests
+
+```
+flutter test
+```

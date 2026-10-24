@@ -23,6 +23,13 @@ class _UserDetailState extends State<UserDetail> {
   DateTime? dob;
   String? gender;
 
+  @override
+  void dispose() {
+    name.dispose();
+    dobText.dispose();
+    super.dispose();
+  }
+
   Future<void> pickDob() async {
     final now = DateTime.now();
     final picked = await showDatePicker(
@@ -52,7 +59,7 @@ class _UserDetailState extends State<UserDetail> {
                 const SizedBox(height: 18),
                 Image.asset('assets/images/logo.png', width: 100, height: 100),
                 const SizedBox(height: 24),
-                const Text('Complete Registeration', style: kHeadingTextStyle),
+                const Text('Complete Registration', style: kHeadingTextStyle),
                 const SizedBox(height: 10),
                 const Text(
                   "Complete Your Profile",
@@ -78,7 +85,7 @@ class _UserDetailState extends State<UserDetail> {
                               return 'Please Enter Your Name';
                             }
                             if (value.length < 3) {
-                              return 'Phone Number Should be 3 Letter';
+                              return 'Name Should Be At Least 3 Letters';
                             }
                             return null;
                           },

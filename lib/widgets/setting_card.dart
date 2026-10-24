@@ -9,13 +9,14 @@ class SettingsCard extends StatelessWidget {
   final bool start;
   // When enabled, the bottom border is rounded
   final bool end;
-  const SettingsCard(
-      {required this.leading,
-      required this.title,
-      required this.trailing,
-      this.start = false,
-      this.end = false,
-      super.key});
+  const SettingsCard({
+    required this.leading,
+    required this.title,
+    required this.trailing,
+    this.start = false,
+    this.end = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

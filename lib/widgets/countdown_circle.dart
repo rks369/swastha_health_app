@@ -17,10 +17,7 @@ class _CountdownCircleState extends State<CountdownCircle>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      duration: widget.duration,
-      vsync: this,
-    );
+    _controller = AnimationController(duration: widget.duration, vsync: this);
     _controller.forward().orCancel;
   }
 
@@ -37,10 +34,12 @@ class _CountdownCircleState extends State<CountdownCircle>
         aspectRatio: 1.0,
         child: CustomPaint(
           painter: _CircleCountdownPainter(
-              thinRing: kPrimaryColor,
-              tickerRing: kPrimaryColor,
-              animation: Tween<double>(begin: 0.0, end: pi * 2).animate(
-                  CurvedAnimation(parent: _controller, curve: Curves.linear))),
+            thinRing: kPrimaryColor,
+            tickerRing: kPrimaryColor,
+            animation: Tween<double>(begin: 0.0, end: pi * 2).animate(
+              CurvedAnimation(parent: _controller, curve: Curves.linear),
+            ),
+          ),
           size: Size.infinite,
         ),
       ),
@@ -49,16 +48,16 @@ class _CountdownCircleState extends State<CountdownCircle>
 }
 
 class _CircleCountdownPainter extends CustomPainter {
-  _CircleCountdownPainter(
-      {required this.animation,
-      required this.thinRing,
-      required this.tickerRing})
-      : fillerPaint = Paint()
-          ..color = kPrimaryColor
-          ..style = PaintingStyle.stroke
-          ..strokeWidth = 42.0
-          ..strokeCap = StrokeCap.round,
-        super(repaint: animation);
+  _CircleCountdownPainter({
+    required this.animation,
+    required this.thinRing,
+    required this.tickerRing,
+  }) : fillerPaint = Paint()
+         ..color = kPrimaryColor
+         ..style = PaintingStyle.stroke
+         ..strokeWidth = 42.0
+         ..strokeCap = StrokeCap.round,
+       super(repaint: animation);
 
   // The color of the thinRing
   final Color thinRing;
@@ -80,11 +79,7 @@ class _CircleCountdownPainter extends CustomPainter {
     final rect = Rect.fromCircle(center: center, radius: radius);
 
     // Draw the thin ring
-    canvas.drawCircle(
-      center,
-      radius,
-      circlePaint..color = thinRing,
-    );
+    canvas.drawCircle(center, radius, circlePaint..color = thinRing);
 
     final Gradient gradient = LinearGradient(
       begin: Alignment.topCenter,

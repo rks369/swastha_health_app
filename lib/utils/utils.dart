@@ -6,7 +6,7 @@ import 'constants.dart';
 
 Quote getQuote() {
   var r = Random(DateTime.now().millisecondsSinceEpoch);
-  
+
   var randInt = r.nextInt(kQuote.length);
   return kQuote[randInt];
 }

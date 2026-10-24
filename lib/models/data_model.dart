@@ -7,7 +7,13 @@ class DataModel {
   int sleep;
 
   DataModel(
-      this.date, this.day, this.water, this.calories, this.sleep, this.steps);
+    this.date,
+    this.day,
+    this.water,
+    this.calories,
+    this.sleep,
+    this.steps,
+  );
   Map<String, dynamic> toMap() {
     return {
       'date': date,
@@ -15,12 +21,18 @@ class DataModel {
       'water': water,
       'calories': calories,
       'steps': steps,
-      'sleep': sleep
+      'sleep': sleep,
     };
   }
 }
 
 DataModel dataModelFromJson(Map<String, dynamic> data) {
-  return DataModel(data['date'], data['day'], data['water'], data['calories'],
-      data['sleep'], data['steps']);
+  return DataModel(
+    data['date'],
+    data['day'],
+    data['water'],
+    data['calories'],
+    data['sleep'],
+    data['steps'],
+  );
 }

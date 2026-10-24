@@ -17,20 +17,21 @@ class UserModel {
   String goalCalorie;
 
   UserModel(
-      this.uid,
-      this.mobile,
-      this.name,
-      this.profileURL,
-      this.gender,
-      this.dob,
-      this.height,
-      this.weight,
-      this.age,
-      this.bmi,
-      this.goalWater,
-      this.goalSteps,
-      this.goalSleep,
-      this.goalCalorie);
+    this.uid,
+    this.mobile,
+    this.name,
+    this.profileURL,
+    this.gender,
+    this.dob,
+    this.height,
+    this.weight,
+    this.age,
+    this.bmi,
+    this.goalWater,
+    this.goalSteps,
+    this.goalSleep,
+    this.goalCalorie,
+  );
 
   DateTime? get dobDate => DateTime.tryParse(dob);
 
@@ -39,6 +40,18 @@ class UserModel {
     if (date != null) return ageFromDob(date);
     return int.tryParse(age.split('.').first) ?? 18;
   }
+
+  static double _positive(String value, double fallback) {
+    final parsed = double.tryParse(value);
+    return parsed != null && parsed > 0 ? parsed : fallback;
+  }
+
+  double get heightCm => _positive(height, 170);
+  double get weightKg => _positive(weight, 50);
+  double get goalWaterLiters => _positive(goalWater, 3);
+  double get goalStepsCount => _positive(goalSteps, 6000);
+  double get goalSleepHours => _positive(goalSleep, 8);
+  double get goalCalorieKcal => _positive(goalCalorie, 2000);
 
   Map<String, String> toJSON() {
     return {

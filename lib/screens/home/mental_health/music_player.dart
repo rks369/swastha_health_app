@@ -1,5 +1,8 @@
-import 'package:audio_manager/audio_manager.dart';
+import 'dart:async';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:swastha/models/audio_model.dart';
 import 'package:swastha/screens/home/mental_health/songs.dart';
 import 'package:swastha/utils/styles.dart';
 
@@ -11,47 +14,77 @@ class MusicPlayer extends StatefulWidget {
 }
 
 class _MusicPlayer extends State<MusicPlayer> {
+  final AudioPlayer player = AudioPlayer();
+  final List<StreamSubscription<dynamic>> subscriptions = [];
+
+  int? current;
+  bool isPlaying = false;
+  Duration position = Duration.zero;
+  Duration duration = Duration.zero;
+
   @override
   void initState() {
     super.initState();
-    setupAudio();
+    subscriptions.addAll([
+      player.onPlayerStateChanged.listen((state) {
+        setState(() => isPlaying = state == PlayerState.playing);
+      }),
+      player.onPositionChanged.listen((value) {
+        setState(() => position = value);
+      }),
+      player.onDurationChanged.listen((value) {
+        setState(() => duration = value);
+      }),
+      player.onPlayerComplete.listen((_) => skip(1)),
+    ]);
   }
 
   @override
   void dispose() {
-    audioManagerInstance.release();
+    for (final subscription in subscriptions) {
+      subscription.cancel();
+    }
+    player.dispose();
     super.dispose();
   }
 
-  void setupAudio() {
-    audioManagerInstance.onEvents((events, args) {
-      switch (events) {
-        case AudioManagerEvents.start:
-          _slider = 0;
-          break;
-        case AudioManagerEvents.seekComplete:
-          _slider = audioManagerInstance.position.inMilliseconds /
-              audioManagerInstance.duration.inMilliseconds;
-          setState(() {});
-          break;
-        case AudioManagerEvents.playstatus:
-          isPlaying = audioManagerInstance.isPlaying;
-          setState(() {});
-          break;
-        case AudioManagerEvents.timeupdate:
-          _slider = audioManagerInstance.position.inMilliseconds /
-              audioManagerInstance.duration.inMilliseconds;
-          audioManagerInstance.updateLrc(args["position"].toString());
-          setState(() {});
-          break;
-        case AudioManagerEvents.ended:
-          audioManagerInstance.next();
-          setState(() {});
-          break;
-        default:
-          break;
-      }
+  Future<void> play(int index) async {
+    setState(() {
+      current = index;
+      position = Duration.zero;
+      duration = Duration.zero;
     });
+    // AssetSource already prefixes the "assets/" folder.
+    final path = songList[index].audioPath.replaceFirst('assets/', '');
+    await player.play(AssetSource(path));
+  }
+
+  Future<void> select(int index) async {
+    if (index == current) {
+      await togglePlay();
+    } else {
+      await play(index);
+    }
+  }
+
+  Future<void> togglePlay() async {
+    if (current == null) return play(0);
+    if (isPlaying) {
+      await player.pause();
+    } else {
+      await player.resume();
+    }
+  }
+
+  Future<void> skip(int step) async {
+    final next = ((current ?? -1) + step) % songList.length;
+    await play(next);
+  }
+
+  String formatDuration(Duration d) {
+    final minutes = d.inMinutes.toString().padLeft(2, '0');
+    final seconds = (d.inSeconds % 60).toString().padLeft(2, '0');
+    return '$minutes:$seconds';
   }
 
   @override
@@ -59,139 +92,95 @@ class _MusicPlayer extends State<MusicPlayer> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimaryColor,
+        foregroundColor: kWhite,
         title: const Text('Relaxing Music Player'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          const Expanded(child: SongWidget()),
+          Expanded(
+            child: SongWidget(
+              currentIndex: current,
+              isPlaying: isPlaying,
+              onSelect: select,
+            ),
+          ),
           bottomPanel(),
         ],
       ),
     );
   }
 
-  String _formatDuration(Duration d) {
-    int minute = d.inMinutes;
-    int second = (d.inSeconds > 60) ? (d.inSeconds % 60) : d.inSeconds;
-    String format = "${(minute < 10) ? "0$minute" : "$minute"}:${(second < 10) ? "0$second" : "$second"}";
-    return format;
-  }
-
-  Widget songProgress(BuildContext context) {
-    var style = const TextStyle(color: kPrimaryColor);
+  Widget songProgress() {
+    const style = TextStyle(color: kPrimaryColor);
+    final total = duration.inMilliseconds;
+    final value = total == 0
+        ? 0.0
+        : (position.inMilliseconds / total).clamp(0.0, 1.0).toDouble();
     return Row(
       children: <Widget>[
-        Text(
-          _formatDuration(audioManagerInstance.position),
-          style: style,
-        ),
+        Text(formatDuration(position), style: style),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: SliderTheme(
-                data: SliderTheme.of(context).copyWith(
-                  trackHeight: 2,
-                  thumbColor: kPrimaryColor,
-                  overlayColor: kPrimaryColor,
-                  thumbShape: const RoundSliderThumbShape(
-                    disabledThumbRadius: 5,
-                    enabledThumbRadius: 5,
-                  ),
-                  overlayShape: const RoundSliderOverlayShape(
-                    overlayRadius: 10,
-                  ),
-                  activeTrackColor: kPrimaryColor,
-                  inactiveTrackColor: kActiveSelect,
-                ),
-                child: Slider(
-                  value: _slider,
-                  onChanged: (value) {
-                    setState(() {
-                      _slider = value;
-                    });
-                  },
-                  onChangeEnd: (value) {
-                    Duration msec = Duration(
-                        milliseconds:
-                            (audioManagerInstance.duration.inMilliseconds *
-                                    value)
-                                .round());
-                    audioManagerInstance.seekTo(msec);
-                  },
-                )),
+          child: Slider(
+            activeColor: kPrimaryColor,
+            inactiveColor: kActiveSelect,
+            value: value,
+            onChanged: total == 0
+                ? null
+                : (v) => player.seek(Duration(milliseconds: (total * v).round())),
           ),
         ),
-        Text(
-          _formatDuration(audioManagerInstance.duration),
-          style: style,
-        ),
+        Text(formatDuration(duration), style: style),
       ],
     );
   }
 
   Widget bottomPanel() {
-    return Column(children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: songProgress(context),
-      ),
-      Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            CircleAvatar(
-              radius: 25,
-              backgroundColor: kActiveSelect,
-              child: Center(
+    return SafeArea(
+      top: false,
+      child: Column(children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: songProgress(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              CircleAvatar(
+                radius: 25,
+                backgroundColor: kActiveSelect,
                 child: IconButton(
-                    icon: const Icon(
-                      Icons.skip_previous,
-                      color: kWhite,
-                    ),
-                    onPressed: () => audioManagerInstance.previous()),
+                  tooltip: 'Previous',
+                  icon: const Icon(Icons.skip_previous, color: kWhite),
+                  onPressed: () => skip(-1),
+                ),
               ),
-            ),
-            CircleAvatar(
-              backgroundColor: kPrimaryColor,
-              radius: 30,
-              child: Center(
+              CircleAvatar(
+                backgroundColor: kPrimaryColor,
+                radius: 30,
                 child: IconButton(
-                  onPressed: () async {
-                    audioManagerInstance.playOrPause();
-                  },
-                  padding: const EdgeInsets.all(0.0),
+                  tooltip: isPlaying ? 'Pause' : 'Play',
+                  onPressed: togglePlay,
                   icon: Icon(
-                    audioManagerInstance.isPlaying
-                        ? Icons.pause
-                        : Icons.play_arrow,
+                    isPlaying ? Icons.pause : Icons.play_arrow,
                     color: kWhite,
                   ),
                 ),
               ),
-            ),
-            CircleAvatar(
-              radius: 25,
-              backgroundColor: kActiveSelect,
-              child: Center(
+              CircleAvatar(
+                radius: 25,
+                backgroundColor: kActiveSelect,
                 child: IconButton(
-                    icon: const Icon(
-                      Icons.skip_next,
-                      color: Colors.white,
-                    ),
-                    onPressed: () => audioManagerInstance.next()),
+                  tooltip: 'Next',
+                  icon: const Icon(Icons.skip_next, color: kWhite),
+                  onPressed: () => skip(1),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    ]);
+      ]),
+    );
   }
 }
-
-var audioManagerInstance = AudioManager.instance;
-bool showVol = false;
-PlayMode playMode = audioManagerInstance.playMode;
-bool isPlaying = false;
-double _slider = 0;

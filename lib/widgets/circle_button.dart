@@ -11,16 +11,10 @@ class CircleButton extends StatelessWidget {
     return RawMaterialButton(
       elevation: 0.0,
       onPressed: onpressed,
-      constraints: const BoxConstraints.tightFor(
-        width: 56.0,
-        height: 56.0,
-      ),
+      constraints: const BoxConstraints.tightFor(width: 56.0, height: 56.0),
       shape: const CircleBorder(),
       fillColor: kPrimaryColor,
-      child: Icon(
-        icon,
-        color: kWhite,
-      ),
+      child: Icon(icon, color: kWhite),
     );
   }
 }

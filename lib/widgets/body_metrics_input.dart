@@ -31,9 +31,10 @@ class BodyMetricsInput extends StatelessWidget {
                 const Text(
                   'Height (in cm)',
                   style: TextStyle(
-                      fontSize: 20.0,
-                      color: kPrimaryColor,
-                      fontWeight: FontWeight.bold),
+                    fontSize: 20.0,
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   height.round().toString(),
@@ -61,9 +62,10 @@ class BodyMetricsInput extends StatelessWidget {
                 const Text(
                   'Weight (in Kg)',
                   style: TextStyle(
-                      fontSize: 20.0,
-                      color: kPrimaryColor,
-                      fontWeight: FontWeight.bold),
+                    fontSize: 20.0,
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   weight.toStringAsFixed(1),

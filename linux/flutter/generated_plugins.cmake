@@ -3,7 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  audio_manager
   audioplayers_linux
   url_launcher_linux
 )

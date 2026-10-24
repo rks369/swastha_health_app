@@ -6,6 +6,7 @@ import 'package:swastha/Bloc/auth_cubit.dart';
 import 'package:swastha/models/weight_entry.dart';
 import 'package:swastha/utils/body_metrics.dart';
 import 'package:swastha/utils/styles.dart';
+import 'package:swastha/widgets/app_page.dart';
 
 enum _Metric { weight, bmi }
 
@@ -17,8 +18,9 @@ class WeightHistory extends StatefulWidget {
 }
 
 class _WeightHistoryState extends State<WeightHistory> {
-  late final Stream<List<WeightEntry>> history =
-      BlocProvider.of<AuthCubit>(context).weightHistory();
+  late final Stream<List<WeightEntry>> history = BlocProvider.of<AuthCubit>(
+    context,
+  ).weightHistory();
   _Metric metric = _Metric.weight;
 
   double valueOf(WeightEntry entry) =>
@@ -26,60 +28,32 @@ class _WeightHistoryState extends State<WeightHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: kWhite,
-          mini: true,
-          onPressed: (() {
-            Navigator.pop(context);
-          }),
-          child: const Icon(
-            Icons.arrow_back,
-            color: kPrimaryColor,
-          )),
-      body: Container(
-        decoration: const BoxDecoration(color: kPrimaryColor),
-        child: SafeArea(
-          child: Column(children: [
-            const SizedBox(height: 20),
-            const Text(
-              'Weight & BMI History',
-              style: TextStyle(
-                  color: kWhite, fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                    color: kGrey,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30))),
-                child: StreamBuilder<List<WeightEntry>>(
-                  stream: history,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return const Center(
-                          child: Text('Could not load history'));
-                    }
-                    if (!snapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    final entries = snapshot.data!;
-                    if (entries.isEmpty) {
-                      return const Center(
-                          child: Text('No entries yet. Calculate your BMI '
-                              'and save it to start tracking.'));
-                    }
-                    return buildContent(entries);
-                  },
+    return AppPage(
+      title: 'Weight & BMI History',
+      child: StreamBuilder<List<WeightEntry>>(
+        stream: history,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return const Center(child: Text('Could not load history'));
+          }
+          if (!snapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final entries = snapshot.data!;
+          if (entries.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(24),
+                child: Text(
+                  'No entries yet. Calculate your BMI and save it to start '
+                  'tracking.',
+                  textAlign: TextAlign.center,
                 ),
               ),
-            ),
-          ]),
-        ),
+            );
+          }
+          return buildContent(entries);
+        },
       ),
     );
   }
@@ -97,8 +71,7 @@ class _WeightHistoryState extends State<WeightHistory> {
               ButtonSegment(value: _Metric.bmi, label: Text('BMI')),
             ],
             selected: {metric},
-            onSelectionChanged: (value) =>
-                setState(() => metric = value.first),
+            onSelectionChanged: (value) => setState(() => metric = value.first),
           ),
         ),
         SizedBox(
@@ -114,8 +87,9 @@ class _WeightHistoryState extends State<WeightHistory> {
             itemCount: reversed.length,
             itemBuilder: (context, index) {
               final entry = reversed[index];
-              final previous =
-                  index + 1 < reversed.length ? reversed[index + 1] : null;
+              final previous = index + 1 < reversed.length
+                  ? reversed[index + 1]
+                  : null;
               return buildTile(entry, previous);
             },
           ),
@@ -129,69 +103,76 @@ class _WeightHistoryState extends State<WeightHistory> {
     final minY = (values.reduce((a, b) => a < b ? a : b) - 2).floorToDouble();
     final maxY = (values.reduce((a, b) => a > b ? a : b) + 2).ceilToDouble();
     final dateFormat = DateFormat('d MMM');
-    return LineChart(LineChartData(
-      minY: minY,
-      maxY: maxY,
-      gridData: const FlGridData(drawVerticalLine: false),
-      borderData: FlBorderData(show: false),
-      titlesData: FlTitlesData(
-        topTitles: const AxisTitles(),
-        rightTitles: const AxisTitles(),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 40,
-            getTitlesWidget: (value, meta) {
-              if (value == meta.min || value == meta.max) {
-                return const SizedBox.shrink();
-              }
-              return SideTitleWidget(
-                meta: meta,
-                child: Text(value.toStringAsFixed(0),
-                    style: const TextStyle(fontSize: 11)),
-              );
-            },
+    return LineChart(
+      LineChartData(
+        minY: minY,
+        maxY: maxY,
+        gridData: const FlGridData(drawVerticalLine: false),
+        borderData: FlBorderData(show: false),
+        titlesData: FlTitlesData(
+          topTitles: const AxisTitles(),
+          rightTitles: const AxisTitles(),
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 40,
+              getTitlesWidget: (value, meta) {
+                if (value == meta.min || value == meta.max) {
+                  return const SizedBox.shrink();
+                }
+                return SideTitleWidget(
+                  meta: meta,
+                  child: Text(
+                    value.toStringAsFixed(0),
+                    style: const TextStyle(fontSize: 11),
+                  ),
+                );
+              },
+            ),
+          ),
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 28,
+              interval: entries.length > 5
+                  ? (entries.length / 4).ceilToDouble()
+                  : 1,
+              getTitlesWidget: (value, meta) {
+                final index = value.toInt();
+                if (value != index.toDouble() ||
+                    index < 0 ||
+                    index >= entries.length) {
+                  return const SizedBox.shrink();
+                }
+                return SideTitleWidget(
+                  meta: meta,
+                  child: Text(
+                    dateFormat.format(entries[index].date),
+                    style: const TextStyle(fontSize: 11),
+                  ),
+                );
+              },
+            ),
           ),
         ),
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 28,
-            interval:
-                entries.length > 5 ? (entries.length / 4).ceilToDouble() : 1,
-            getTitlesWidget: (value, meta) {
-              final index = value.toInt();
-              if (value != index.toDouble() ||
-                  index < 0 ||
-                  index >= entries.length) {
-                return const SizedBox.shrink();
-              }
-              return SideTitleWidget(
-                meta: meta,
-                child: Text(dateFormat.format(entries[index].date),
-                    style: const TextStyle(fontSize: 11)),
-              );
-            },
+        lineBarsData: [
+          LineChartBarData(
+            spots: [
+              for (var i = 0; i < entries.length; i++)
+                FlSpot(i.toDouble(), values[i]),
+            ],
+            isCurved: true,
+            color: kPrimaryColor,
+            barWidth: 3,
+            dotData: const FlDotData(show: true),
+            belowBarData: BarAreaData(
+              show: true,
+              color: kPrimaryColor.withValues(alpha: 0.15),
+            ),
           ),
-        ),
+        ],
       ),
-      lineBarsData: [
-        LineChartBarData(
-          spots: [
-            for (var i = 0; i < entries.length; i++)
-              FlSpot(i.toDouble(), values[i]),
-          ],
-          isCurved: true,
-          color: kPrimaryColor,
-          barWidth: 3,
-          dotData: const FlDotData(show: true),
-          belowBarData: BarAreaData(
-            show: true,
-            color: kPrimaryColor.withValues(alpha: 0.15),
-          ),
-        ),
-      ],
-    ));
+    );
   }
 
   Widget buildTile(WeightEntry entry, WeightEntry? previous) {
@@ -204,14 +185,16 @@ class _WeightHistoryState extends State<WeightHistory> {
       ),
       title: Text('${entry.weight.toStringAsFixed(1)} kg'),
       subtitle: Text(
-          '$date  •  BMI ${entry.bmi.toStringAsFixed(1)} (${bmiCategory(entry.bmi)})'),
+        '$date  •  BMI ${entry.bmi.toStringAsFixed(1)} (${bmiCategory(entry.bmi)})',
+      ),
       trailing: change == null || change == 0
           ? null
           : Text(
               '${change > 0 ? '+' : ''}${change.toStringAsFixed(1)}',
               style: TextStyle(
-                  color: change > 0 ? Colors.red : Colors.green,
-                  fontWeight: FontWeight.bold),
+                color: change > 0 ? Colors.red : Colors.green,
+                fontWeight: FontWeight.bold,
+              ),
             ),
     );
   }

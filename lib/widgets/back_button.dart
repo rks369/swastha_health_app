@@ -7,11 +7,7 @@ class BackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.pop(context),
-      child: const Icon(
-        Icons.arrow_back,
-        size: 32,
-        color: Colors.black54,
-      ),
+      child: const Icon(Icons.arrow_back, size: 32, color: Colors.black54),
     );
   }
 }
