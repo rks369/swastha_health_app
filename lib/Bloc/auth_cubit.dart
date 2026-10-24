@@ -27,7 +27,10 @@ class AuthCubit extends Cubit<Authstate> {
 
     if(__googleSignIn == null) {
       __googleSignIn = GoogleSignIn.instance;
-      await __googleSignIn?.initialize();
+      await __googleSignIn?.initialize(
+        serverClientId:
+            '1043018008926-tsetgd75rbo8dbaehhebdnos1l2btt1b.apps.googleusercontent.com',
+      );
     }
 
     assert(__googleSignIn != null ,"Google Sign In Can't be Null");

@@ -1,4 +1,4 @@
-package com.swastha.health_app
+package com.swastha.health
 
 import io.flutter.embedding.android.FlutterActivity
 

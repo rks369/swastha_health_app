@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1043018008926",
+    "project_id": "swastha-health-app",
+    "storage_bucket": "swastha-health-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043018008926:android:07feb898ed7f576aa9e7cf",
+        "android_client_info": {
+          "package_name": "com.swastha.health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1043018008926-4qjg6r6udm2arc9reb7dthp77f4b946b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.swastha.health",
+            "certificate_hash": "bb7bb4ad415a4fb552b2ebbac8d2bcef50382f50"
+          }
+        },
+        {
+          "client_id": "1043018008926-qj80bdmva70pu3isrcnojcoo51o2q2ih.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.swastha.health",
+            "certificate_hash": "f54290b63e94c47c869f3828b3aeacaea253c903"
+          }
+        },
+        {
+          "client_id": "1043018008926-tsetgd75rbo8dbaehhebdnos1l2btt1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBePFEdGLaJJK5IM_YyY6OVNpB0Pvjp5bY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1043018008926-tsetgd75rbo8dbaehhebdnos1l2btt1b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
