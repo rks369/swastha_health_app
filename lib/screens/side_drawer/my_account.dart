@@ -73,9 +73,12 @@ class MyAccount extends StatelessWidget {
                     ),
                     CircleAvatar(
                       radius: 70.0,
-                      backgroundImage:
-                          Image.network(blocProvider.userModel.profileURL)
-                              .image,
+                      backgroundImage: blocProvider.userModel.profileURL.isEmpty
+                          ? null
+                          : NetworkImage(blocProvider.userModel.profileURL),
+                      child: blocProvider.userModel.profileURL.isEmpty
+                          ? const Icon(Icons.person, size: 50)
+                          : null,
                     ),
                     const SizedBox(
                       height: 15.0,

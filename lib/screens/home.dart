@@ -8,6 +8,7 @@ import 'package:swastha/screens/home/physical_health.dart';
 import 'package:swastha/screens/side_drawer/bmi_calculator.dart';
 import 'package:swastha/screens/side_drawer/my_account.dart';
 import 'package:swastha/screens/side_drawer/privacy_policy.dart';
+import 'package:swastha/screens/side_drawer/weight_history.dart';
 import 'package:swastha/screens/side_drawer/term_and_condition.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
@@ -58,9 +59,12 @@ class _HomeState extends State<Home> {
                     ),
                     CircleAvatar(
                       radius: 75.0,
-                      backgroundImage:
-                          Image.network(blocProvider.userModel.profileURL)
-                              .image,
+                      backgroundImage: blocProvider.userModel.profileURL.isEmpty
+                          ? null
+                          : NetworkImage(blocProvider.userModel.profileURL),
+                      child: blocProvider.userModel.profileURL.isEmpty
+                          ? const Icon(Icons.person, size: 50)
+                          : null,
                     ),
                     const SizedBox(
                       height: 15.0,
@@ -110,8 +114,14 @@ class _HomeState extends State<Home> {
                   title: 'BMI Calculator',
                   icon: Icons.monitor_heart,
                   onPress: () {
-                    changeScreen(
-                        context, const BMICalculator(name: '', profileURL: ''));
+                    changeScreen(context, const BMICalculator());
+                  },
+                ),
+                DrawerListTile(
+                  title: 'Weight & BMI History',
+                  icon: Icons.show_chart,
+                  onPress: () {
+                    changeScreen(context, const WeightHistory());
                   },
                 ),
                 DrawerListTile(

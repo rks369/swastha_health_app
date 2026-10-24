@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:swastha/screens/authentication/bmi_reg.dart';
 import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/styles.dart';
@@ -18,30 +14,28 @@ class UserDetail extends StatefulWidget {
 }
 
 class _UserDetailState extends State<UserDetail> {
-  final TextEditingController name = TextEditingController();
+  final TextEditingController name = TextEditingController(
+    text: FirebaseAuth.instance.currentUser?.displayName ?? '',
+  );
+  final TextEditingController dobText = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  File? image;
-  AndroidUiSettings androidUiSettingsLocked() => AndroidUiSettings(
-        toolbarTitle: 'Crop Image',
-        toolbarColor: Colors.red,
-        toolbarWidgetColor: Colors.white,
-        hideBottomControls: true,
-      );
-  Future pickImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      return;
-    }
+  DateTime? dob;
+  String? gender;
 
-    final imageTemporary = File(image.path);
-    final img = await ImageCropper().cropImage(
-      sourcePath: imageTemporary.path,
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-      compressFormat: ImageCompressFormat.jpg,
+  Future<void> pickDob() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: dob ?? DateTime(now.year - 18, now.month, now.day),
+      firstDate: DateTime(1900),
+      lastDate: now,
+      helpText: 'Select Date of Birth',
     );
+    if (picked == null) return;
     setState(() {
-      this.image = File(img!.path);
+      dob = picked;
+      dobText.text = DateFormat('dd MMM yyyy').format(picked);
     });
   }
 
@@ -55,109 +49,130 @@ class _UserDetailState extends State<UserDetail> {
             child: Column(
               children: [
                 const Align(alignment: Alignment.topLeft, child: BackButton()),
-                const SizedBox(
-                  height: 18,
-                ),
-                Image.asset(
-                  'assets/images/logo.png',
-                  width: 100,
-                  height: 100,
-                ),
-                const SizedBox(
-                  height: 24,
-                ),
-                const Text(
-                  'Complete Registeration',
-                  style: kHeadingTextStyle,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 18),
+                Image.asset('assets/images/logo.png', width: 100, height: 100),
+                const SizedBox(height: 24),
+                const Text('Complete Registeration', style: kHeadingTextStyle),
+                const SizedBox(height: 10),
                 const Text(
                   "Complete Your Profile",
                   style: kSubHeadingTextStyle,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(
-                  height: 28,
-                ),
-                InkWell(
-                  onTap: () => {pickImage()},
-                  child: image == null
-                      ? const CircleAvatar(
-                          radius: 100,
-                          backgroundColor: kWhite,
-                          child: Icon(
-                            Icons.photo_camera,
-                            color: kPrimaryColor,
-                            size: 100,
-                          ),
-                        )
-                      : CircleAvatar(
-                          radius: 100,
-                          backgroundImage: Image.file(image!).image),
-                ),
-                const SizedBox(
-                  height: 28,
-                ),
+                const SizedBox(height: 28),
                 Form(
                   key: formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 5.0, horizontal: 15.0),
-                    child: TextFormField(
-                      controller: name,
-                      keyboardType: TextInputType.name,
-                      onChanged: (value) {},
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please Enter Your Name';
-                        }
-                        if (value.length < 3) {
-                          return 'Phone Number Should be 3 Letter';
-                        }
-                        return null;
-                      },
-                      decoration: kTextFieldDecoration.copyWith(
-                          prefixIcon: const Icon(
-                            Icons.person,
-                            color: kPrimaryColor,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5.0,
+                          horizontal: 15.0,
+                        ),
+                        child: TextFormField(
+                          controller: name,
+                          keyboardType: TextInputType.name,
+                          onChanged: (value) {},
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please Enter Your Name';
+                            }
+                            if (value.length < 3) {
+                              return 'Phone Number Should be 3 Letter';
+                            }
+                            return null;
+                          },
+                          decoration: kTextFieldDecoration.copyWith(
+                            prefixIcon: const Icon(
+                              Icons.person,
+                              color: kPrimaryColor,
+                            ),
+                            hintText: 'Enter Your Name',
+                            labelText: 'Enter Your Name',
                           ),
-                          hintText: 'Enter Your Name',
-                          labelText: 'Enter Your Name'),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 5.0,
+                          horizontal: 15.0,
+                        ),
+                        child: TextFormField(
+                          controller: dobText,
+                          readOnly: true,
+                          onTap: pickDob,
+                          validator: (value) {
+                            if (dob == null)
+                              return 'Please Select Your Date of Birth';
+                            return null;
+                          },
+                          decoration: kTextFieldDecoration.copyWith(
+                            prefixIcon: const Icon(
+                              Icons.cake,
+                              color: kPrimaryColor,
+                            ),
+                            hintText: 'Date of Birth',
+                            labelText: 'Date of Birth',
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 15.0,
+                  ),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: SegmentedButton<String>(
+                      emptySelectionAllowed: true,
+                      showSelectedIcon: false,
+                      segments: const [
+                        ButtonSegment(
+                          value: 'Male',
+                          icon: Icon(Icons.male),
+                          label: Text('Male'),
+                        ),
+                        ButtonSegment(
+                          value: 'Female',
+                          icon: Icon(Icons.female),
+                          label: Text('Female'),
+                        ),
+                      ],
+                      selected: gender == null ? {} : {gender!},
+                      onSelectionChanged: (value) => setState(
+                        () => gender = value.isEmpty ? null : value.first,
+                      ),
                     ),
                   ),
                 ),
                 RoundedButton(
-                    title: 'Continue',
-                    colour: kPrimaryColor,
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        if (image != null) {
-                          showProgressDialog(context);
-                          final auth = FirebaseAuth.instance.currentUser;
-                          final displayPicture = FirebaseStorage.instance
-                              .ref('Profile')
-                              .child(auth!.uid)
-                              .putFile(image!)
-                              .snapshot;
-
-                          await displayPicture.ref
-                              .getDownloadURL()
-                              .then((value) {
-                            if (!context.mounted) return;
-                            changeScreen(context,
-                                BMIReg(name: name.text, profileURL: value));
-                          });
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Please Select Profile Picture'),
-                            ),
-                          );
-                        }
-                      }
-                    }),
+                  title: 'Continue',
+                  colour: kPrimaryColor,
+                  onPressed: () {
+                    if (!formKey.currentState!.validate()) return;
+                    if (gender == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please Select Your Gender'),
+                        ),
+                      );
+                      return;
+                    }
+                    changeScreen(
+                      context,
+                      BMIReg(
+                        name: name.text,
+                        profileURL:
+                            FirebaseAuth.instance.currentUser?.photoURL ?? '',
+                        dob: dob!,
+                        gender: gender!,
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),

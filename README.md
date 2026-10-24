@@ -7,7 +7,8 @@ Swastha is a Flutter health and wellness app that brings physical and mental hea
 **Physical health**
 - Background step counter using the accelerometer
 - Water, calorie and sleep tracking with daily dashboards and charts
-- BMI calculator
+- BMI calculator (height and weight only; age and gender come from your profile)
+- Weight and BMI history with a trend chart
 
 **Mental health**
 - Guided breathing exercises
@@ -15,8 +16,8 @@ Swastha is a Flutter health and wellness app that brings physical and mental hea
 - Music player with relaxing tracks
 
 **Account**
-- Phone OTP and Google sign-in (Firebase Auth)
-- Profile and user details stored in Cloud Firestore, with profile photo upload to Firebase Storage
+- Phone OTP and Google sign-in (Firebase Auth), with date of birth and gender captured at registration
+- Profile and user details stored in Cloud Firestore
 - Local history stored on device with SQLite
 
 ## Screenshots
@@ -39,7 +40,7 @@ Swastha is a Flutter health and wellness app that brings physical and mental hea
 
 - Flutter / Dart
 - State management: `flutter_bloc`
-- Backend: Firebase (Auth, Firestore, Storage)
+- Backend: Firebase (Auth, Firestore)
 - Local storage: `sqflite`, `shared_preferences`
 - Background work: `flutter_background_service`, `sensors_plus`
 - Charts and gauges: `fl_chart`, `syncfusion_flutter_gauges`

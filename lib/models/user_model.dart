@@ -1,11 +1,14 @@
+import 'package:swastha/utils/body_metrics.dart';
+
 class UserModel {
   final String uid;
   final String mobile;
   String name;
   final String profileURL;
   final String gender;
-  final String height;
-  final String weight;
+  final String dob;
+  String height;
+  String weight;
   final String age;
   String bmi;
   String goalWater;
@@ -19,6 +22,7 @@ class UserModel {
       this.name,
       this.profileURL,
       this.gender,
+      this.dob,
       this.height,
       this.weight,
       this.age,
@@ -28,6 +32,14 @@ class UserModel {
       this.goalSleep,
       this.goalCalorie);
 
+  DateTime? get dobDate => DateTime.tryParse(dob);
+
+  int get currentAge {
+    final date = dobDate;
+    if (date != null) return ageFromDob(date);
+    return int.tryParse(age.split('.').first) ?? 18;
+  }
+
   Map<String, String> toJSON() {
     return {
       'uid': uid,
@@ -35,6 +47,7 @@ class UserModel {
       'name': name,
       'profileURL': profileURL,
       'gender': gender,
+      'dob': dob,
       'height': height,
       'weight': weight,
       'age': age,
@@ -54,6 +67,7 @@ UserModel userModelFromJSON(Map<String, dynamic> data) {
     data['name'],
     data['profileURL'],
     data['gender'],
+    data['dob'] ?? '',
     data['height'],
     data['weight'],
     data['age'],

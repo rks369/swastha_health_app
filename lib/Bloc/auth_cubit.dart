@@ -3,10 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:intl/intl.dart';
 import 'package:swastha/database/sql_helper.dart';
 import 'package:swastha/models/data_model.dart';
 import 'package:swastha/models/user_model.dart';
+import 'package:swastha/models/weight_entry.dart';
 import 'package:swastha/models/water_model.dart';
+import 'package:swastha/utils/body_metrics.dart';
 
 enum Authstate {
   init,
@@ -112,8 +115,49 @@ class AuthCubit extends Cubit<Authstate> {
     await _firestore
         .collection('users')
         .doc(user!.uid)
-        .set(userModel.toJSON())
-        .then((value) => {emit(Authstate.loggedIn)});
+        .set(userModel.toJSON());
+    await _weightEntries(user!.uid).doc(_todayKey()).set(WeightEntry(
+          date: DateTime.now(),
+          weight: double.parse(userModel.weight),
+          height: double.parse(userModel.height),
+          bmi: double.parse(userModel.bmi),
+        ).toMap());
+    emit(Authstate.loggedIn);
+  }
+
+  String _todayKey() => DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  CollectionReference<Map<String, dynamic>> _weightEntries(String uid) =>
+      _firestore.collection('users').doc(uid).collection('weights');
+
+  Stream<List<WeightEntry>> weightHistory() {
+    return _weightEntries(userModel.uid)
+        .orderBy('date')
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => WeightEntry.fromMap(doc.data()))
+            .toList());
+  }
+
+  Future<void> saveBodyMetrics(double height, double weight) async {
+    final bmi = calculateBmi(weight, height);
+    final bmiText = bmi.toStringAsFixed(1);
+
+    await _firestore.collection('users').doc(userModel.uid).update({
+      'height': height.toString(),
+      'weight': weight.toString(),
+      'bmi': bmiText,
+    });
+    await _weightEntries(userModel.uid).doc(_todayKey()).set(WeightEntry(
+          date: DateTime.now(),
+          weight: weight,
+          height: height,
+          bmi: double.parse(bmiText),
+        ).toMap());
+
+    userModel.height = height.toString();
+    userModel.weight = weight.toString();
+    userModel.bmi = bmiText;
   }
 
   void signInWithPhone(PhoneAuthCredential credential) async {
@@ -208,9 +252,5 @@ class AuthCubit extends Cubit<Authstate> {
     userModel.goalSteps = stepgoal;
     userModel.goalSleep = sleepgoal;
     userModel.goalCalorie = caloriegoal;
-  }
-
-  void updatebmi(String bmi) {
-    userModel.bmi = bmi;
   }
 }

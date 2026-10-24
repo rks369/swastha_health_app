@@ -16,9 +16,7 @@ dependencies:
   firebase_core: ^5.1.0
   firebase_auth: ^7.0.1
   flutter_bloc: ^9.1.1
-  firebase_storage: ^14.0.1
   cloud_firestore: ^7.1.0
-  image_picker: ^1.2.1
   equatable: ^3.0.0
   flutter_zoom_drawer: ^3.2.0
   flutter_advanced_drawer: ^1.5.0
@@ -39,7 +37,6 @@ dependencies:
   simple_speed_dial: ^0.1.7
   url_launcher: ^6.3.2
   audio_manager: ^1.0.0
-  image_cropper: ^13.0.0
   audioplayers: ^6.8.1
 
 dev_dependencies:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
-import 'package:swastha/screens/authentication/bmi_reg.dart';
+import 'package:swastha/screens/authentication/user_detail.dart';
 import 'package:swastha/screens/authentication/verify_otp.dart';
 import 'package:swastha/screens/home.dart';
 import 'package:swastha/services/change_screen.dart';
@@ -29,7 +29,7 @@ class Register extends StatelessWidget {
                 if (state == Authstate.otpSend) {
                   changeScreenReplacement(context, const VerifyOTP());
                 } else if (state == Authstate.unRegistered) {
-                  changeScreenReplacement(context, const BMIReg());
+                  changeScreenReplacement(context, const UserDetail());
                 } else if (state == Authstate.error) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
