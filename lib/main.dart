@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        builder: (context, child) => SafeArea(child: child!),
         home: BlocBuilder<AuthCubit, Authstate>(
           buildWhen: ((previous, current) {
             return previous == Authstate.init;

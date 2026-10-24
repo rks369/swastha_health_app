@@ -56,14 +56,15 @@ Future<void> initializeService() async {
   service.startService();
 }
 
+@pragma('vm:entry-point')
 bool onIosBackground(ServiceInstance service) {
   WidgetsFlutterBinding.ensureInitialized();
 
   return true;
 }
 
+@pragma('vm:entry-point')
 void onStart(ServiceInstance service) async {
-  // Only available for flutter 3.0.0 and later
   DartPluginRegistrant.ensureInitialized();
 
   if (service is AndroidServiceInstance) {
@@ -88,18 +89,17 @@ void onStart(ServiceInstance service) async {
     return modDistance;
   }
 
-  // bring to foreground
-  Timer.periodic(const Duration(seconds: 1), (timer) async {
-    accelerometerEventStream().listen((event) {
-      x = event.x;
-      y = event.y;
-      z = event.z;
-      distance = getValue(x, y, z);
-      if (distance > 6) {
-        steps++;
-      }
-    });
+  accelerometerEventStream().listen((event) {
+    x = event.x;
+    y = event.y;
+    z = event.z;
+    distance = getValue(x, y, z);
+    if (distance > 6) {
+      steps++;
+    }
+  });
 
+  Timer.periodic(const Duration(seconds: 1), (timer) async {
     if (service is AndroidServiceInstance) {
       service.setForegroundNotificationInfo(
         title: "Steps Count $steps",
