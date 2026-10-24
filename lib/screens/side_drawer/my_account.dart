@@ -8,7 +8,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 
 class MyAccount extends StatelessWidget {
-  const MyAccount({Key? key}) : super(key: key);
+  const MyAccount({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -259,11 +259,10 @@ class EditDialog extends StatelessWidget {
   final String tlabel;
   final VoidCallback onupdate;
   const EditDialog(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.tlabel,
-      required this.onupdate})
-      : super(key: key);
+      required this.onupdate});
 
   @override
   Widget build(BuildContext context) {

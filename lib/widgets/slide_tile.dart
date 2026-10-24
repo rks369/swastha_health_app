@@ -3,11 +3,10 @@ import 'package:swastha/utils/styles.dart';
 
 class SlideTile extends StatelessWidget {
   const SlideTile(
-      {Key? key,
+      {super.key,
       required this.imageAssetPath,
       required this.title,
-      required this.description})
-      : super(key: key);
+      required this.description});
   final String imageAssetPath;
   final String title;
   final String description;

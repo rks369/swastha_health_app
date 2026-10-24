@@ -8,7 +8,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 
 class MentalHealth extends StatelessWidget {
-  const MentalHealth({Key? key}) : super(key: key);
+  const MentalHealth({super.key});
 
   @override
   Widget build(BuildContext context) {

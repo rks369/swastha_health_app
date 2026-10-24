@@ -16,7 +16,7 @@ import 'package:swastha/widgets/round_button.dart';
 class BMIReg extends StatefulWidget {
   final String? name;
   final String? profileURL;
-  const BMIReg({Key? key, this.name, this.profileURL}) : super(key: key);
+  const BMIReg({super.key, this.name, this.profileURL});
 
   @override
   State<BMIReg> createState() => _BMIReg();

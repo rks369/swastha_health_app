@@ -14,8 +14,7 @@ import 'package:swastha/widgets/round_button.dart';
 class BMICalculator extends StatefulWidget {
   final String name;
   final String profileURL;
-  const BMICalculator({Key? key, required this.name, required this.profileURL})
-      : super(key: key);
+  const BMICalculator({super.key, required this.name, required this.profileURL});
 
   @override
   State<BMICalculator> createState() => _BMICalculatorState();

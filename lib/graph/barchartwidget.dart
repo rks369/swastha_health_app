@@ -6,7 +6,7 @@ import 'package:swastha/utils/constants.dart';
 import 'package:swastha/utils/styles.dart';
 
 class BarChartWidget extends StatefulWidget {
-  const BarChartWidget({Key? key}) : super(key: key);
+  const BarChartWidget({super.key});
 
   @override
   State<BarChartWidget> createState() => _BarChartWidgetState();

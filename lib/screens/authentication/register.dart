@@ -10,7 +10,7 @@ import 'package:swastha/widgets/circular_login_component.dart';
 import 'package:swastha/widgets/round_button.dart';
 
 class Register extends StatelessWidget {
-  const Register({Key? key}) : super(key: key);
+  const Register({super.key});
 
   @override
   Widget build(BuildContext context) {

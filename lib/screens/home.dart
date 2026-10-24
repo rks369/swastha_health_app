@@ -14,7 +14,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/drawer_list_tile.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -166,7 +166,7 @@ class _HomeState extends State<Home> {
             },
             child: ValueListenableBuilder<AdvancedDrawerValue>(
               valueListenable: advancedDrawerController,
-              builder: (_, value, __) {
+              builder: (_, value, _) {
                 return AnimatedSwitcher(
                   duration: const Duration(milliseconds: 250),
                   child: Icon(

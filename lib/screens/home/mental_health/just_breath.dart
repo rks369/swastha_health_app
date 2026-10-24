@@ -11,7 +11,7 @@ import 'package:swastha/widgets/round_button.dart';
 import 'package:swastha/widgets/setting_card.dart';
 
 class JustBreath extends StatefulWidget {
-  const JustBreath({Key? key}) : super(key: key);
+  const JustBreath({super.key});
 
   @override
   State<JustBreath> createState() => _JustBreathState();
@@ -145,7 +145,7 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
                     ),
                     leading: const Icon(Icons.music_note, color: kPrimaryColor),
                     trailing: cupertino.CupertinoSwitch(
-                      activeColor: kPrimaryColor,
+                      activeTrackColor: kPrimaryColor,
                       onChanged: (value) {
                         blocProvider.togglePlaySounds();
                         setState(() {});
@@ -165,7 +165,7 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
                     ),
                     // ignore: missing_required_param
                     trailing: cupertino.CupertinoSwitch(
-                      activeColor: kPrimaryColor,
+                      activeTrackColor: kPrimaryColor,
                       onChanged: (_) {
                         blocProvider.toggleZenMode();
                         setState(() {});

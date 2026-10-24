@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:swastha/models/quote.dart';
 import 'package:swastha/screens/home/mental_health/completion_screen.dart';
@@ -18,8 +18,7 @@ class TimerCountdown extends StatefulWidget {
   final bool zenMode;
   final bool playSounds;
   const TimerCountdown(this.duration,
-      {required this.zenMode, required this.playSounds, Key? key})
-      : super(key: key);
+      {required this.zenMode, required this.playSounds, super.key});
 
   @override
   State<TimerCountdown> createState() => _TimerCountdown();
@@ -37,11 +36,7 @@ class _TimerCountdown extends State<TimerCountdown> {
   // Play a sound
   void _playSound() {
     if (widget.playSounds) {
-      final assetsAudioPlayer = AssetsAudioPlayer();
-      assetsAudioPlayer.open(
-        Audio("assets/audio/gong.mp3"),
-        autoStart: true,
-      );
+      AudioPlayer().play(AssetSource('audio/gong.mp3'));
     }
   }
 

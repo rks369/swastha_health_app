@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swastha/utils/styles.dart';
 
 class PrivacyPolicy extends StatelessWidget {
-  const PrivacyPolicy({Key? key}) : super(key: key);
+  const PrivacyPolicy({super.key});
 
   @override
   Widget build(BuildContext context) {

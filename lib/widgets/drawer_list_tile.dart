@@ -6,11 +6,10 @@ class DrawerListTile extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPress;
   const DrawerListTile(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.icon,
-      required this.onPress})
-      : super(key: key);
+      required this.onPress});
   @override
   Widget build(BuildContext context) {
     return InkWell(

@@ -12,7 +12,7 @@ class DashboardTile extends StatelessWidget {
   final Color colorshade1;
   final Color colorshade2;
   const DashboardTile(
-      {Key? key,
+      {super.key,
       required this.icon,
       required this.title,
       required this.rangeTitle,
@@ -20,8 +20,7 @@ class DashboardTile extends StatelessWidget {
       required this.interval,
       required this.valuerange,
       required this.colorshade1,
-      required this.colorshade2})
-      : super(key: key);
+      required this.colorshade2});
 
   @override
   Widget build(BuildContext context) {

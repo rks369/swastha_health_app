@@ -9,7 +9,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 
 class AddCalories extends StatefulWidget {
-  const AddCalories({Key? key}) : super(key: key);
+  const AddCalories({super.key});
 
   @override
   State<AddCalories> createState() => _AddCaloriesState();

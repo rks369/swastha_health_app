@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
   const RoundedButton(
-      {Key? key,
+      {super.key,
       required this.title,
       required this.colour,
-      required this.onPressed})
-      : super(key: key);
+      required this.onPressed});
 
   final Color colour;
   final String title;

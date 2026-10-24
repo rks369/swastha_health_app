@@ -68,10 +68,6 @@ void onStart(ServiceInstance service) async {
   // Only available for flutter 3.0.0 and later
   DartPluginRegistrant.ensureInitialized();
 
-  // For flutter prior to version 3.0.0
-  // We have to register the plugin manually
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-
   if (service is AndroidServiceInstance) {
     service.on('setAsForeground').listen((event) {
       service.setAsForegroundService();
@@ -129,7 +125,7 @@ void onStart(ServiceInstance service) async {
 }
 
 class PhysicalHealth extends StatefulWidget {
-  const PhysicalHealth({Key? key}) : super(key: key);
+  const PhysicalHealth({super.key});
 
   @override
   State<PhysicalHealth> createState() => _PhysicalHealthState();
@@ -288,7 +284,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                               cornerStyle:
                                                   CornerStyle.bothCurve,
                                               color:
-                                                  Colors.blue.withOpacity(0.3),
+                                                  Colors.blue.withValues(alpha: 0.3),
                                               thicknessUnit:
                                                   GaugeSizeUnit.factor,
                                             ),
@@ -331,7 +327,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             thickness: 0.1,
                                             cornerStyle: CornerStyle.bothCurve,
                                             color:
-                                                Colors.green.withOpacity(0.3),
+                                                Colors.green.withValues(alpha: 0.3),
                                             thicknessUnit: GaugeSizeUnit.factor,
                                           ),
                                           pointers: <GaugePointer>[
@@ -361,7 +357,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                           axisLineStyle: AxisLineStyle(
                                             thickness: 0.1,
                                             cornerStyle: CornerStyle.bothCurve,
-                                            color: Colors.red.withOpacity(0.3),
+                                            color: Colors.red.withValues(alpha: 0.3),
                                             thicknessUnit: GaugeSizeUnit.factor,
                                           ),
                                           pointers: <GaugePointer>[
@@ -391,7 +387,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                             thickness: 0.1,
                                             cornerStyle: CornerStyle.bothCurve,
                                             color: const Color(0xffffdd80)
-                                                .withOpacity(0.3),
+                                                .withValues(alpha: 0.3),
                                             thicknessUnit: GaugeSizeUnit.factor,
                                           ),
                                           pointers: <GaugePointer>[
@@ -423,7 +419,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     valuerange:
                                         blocProvider.dataModel.water / 1000,
                                     colorshade1:
-                                        Colors.blueAccent.withOpacity(0.4),
+                                        Colors.blueAccent.withValues(alpha: 0.4),
                                     colorshade2: Colors.blueAccent,
                                   ),
                                   onTap: () {
@@ -444,7 +440,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                         4,
                                     valuerange:
                                         blocProvider.dataModel.steps + 0.0,
-                                    colorshade1: Colors.green.withOpacity(0.4),
+                                    colorshade1: Colors.green.withValues(alpha: 0.4),
                                     colorshade2: Colors.green,
                                   ),
                                   onTap: () {
@@ -466,7 +462,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                     valuerange: double.parse(blocProvider
                                         .dataModel.sleep
                                         .toString()),
-                                    colorshade1: Colors.red.withOpacity(0.4),
+                                    colorshade1: Colors.red.withValues(alpha: 0.4),
                                     colorshade2: Colors.red,
                                   ),
                                   onTap: () {
@@ -487,7 +483,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
                                         4,
                                     valuerange:
                                         blocProvider.dataModel.calories + 0.0,
-                                    colorshade1: Colors.yellow.withOpacity(0.4),
+                                    colorshade1: Colors.yellow.withValues(alpha: 0.4),
                                     colorshade2: Colors.yellow,
                                   ),
                                   onTap: () {

@@ -6,10 +6,10 @@ class ProfileTile extends StatelessWidget {
   final VoidCallback ontap;
 
   const ProfileTile({
-    Key? key,
+    super.key,
     required this.title,
     required this.ontap,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context) {
     return InkWell(

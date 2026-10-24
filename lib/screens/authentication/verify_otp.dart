@@ -9,7 +9,7 @@ import 'package:swastha/widgets/round_button.dart';
 
 class VerifyOTP extends StatefulWidget {
   static const String id = 'VerifyPassword';
-  const VerifyOTP({Key? key}) : super(key: key);
+  const VerifyOTP({super.key});
 
   @override
   State<VerifyOTP> createState() => _VerifyOTPState();

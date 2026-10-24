@@ -3,7 +3,7 @@ import 'package:swastha/graph/barchartwidget.dart';
 import 'package:swastha/utils/styles.dart';
 
 class BarChartPage extends StatelessWidget {
-  const BarChartPage({Key? key}) : super(key: key);
+  const BarChartPage({super.key});
 
   @override
   Widget build(BuildContext context) {

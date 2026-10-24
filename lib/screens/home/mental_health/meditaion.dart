@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swastha/Bloc/breath_cubit.dart';
 import 'package:swastha/widgets/time_counter.dart';
 class Meditation extends StatelessWidget {
-  const Meditation({Key? key}) : super(key: key);
+  const Meditation({super.key});
 
 
   @override

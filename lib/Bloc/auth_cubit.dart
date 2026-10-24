@@ -150,11 +150,11 @@ class AuthCubit extends Cubit<Authstate> {
     }
 
     if(googleUser != null) {
-      final GoogleSignInAuthentication? googleAuth = googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = googleUser.authentication;
 
       // Create a new credential
       final credential = GoogleAuthProvider.credential(
-        idToken: googleAuth?.idToken,
+        idToken: googleAuth.idToken,
       );
 
 

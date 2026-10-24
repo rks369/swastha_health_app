@@ -8,7 +8,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 
 class AddSleep extends StatefulWidget {
-  const AddSleep({Key? key}) : super(key: key);
+  const AddSleep({super.key});
 
   @override
   State<AddSleep> createState() => _AddSleepState();
@@ -37,7 +37,7 @@ class _AddSleepState extends State<AddSleep> {
               child: Padding(
                   padding: const EdgeInsets.all(48.0),
                   child: DropdownButtonFormField(
-                    value: 1,
+                    initialValue: 1,
                     decoration: kTextFieldDecoration,
                     iconEnabledColor: kPrimaryColor,
                     iconDisabledColor: kPrimaryColor,

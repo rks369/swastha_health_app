@@ -4,7 +4,7 @@ import 'package:swastha/screens/home/mental_health/songs.dart';
 import 'package:swastha/utils/styles.dart';
 
 class MusicPlayer extends StatefulWidget {
-  const MusicPlayer({Key? key}) : super(key: key);
+  const MusicPlayer({super.key});
 
   @override
   State<MusicPlayer> createState() => _MusicPlayer();
@@ -72,12 +72,9 @@ class _MusicPlayer extends State<MusicPlayer> {
   }
 
   String _formatDuration(Duration d) {
-    if (d == null) return "--:--";
     int minute = d.inMinutes;
     int second = (d.inSeconds > 60) ? (d.inSeconds % 60) : d.inSeconds;
-    String format = ((minute < 10) ? "0$minute" : "$minute") +
-        ":" +
-        ((second < 10) ? "0$second" : "$second");
+    String format = "${(minute < 10) ? "0$minute" : "$minute"}:${(second < 10) ? "0$second" : "$second"}";
     return format;
   }
 
@@ -115,14 +112,12 @@ class _MusicPlayer extends State<MusicPlayer> {
                     });
                   },
                   onChangeEnd: (value) {
-                    if (audioManagerInstance.duration != null) {
-                      Duration msec = Duration(
-                          milliseconds:
-                              (audioManagerInstance.duration.inMilliseconds *
-                                      value)
-                                  .round());
-                      audioManagerInstance.seekTo(msec);
-                    }
+                    Duration msec = Duration(
+                        milliseconds:
+                            (audioManagerInstance.duration.inMilliseconds *
+                                    value)
+                                .round());
+                    audioManagerInstance.seekTo(msec);
                   },
                 )),
           ),

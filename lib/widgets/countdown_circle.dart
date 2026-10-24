@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:swastha/utils/styles.dart';
 
 class CountdownCircle extends StatefulWidget {
-  const CountdownCircle({Key? key, required this.duration}) : super(key: key);
+  const CountdownCircle({super.key, required this.duration});
   final Duration duration;
   @override
   State<CountdownCircle> createState() => _CountdownCircleState();

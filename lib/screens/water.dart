@@ -4,7 +4,7 @@ import 'package:swastha/widgets/round_button.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class WaterScreen extends StatefulWidget {
-  const WaterScreen({Key? key}) : super(key: key);
+  const WaterScreen({super.key});
 
   @override
   State<WaterScreen> createState() => _WaterScreenState();

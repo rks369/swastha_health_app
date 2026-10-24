@@ -9,7 +9,7 @@ import 'package:swastha/widgets/card.dart';
 import 'package:swastha/widgets/round_button.dart';
 
 class AddWater extends StatefulWidget {
-  const AddWater({Key? key}) : super(key: key);
+  const AddWater({super.key});
 
   @override
   State<AddWater> createState() => _AddWaterState();

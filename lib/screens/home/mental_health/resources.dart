@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Resources extends StatelessWidget {
-  const Resources({Key? key}) : super(key: key);
+  const Resources({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -79,10 +77,9 @@ class Resources extends StatelessWidget {
 class ResrouceTile extends StatelessWidget {
   final String title;
   final String link;
-  final ontap;
+  final Function()? ontap;
   const ResrouceTile(
-      {Key? key, required this.title, required this.link, required this.ontap})
-      : super(key: key);
+      {super.key, required this.title, required this.link, required this.ontap});
 
   @override
   Widget build(BuildContext context) {

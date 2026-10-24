@@ -8,7 +8,7 @@ import 'package:swastha/widgets/slide_tile.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   static const String id = 'OnBoardingScreen';
-  const OnBoardingScreen({Key? key}) : super(key: key);
+  const OnBoardingScreen({super.key});
 
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();

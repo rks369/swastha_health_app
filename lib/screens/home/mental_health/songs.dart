@@ -4,7 +4,7 @@ import 'package:swastha/models/audio_model.dart';
 import 'package:swastha/utils/styles.dart';
 
 class SongWidget extends StatelessWidget {
-  const SongWidget({Key? key}) : super(key: key);
+  const SongWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class SongWidget extends StatelessWidget {
     int minutes = duration.inMinutes;
     int seconds = (duration.inSeconds) - (minutes * 60);
 
-    data = minutes.toString() + ":";
+    data = "$minutes:";
     if (seconds <= 9) data += "0";
 
     data += seconds.toString();

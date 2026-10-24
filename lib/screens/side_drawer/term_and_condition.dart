@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swastha/utils/styles.dart';
 
 class TermAndCondtion extends StatelessWidget {
-  const TermAndCondtion({Key? key}) : super(key: key);
+  const TermAndCondtion({super.key});
 
   @override
   Widget build(BuildContext context) {

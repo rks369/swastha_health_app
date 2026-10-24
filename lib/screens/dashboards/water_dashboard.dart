@@ -9,7 +9,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class WaterDashboard extends StatefulWidget {
-  const WaterDashboard({Key? key}) : super(key: key);
+  const WaterDashboard({super.key});
 
   @override
   State<WaterDashboard> createState() => _WaterDashboardState();
@@ -107,7 +107,7 @@ class _WaterDashboardState extends State<WaterDashboard> {
                               axisLineStyle: AxisLineStyle(
                                 thickness: 0.2,
                                 cornerStyle: CornerStyle.bothCurve,
-                                color: Colors.blue.withOpacity(0.3),
+                                color: Colors.blue.withValues(alpha: 0.3),
                                 thicknessUnit: GaugeSizeUnit.factor,
                               ),
                               pointers: <GaugePointer>[

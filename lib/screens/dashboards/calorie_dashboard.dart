@@ -9,7 +9,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class CalorieDashboard extends StatefulWidget {
-  const CalorieDashboard({Key? key}) : super(key: key);
+  const CalorieDashboard({super.key});
 
   @override
   State<CalorieDashboard> createState() => _CalorieDashboardState();
@@ -106,7 +106,7 @@ class _CalorieDashboardState extends State<CalorieDashboard> {
                               axisLineStyle: AxisLineStyle(
                                 thickness: 0.2,
                                 cornerStyle: CornerStyle.bothCurve,
-                                color: Colors.yellow.withOpacity(0.3),
+                                color: Colors.yellow.withValues(alpha: 0.3),
                                 thicknessUnit: GaugeSizeUnit.factor,
                               ),
                               pointers: <GaugePointer>[

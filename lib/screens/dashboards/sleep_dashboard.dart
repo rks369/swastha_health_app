@@ -9,7 +9,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class SleepDashboard extends StatefulWidget {
-  const SleepDashboard({Key? key}) : super(key: key);
+  const SleepDashboard({super.key});
 
   @override
   State<SleepDashboard> createState() => _SleepDashboardState();
@@ -106,7 +106,7 @@ class _SleepDashboardState extends State<SleepDashboard> {
                               axisLineStyle: AxisLineStyle(
                                 thickness: 0.2,
                                 cornerStyle: CornerStyle.bothCurve,
-                                color: Colors.red.withOpacity(0.3),
+                                color: Colors.red.withValues(alpha: 0.3),
                                 thicknessUnit: GaugeSizeUnit.factor,
                               ),
                               pointers: <GaugePointer>[

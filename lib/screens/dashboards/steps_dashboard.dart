@@ -9,7 +9,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 class StepDashboard extends StatefulWidget {
-  const StepDashboard({Key? key}) : super(key: key);
+  const StepDashboard({super.key});
 
   @override
   State<StepDashboard> createState() => _StepDashboardState();
@@ -106,7 +106,7 @@ class _StepDashboardState extends State<StepDashboard> {
                               axisLineStyle: AxisLineStyle(
                                 thickness: 0.2,
                                 cornerStyle: CornerStyle.bothCurve,
-                                color: Colors.green.withOpacity(0.3),
+                                color: Colors.green.withValues(alpha: 0.3),
                                 thicknessUnit: GaugeSizeUnit.factor,
                               ),
                               pointers: <GaugePointer>[

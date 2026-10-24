@@ -15,8 +15,7 @@ class SettingsCard extends StatelessWidget {
       required this.trailing,
       this.start = false,
       this.end = false,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   @override
   Widget build(BuildContext context) {

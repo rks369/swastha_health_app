@@ -5,7 +5,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 
 class CompletionScreen extends StatelessWidget {
-  const CompletionScreen({Key? key, required this.quote}) : super(key: key);
+  const CompletionScreen({super.key, required this.quote});
   final Quote quote;
 
   @override

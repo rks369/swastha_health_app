@@ -31,18 +31,16 @@ dependencies:
   sensors_plus: ^7.0.0
   intl: ^0.20.2
   fl_chart: ^1.1.1
-  animated_floating_buttons: ^0.0.2
   flutter_background_service: ^5.1.0
   flutter_background_service_android: ^6.3.1
   device_info_plus: ^13.3.0
   flutter_svg: ^2.2.3
   styled_widget: ^0.4.1
   simple_speed_dial: ^0.1.7
-  custom_floating_action_button: ^0.0.3
   url_launcher: ^6.3.2
   audio_manager: ^1.0.0
   image_cropper: ^13.0.0
-  assets_audio_player: ^3.1.1
+  audioplayers: ^6.8.1
 
 dev_dependencies:
   flutter_test:

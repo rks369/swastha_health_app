@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CircularLoginOption extends StatelessWidget {
-  const CircularLoginOption({Key? key, required this.icon, required this.onTap})
-      : super(key: key);
+  const CircularLoginOption({super.key, required this.icon, required this.onTap});
 
   final Image icon;
   final VoidCallback onTap;

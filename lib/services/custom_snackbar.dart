@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-customSnackBar(context, message) {
+void customSnackBar(context, message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message),

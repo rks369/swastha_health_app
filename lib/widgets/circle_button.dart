@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:swastha/utils/styles.dart';
 
 class CircleButton extends StatelessWidget {
-  const CircleButton({Key? key, required this.icon, required this.onpressed})
-      : super(key: key);
+  const CircleButton({super.key, required this.icon, required this.onpressed});
   final IconData icon;
   final VoidCallback? onpressed;
 

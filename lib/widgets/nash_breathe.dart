@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:swastha/utils/styles.dart';
 
 class CupertinoBreathe extends StatefulWidget {
-  const CupertinoBreathe({Key? key}) : super(key: key);
+  const CupertinoBreathe({super.key});
 
   @override
   State<CupertinoBreathe> createState() => _CupertinoBreatheState();

@@ -11,7 +11,7 @@ import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/round_button.dart';
 
 class UserDetail extends StatefulWidget {
-  const UserDetail({Key? key}) : super(key: key);
+  const UserDetail({super.key});
 
   @override
   State<UserDetail> createState() => _UserDetailState();
