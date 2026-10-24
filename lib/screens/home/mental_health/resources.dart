@@ -52,8 +52,8 @@ class Resources extends StatelessWidget {
                     title: "National Mental Health Program",
                     link: "www.nhp.gov.in",
                     ontap: () {
-                      launch(
-                          "https://www.nhp.gov.in/national-mental-health-programme_pg");
+                      launchUrl(Uri.parse(
+                          "https://www.nhp.gov.in/national-mental-health-programme_pg"));
                     }),
                 ResrouceTile(
                     title: "Very Well Mind",

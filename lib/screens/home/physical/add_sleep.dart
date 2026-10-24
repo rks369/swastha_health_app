@@ -59,16 +59,15 @@ class _AddSleepState extends State<AddSleep> {
                 colour: kPrimaryColor,
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    setState(() async {
-                      await SQLHelper.insertData(DataModel(
-                          DateFormat('dd/MM/yyyy').format(DateTime.now()),
-                          DateTime.now().weekday,
-                          0,
-                          0,
-                          _taken,
-                          0));
-                      changeScreenReplacement(context, const Home());
-                    });
+                    await SQLHelper.insertData(DataModel(
+                        DateFormat('dd/MM/yyyy').format(DateTime.now()),
+                        DateTime.now().weekday,
+                        0,
+                        0,
+                        _taken,
+                        0));
+                    if (!context.mounted) return;
+                    changeScreenReplacement(context, const Home());
                   }
                 }),
           ),

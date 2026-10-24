@@ -44,7 +44,8 @@ class MentalHealth extends StatelessWidget {
                 SvgPicture.asset(
                   'assets/images/lotus.svg',
                   semanticsLabel: 'logo logo',
-                  color: kPrimaryColor,
+                  colorFilter:
+                      const ColorFilter.mode(kPrimaryColor, BlendMode.srcIn),
                   height: 240,
                 ),
                 const SizedBox(

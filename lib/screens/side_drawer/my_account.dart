@@ -122,6 +122,7 @@ class MyAccount extends StatelessWidget {
                                   controllerSleepG.text.toString(),
                                   controllerCalorieG.text.toString());
 
+                              if (!context.mounted) return;
                               Navigator.pop(context);
 
                               changeScreenReplacement(context, const Home());

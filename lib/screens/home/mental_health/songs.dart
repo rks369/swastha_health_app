@@ -53,7 +53,7 @@ class SongWidget extends StatelessWidget {
                             cover: songList[index].cover,
                           )
                               .then((err) {
-                            print(err);
+                            debugPrint(err);
                           });
                         },
                         child: const Icon(

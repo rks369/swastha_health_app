@@ -206,6 +206,7 @@ class _AddWaterState extends State<AddWater> {
                       0,
                       0));
 
+                  if (!context.mounted) return;
                   changeScreenReplacement(context, const Home());
                 }),
           ),

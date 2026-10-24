@@ -87,7 +87,8 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
                   child: SvgPicture.asset(
                     'assets/images/lotus.svg',
                     semanticsLabel: 'logo logo',
-                    color: kPrimaryColor,
+                    colorFilter: const ColorFilter.mode(
+                        kPrimaryColor, BlendMode.srcIn),
                   ),
                 ),
               ),
