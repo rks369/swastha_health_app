@@ -80,14 +80,6 @@ lib/
    flutter run
    ```
 
-### App icon
-
-The launcher icon is generated from `assets/images/logo.png`. After changing the logo, regenerate it:
-
-```
-dart run flutter_launcher_icons
-```
-
 ### Release build
 
 Create `android/key.properties` with `keyAlias`, `keyPassword`, `storeFile` and `storePassword`, then:
