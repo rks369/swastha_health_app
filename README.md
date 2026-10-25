@@ -31,49 +31,49 @@ Use light mode, one phone size for every shot, and realistic data.
 
 | Onboarding | Login | Complete Registration |
 | :---: | :---: | :---: |
-| ![Onboarding](docs/screenshots/onboarding.png) | ![Login](docs/screenshots/login.png) | ![Complete Registration](docs/screenshots/user_detail.png) |
+| <img src="docs/screenshots/onboarding.png" alt="Onboarding" width="220"> | <img src="docs/screenshots/login.png" alt="Login" width="220"> | <img src="docs/screenshots/user_detail.png" alt="Complete Registration" width="220"> |
 
 | Registration BMI | | |
 | :---: | :---: | :---: |
-| ![Registration BMI](docs/screenshots/registration_bmi.png) | | |
+| <img src="docs/screenshots/registration_bmi.png" alt="Registration BMI" width="220"> | | |
 
 ### Physical health
 
 | Physical Health | Add Menu | Quick Add |
 | :---: | :---: | :---: |
-| ![Physical Health](docs/screenshots/physical_health.png) | ![Add Menu](docs/screenshots/add_menu.png) | ![Quick Add](docs/screenshots/quick_add.png) |
+| <img src="docs/screenshots/physical_health.png" alt="Physical Health" width="220"> | <img src="docs/screenshots/add_menu.png" alt="Add Menu" width="220"> | <img src="docs/screenshots/quick_add.png" alt="Quick Add" width="220"> |
 
 | Metric Dashboard | Activity Permission | |
 | :---: | :---: | :---: |
-| ![Metric Dashboard](docs/screenshots/metric_dashboard.png) | ![Activity Permission](docs/screenshots/activity_permission.png) | |
+| <img src="docs/screenshots/metric_dashboard.png" alt="Metric Dashboard" width="220"> | <img src="docs/screenshots/activity_permission.png" alt="Activity Permission" width="220"> | |
 
 ### Mental health
 
 | Mental Health | Just Breath | Meditation Timer |
 | :---: | :---: | :---: |
-| ![Mental Health](docs/screenshots/mental_health.png) | ![Just Breath](docs/screenshots/just_breath.png) | ![Meditation Timer](docs/screenshots/meditation.png) |
+| <img src="docs/screenshots/mental_health.png" alt="Mental Health" width="220"> | <img src="docs/screenshots/just_breath.png" alt="Just Breath" width="220"> | <img src="docs/screenshots/meditation.png" alt="Meditation Timer" width="220"> |
 
 | Zen Mode | Completion | Music Player |
 | :---: | :---: | :---: |
-| ![Zen Mode](docs/screenshots/zen_mode.png) | ![Completion](docs/screenshots/completion.png) | ![Music Player](docs/screenshots/music.png) |
+| <img src="docs/screenshots/zen_mode.png" alt="Zen Mode" width="220"> | <img src="docs/screenshots/completion.png" alt="Completion" width="220"> | <img src="docs/screenshots/music.png" alt="Music Player" width="220"> |
 
 | Resources | | |
 | :---: | :---: | :---: |
-| ![Resources](docs/screenshots/resources.png) | | |
+| <img src="docs/screenshots/resources.png" alt="Resources" width="220"> | | |
 
 ### Menu and profile
 
 | Side Menu | My Account | Weight History |
 | :---: | :---: | :---: |
-| ![Side Menu](docs/screenshots/drawer.png) | ![My Account](docs/screenshots/my_account.png) | ![Weight History](docs/screenshots/weight_history.png) |
+| <img src="docs/screenshots/drawer.png" alt="Side Menu" width="220"> | <img src="docs/screenshots/my_account.png" alt="My Account" width="220"> | <img src="docs/screenshots/weight_history.png" alt="Weight History" width="220"> |
 
 | BMI (Myself) | BMI (Someone else) | BMI Result |
 | :---: | :---: | :---: |
-| ![BMI Myself](docs/screenshots/bmi_self.png) | ![BMI Someone else](docs/screenshots/bmi_other.png) | ![BMI Result](docs/screenshots/bmi_result.png) |
+| <img src="docs/screenshots/bmi_self.png" alt="BMI Myself" width="220"> | <img src="docs/screenshots/bmi_other.png" alt="BMI Someone else" width="220"> | <img src="docs/screenshots/bmi_result.png" alt="BMI Result" width="220"> |
 
 | Privacy Policy | Terms & Conditions | |
 | :---: | :---: | :---: |
-| ![Privacy Policy](docs/screenshots/privacy_policy.png) | ![Terms & Conditions](docs/screenshots/terms.png) | |
+| <img src="docs/screenshots/privacy_policy.png" alt="Privacy Policy" width="220"> | <img src="docs/screenshots/terms.png" alt="Terms & Conditions" width="220"> | |
 
 ## Tech Stack
 
