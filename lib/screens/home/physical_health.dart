@@ -48,10 +48,49 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
     setState(() => loading = false);
   }
 
+  static bool _askedThisSession = false;
+
   Future<void> startStepTracking() async {
+    final granted = await Permission.activityRecognition.isGranted;
+    if (!granted && !_askedThisSession) {
+      _askedThisSession = true;
+      if (!mounted) return;
+      final agreed = await showActivityPermissionDialog();
+      if (!mounted) return;
+      if (agreed != true) {
+        setState(() => stepsAllowed = false);
+        return;
+      }
+    }
     final allowed = await StepTracker.instance.start();
     if (!mounted) return;
     setState(() => stepsAllowed = allowed);
+  }
+
+  Future<bool?> showActivityPermissionDialog() {
+    return showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        icon: const Icon(Icons.directions_run, color: kPrimaryColor, size: 32),
+        title: const Text('Allow physical activity?'),
+        content: const Text(
+          'Swastha uses your phone\'s step sensor to count your daily steps. '
+          'Your steps are stored only on this device.',
+          textAlign: TextAlign.center,
+        ),
+        actionsAlignment: MainAxisAlignment.center,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('Not now'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('Allow'),
+          ),
+        ],
+      ),
+    );
   }
 
   void onSteps() {

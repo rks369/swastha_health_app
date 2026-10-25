@@ -22,23 +22,58 @@ Swastha is a Flutter health and wellness app that brings physical and mental hea
 
 ## Screenshots
 
-<!-- Put images in docs/screenshots/ with the file names below. -->
+<!--
+Put images in docs/screenshots/ with the file names below.
+Use light mode, one phone size for every shot, and realistic data.
+-->
 
-| Onboarding | Login | Physical Health |
-| :---: | :---: | :---: |
-| ![Onboarding](docs/screenshots/onboarding.png) | ![Login](docs/screenshots/login.png) | ![Physical Health](docs/screenshots/physical_health.png) |
+### Onboarding and sign-in
 
-| Metric Dashboard | Quick Add | Side Menu |
+| Onboarding | Login | Complete Registration |
 | :---: | :---: | :---: |
-| ![Metric Dashboard](docs/screenshots/metric_dashboard.png) | ![Quick Add](docs/screenshots/quick_add.png) | ![Side Menu](docs/screenshots/drawer.png) |
+| ![Onboarding](docs/screenshots/onboarding.png) | ![Login](docs/screenshots/login.png) | ![Complete Registration](docs/screenshots/user_detail.png) |
 
-| BMI (Myself) | BMI (Someone else) | Weight History |
+| Registration BMI | | |
 | :---: | :---: | :---: |
-| ![BMI Myself](docs/screenshots/bmi_self.png) | ![BMI Someone else](docs/screenshots/bmi_other.png) | ![Weight History](docs/screenshots/weight_history.png) |
+| ![Registration BMI](docs/screenshots/registration_bmi.png) | | |
 
-| Mental Health | Breathing | Music Player |
+### Physical health
+
+| Physical Health | Add Menu | Quick Add |
 | :---: | :---: | :---: |
-| ![Mental Health](docs/screenshots/mental_health.png) | ![Breathing](docs/screenshots/breathing.png) | ![Music](docs/screenshots/music.png) |
+| ![Physical Health](docs/screenshots/physical_health.png) | ![Add Menu](docs/screenshots/add_menu.png) | ![Quick Add](docs/screenshots/quick_add.png) |
+
+| Metric Dashboard | Activity Permission | |
+| :---: | :---: | :---: |
+| ![Metric Dashboard](docs/screenshots/metric_dashboard.png) | ![Activity Permission](docs/screenshots/activity_permission.png) | |
+
+### Mental health
+
+| Mental Health | Just Breath | Meditation Timer |
+| :---: | :---: | :---: |
+| ![Mental Health](docs/screenshots/mental_health.png) | ![Just Breath](docs/screenshots/just_breath.png) | ![Meditation Timer](docs/screenshots/meditation.png) |
+
+| Zen Mode | Completion | Music Player |
+| :---: | :---: | :---: |
+| ![Zen Mode](docs/screenshots/zen_mode.png) | ![Completion](docs/screenshots/completion.png) | ![Music Player](docs/screenshots/music.png) |
+
+| Resources | | |
+| :---: | :---: | :---: |
+| ![Resources](docs/screenshots/resources.png) | | |
+
+### Menu and profile
+
+| Side Menu | My Account | Weight History |
+| :---: | :---: | :---: |
+| ![Side Menu](docs/screenshots/drawer.png) | ![My Account](docs/screenshots/my_account.png) | ![Weight History](docs/screenshots/weight_history.png) |
+
+| BMI (Myself) | BMI (Someone else) | BMI Result |
+| :---: | :---: | :---: |
+| ![BMI Myself](docs/screenshots/bmi_self.png) | ![BMI Someone else](docs/screenshots/bmi_other.png) | ![BMI Result](docs/screenshots/bmi_result.png) |
+
+| Privacy Policy | Terms & Conditions | |
+| :---: | :---: | :---: |
+| ![Privacy Policy](docs/screenshots/privacy_policy.png) | ![Terms & Conditions](docs/screenshots/terms.png) | |
 
 ## Tech Stack
 
