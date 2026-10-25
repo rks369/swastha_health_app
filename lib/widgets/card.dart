@@ -7,20 +7,24 @@ class UserCard extends StatelessWidget {
     required this.colour,
     required this.cardChild,
     required this.onPress,
+    this.borderColor = kBorder,
+    this.margin = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
   });
   final Color colour;
   final Widget cardChild;
   final Function()? onPress;
+  final Color borderColor;
+  final EdgeInsetsGeometry margin;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPress,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: margin,
         decoration: BoxDecoration(
           color: colour,
-          border: Border.all(color: kBorder),
+          border: Border.all(color: borderColor),
           borderRadius: BorderRadius.circular(kRadius),
         ),
         child: cardChild,

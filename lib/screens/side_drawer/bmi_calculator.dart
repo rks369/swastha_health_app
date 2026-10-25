@@ -7,8 +7,13 @@ import 'package:swastha/services/change_screen.dart';
 import 'package:swastha/utils/body_metrics.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/app_page.dart';
+import 'package:swastha/widgets/bmi_result_dialog.dart';
 import 'package:swastha/widgets/body_metrics_input.dart';
+import 'package:swastha/widgets/gender_selector.dart';
 import 'package:swastha/widgets/round_button.dart';
+import 'package:swastha/widgets/stepper_card.dart';
+
+enum _Subject { self, other }
 
 class BMICalculator extends StatefulWidget {
   const BMICalculator({super.key});
@@ -19,13 +24,29 @@ class BMICalculator extends StatefulWidget {
 
 class _BMICalculatorState extends State<BMICalculator> {
   late final AuthCubit cubit = BlocProvider.of<AuthCubit>(context);
-  late double height = cubit.userModel.heightCm.clamp(120, 220).toDouble();
-  late double weight = cubit.userModel.weightKg.clamp(20, 200).toDouble();
+
+  _Subject subject = _Subject.self;
+  late double myHeight = cubit.userModel.heightCm.clamp(120, 220).toDouble();
+  late double myWeight = cubit.userModel.weightKg.clamp(20, 200).toDouble();
+  double otherHeight = 170;
+  double otherWeight = 65;
+  int otherAge = 30;
+  String? otherGender;
+
+  bool get isSelf => subject == _Subject.self;
+  double get height => isSelf ? myHeight : otherHeight;
+  double get weight => isSelf ? myWeight : otherWeight;
+
+  void setHeight(double value) =>
+      setState(() => isSelf ? myHeight = value : otherHeight = value);
+
+  void setWeight(double value) =>
+      setState(() => isSelf ? myWeight = value : otherWeight = value);
 
   Future<void> save() async {
     showProgressDialog(context);
     try {
-      await cubit.saveBodyMetrics(height, weight);
+      await cubit.saveBodyMetrics(myHeight, myWeight);
       if (!mounted) return;
       Navigator.pop(context);
       changeScreenClearStack(context, const Home());
@@ -38,90 +59,143 @@ class _BMICalculatorState extends State<BMICalculator> {
     }
   }
 
-  void showResult() {
+  void showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+
+  void calculate() {
     final bmi = calculateBmi(weight, height);
-    showDialog(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            title: const Center(
-              child: Text(
-                'Your BMI Is',
-                style: TextStyle(
-                  color: kInk,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+    if (isSelf) {
+      final user = cubit.userModel;
+      showBmiResult(
+        context,
+        bmi: bmi,
+        gender: user.gender,
+        age: user.currentAge,
+        onSave: save,
+      );
+      return;
+    }
+
+    if (otherGender == null) return showError('Please select a gender');
+    showBmiResult(
+      context,
+      bmi: bmi,
+      gender: otherGender!,
+      age: otherAge,
+      forSelf: false,
+    );
+  }
+
+  Widget subjectToggle() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: SizedBox(
+        width: double.infinity,
+        child: SegmentedButton<_Subject>(
+          showSelectedIcon: false,
+          segments: const [
+            ButtonSegment(
+              value: _Subject.self,
+              icon: Icon(Icons.person_outline),
+              label: Text('Myself'),
             ),
-            content: Column(mainAxisSize: MainAxisSize.min, children: [
-              Text(
-                bmi.toStringAsFixed(1),
-                style: kHeadingTextStyle.copyWith(
-                    color: kPrimaryColor,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 48),
-              ),
-              Text(
-                bmiCategory(bmi),
-                style: kHeadingTextStyle.copyWith(fontSize: 20),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                bmiInterpretation(bmi),
-                textAlign: TextAlign.center,
-                style: kNormalTextStyle,
-              ),
-              RoundedButton(
-                  title: 'Save to History',
-                  colour: kPrimaryColor,
-                  onPressed: () {
-                    Navigator.pop(ctx);
-                    save();
-                  })
-            ]),
-          );
-        });
+            ButtonSegment(
+              value: _Subject.other,
+              icon: Icon(Icons.people_outline),
+              label: Text('Someone else'),
+            ),
+          ],
+          selected: {subject},
+          onSelectionChanged: (value) =>
+              setState(() => subject = value.first),
+        ),
+      ),
+    );
+  }
+
+  Widget selfSummary() {
+    final user = cubit.userModel;
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Text(
+        '${user.gender}, ${user.currentAge} years',
+        textAlign: TextAlign.center,
+        style: kSubHeadingTextStyle,
+      ),
+    );
+  }
+
+  Widget metricsInput({double? fixedHeight}) {
+    final input = BodyMetricsInput(
+      height: height,
+      weight: weight,
+      onHeightChanged: setHeight,
+      onWeightChanged: setWeight,
+    );
+    return fixedHeight == null
+        ? input
+        : SizedBox(height: fixedHeight, child: input);
+  }
+
+  Widget otherInputs() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          GenderSelector(
+            selected: otherGender,
+            onChanged: (value) => setState(() => otherGender = value),
+          ),
+          StepperCard(
+            label: 'Age (years)',
+            value: otherAge,
+            min: 1,
+            max: 120,
+            onChanged: (value) => setState(() => otherAge = value),
+          ),
+          metricsInput(fixedHeight: 400),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = cubit.userModel;
     return AppPage(
       title: 'BMI Calculator',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 12),
-            child: Text(
-              '${user.gender}, ${user.currentAge} years',
-              textAlign: TextAlign.center,
-              style: kSubHeadingTextStyle,
-            ),
-          ),
-          const SizedBox(height: 4),
+          subjectToggle(),
           Expanded(
-            child: BodyMetricsInput(
-              height: height,
-              weight: weight,
-              onHeightChanged: (value) => setState(() => height = value),
-              onWeightChanged: (value) => setState(() => weight = value),
-            ),
+            child: isSelf
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      selfSummary(),
+                      const SizedBox(height: 4),
+                      Expanded(child: metricsInput()),
+                    ],
+                  )
+                : otherInputs(),
           ),
           Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 2.0, horizontal: 64.0),
             child: RoundedButton(
-                title: 'Calculate BMI',
-                colour: kPrimaryColor,
-                onPressed: showResult),
+              title: 'Calculate BMI',
+              colour: kPrimaryColor,
+              onPressed: calculate,
+            ),
           ),
-          TextButton.icon(
-            onPressed: () => changeScreen(context, const WeightHistory()),
-            icon: const Icon(Icons.show_chart),
-            label: const Text('Weight & BMI History'),
-          ),
+          if (isSelf)
+            TextButton.icon(
+              onPressed: () => changeScreen(context, const WeightHistory()),
+              icon: const Icon(Icons.show_chart),
+              label: const Text('Weight & BMI History'),
+            ),
           const SizedBox(height: 8),
         ],
       ),

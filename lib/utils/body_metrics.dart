@@ -10,14 +10,17 @@ String bmiCategory(double bmi) {
   return 'Underweight';
 }
 
-String bmiInterpretation(double bmi) {
+String bmiInterpretation(double bmi, {bool forSelf = true}) {
+  final subject = forSelf ? 'You have' : 'This person has';
   if (bmi >= 25) {
-    return 'You have a higher than normal body weight. Try to exercise more.';
+    return '$subject a higher than normal body weight.'
+        '${forSelf ? ' Try to exercise more.' : ''}';
   }
   if (bmi >= 18.5) {
-    return 'You have a normal body weight. Good job!';
+    return '$subject a normal body weight.${forSelf ? ' Good job!' : ''}';
   }
-  return 'You have a lower than normal body weight. You can eat a bit more.';
+  return '$subject a lower than normal body weight.'
+      '${forSelf ? ' You can eat a bit more.' : ''}';
 }
 
 int ageFromDob(DateTime dob, [DateTime? today]) {

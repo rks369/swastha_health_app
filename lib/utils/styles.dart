@@ -36,6 +36,16 @@ const TextStyle kLinkTextStyle = TextStyle(
   color: kPrimaryColor,
 );
 
+const TextStyle kCardLabelStyle = TextStyle(
+  fontSize: 14.0,
+  color: kSecondaryColor,
+);
+const TextStyle kCardValueStyle = TextStyle(
+  fontSize: 48.0,
+  color: kInk,
+  fontWeight: FontWeight.w300,
+);
+
 OutlineInputBorder _inputBorder(Color color, [double width = 1]) =>
     OutlineInputBorder(
       borderSide: BorderSide(color: color, width: width),

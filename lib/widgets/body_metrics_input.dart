@@ -17,13 +17,6 @@ class BodyMetricsInput extends StatelessWidget {
     required this.onWeightChanged,
   });
 
-  static const _labelStyle = TextStyle(fontSize: 14.0, color: kSecondaryColor);
-  static const _valueStyle = TextStyle(
-    fontSize: 48.0,
-    color: kInk,
-    fontWeight: FontWeight.w300,
-  );
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,8 +28,8 @@ class BodyMetricsInput extends StatelessWidget {
             cardChild: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Height (cm)', style: _labelStyle),
-                Text(height.round().toString(), style: _valueStyle),
+                const Text('Height (cm)', style: kCardLabelStyle),
+                Text(height.round().toString(), style: kCardValueStyle),
                 Slider(
                   value: height,
                   min: 120.0,
@@ -55,8 +48,8 @@ class BodyMetricsInput extends StatelessWidget {
             cardChild: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Weight (kg)', style: _labelStyle),
-                Text(weight.toStringAsFixed(1), style: _valueStyle),
+                const Text('Weight (kg)', style: kCardLabelStyle),
+                Text(weight.toStringAsFixed(1), style: kCardValueStyle),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
