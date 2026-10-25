@@ -1,6 +1,6 @@
 # Swastha
 
-[![Download APK](https://img.shields.io/github/v/release/rks369/swastha_health_app?label=Download%20APK&logo=android&color=3DDC84)](https://github.com/rks369/swastha_health_app/releases/tag/v2.0.1-4)
+[![Download APK](https://img.shields.io/github/v/release/rks369/swastha_health_app?label=Download%20APK&logo=android&color=3DDC84)](https://github.com/rks369/swastha_health_app/releases/latest)
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)
 
@@ -98,7 +98,7 @@ Use light mode, one phone size for every shot, and realistic data.
 
 ```
 lib/
-├── Bloc/        # AuthCubit, BreathCubit
+├── bloc/        # AuthCubit, BreathCubit
 ├── database/    # SQLite helper
 ├── models/      # Data models, Metric enum
 ├── screens/     # Authentication, home, dashboards, side drawer
