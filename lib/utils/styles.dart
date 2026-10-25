@@ -88,14 +88,6 @@ ThemeData buildAppTheme() {
         side: const BorderSide(color: kBorder),
       ),
     ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: kWhite,
-      elevation: 0,
-      selectedItemColor: kPrimaryColor,
-      unselectedItemColor: Color(0xffa5a5ad),
-      showUnselectedLabels: true,
-      type: BottomNavigationBarType.fixed,
-    ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       elevation: 0,
       focusElevation: 0,

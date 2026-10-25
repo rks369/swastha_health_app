@@ -5,7 +5,7 @@ import 'package:swastha/models/user_model.dart';
 enum Metric {
   water('Water', 'L', Icons.water_drop, Color(0xff3fa7f5), 'water', 1000),
   steps('Steps', '', Icons.directions_run, Color(0xff4cc38a), 'steps', 1),
-  sleep('Sleep', 'h', Icons.hotel, Color(0xff5e72e4), 'sleep', 1),
+  sleep('Sleep', 'h', Icons.hotel, Color(0xff8089c4), 'sleep', 1),
   calories(
     'Calorie',
     'kcal',

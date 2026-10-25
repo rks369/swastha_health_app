@@ -53,8 +53,7 @@ class _CupertinoBreatheState extends State<CupertinoBreathe>
 class _BreathePainter extends CustomPainter {
   _BreathePainter(this.animation, {required this.count})
     : circlePaint = Paint()
-        ..color = kActiveSelect
-        ..blendMode = BlendMode.modulate,
+        ..color = kPrimaryColor.withValues(alpha: 0.14),
       super(repaint: animation);
 
   final Animation<double> animation;
