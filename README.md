@@ -1,6 +1,14 @@
 # Swastha
 
+[![Download APK](https://img.shields.io/github/v/release/rks369/swastha_health_app?label=Download%20APK&logo=android&color=3DDC84)](https://github.com/rks369/swastha_health_app/releases/tag/v2.0.1-4)
+![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)
+
 Swastha is a Flutter health and wellness app that brings physical and mental health tracking into one place, in a flat, minimal interface.
+
+<p align="center">
+  <img src="docs/hero.png" alt="Swastha: physical health, metric dashboard, Just Breath and meditation timer" width="100%">
+</p>
 
 ## Features
 
@@ -99,6 +107,25 @@ lib/
 └── widgets/     # Reusable widgets (AppPage, rings, quick-add sheet)
 ```
 
+## Architecture
+
+```mermaid
+flowchart LR
+  UI[Screens and widgets] --> Auth[AuthCubit]
+  UI --> Breath[BreathCubit]
+  Auth --> FA[Firebase Auth: OTP and Google]
+  Auth --> FS[(Firestore: profile and weight history)]
+  Auth --> SQL[(SQLite: daily logs)]
+  Sensor[Pedometer sensor] --> Steps[StepTracker]
+  Steps --> SQL
+  Steps -. step count .-> UI
+```
+
+- **SQLite for daily logs.** Water, sleep, calories and steps are written on the device, so logging works offline and charts load without a network call.
+- **Firestore for the profile and weight history only.** These follow the account across devices and are the only health data that leaves the phone.
+- **Cubits instead of full Blocs.** The state is simple (auth status, breathing settings), so plain methods are enough and there are no event classes to maintain.
+- **`StepTracker` is a singleton service.** It owns the sensor subscription, keeps a per-day baseline in SQLite, and exposes the count as a `ValueNotifier` that the Physical tab listens to.
+
 ## Getting Started
 
 ### Prerequisites
@@ -141,6 +168,23 @@ Upload the APK from `build/app/outputs/flutter-apk/app-release.apk`. An AAB is o
 ## Permissions (Android)
 
 `ACTIVITY_RECOGNITION` is requested at runtime so the step sensor can be read. Steps are counted from the sensor's total since boot, with a per-day baseline kept in SQLite, so steps taken while the app is closed are included the next time it opens.
+
+## Privacy and data
+
+| Data | Where it is stored |
+| --- | --- |
+| Name, phone number or Google email, gender, date of birth, height, weight, BMI, goals | Cloud Firestore (`users/{uid}`) |
+| Weight and BMI history | Cloud Firestore (`users/{uid}/weights`) |
+| Daily water, sleep, calories and steps | SQLite on your device only |
+| BMI calculated for "Someone else" | Not stored anywhere |
+
+Sign-in is handled by Firebase Authentication. The app has no analytics or advertising SDKs, and your data is not sold or shared with third parties. Firestore rules should restrict each user to their own documents (`request.auth.uid == userId`).
+
+## Roadmap
+
+- Health Connect integration for steps and sleep
+- iOS build
+- Widget and cubit tests
 
 ## Changelog
 
