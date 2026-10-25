@@ -59,15 +59,15 @@ class _RegisterState extends State<Register> {
                     const SizedBox(height: 18),
                     Image.asset(
                       'assets/images/logo.png',
-                      width: 100,
-                      height: 100,
+                      width: 72,
+                      height: 72,
                     ),
                     const SizedBox(height: 24),
                     const Text(
                       'Get Into Swastha',
                       style: kHeadingTextStyle,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     const Text(
                       'Sign in to start your health journey',
                       style: kSubHeadingTextStyle,
@@ -96,7 +96,7 @@ class _RegisterState extends State<Register> {
                           decoration: kTextFieldDecoration.copyWith(
                               prefixIcon: const Icon(
                                 Icons.smartphone,
-                                color: kPrimaryColor,
+                                color: kSecondaryColor,
                               ),
                               counter: const Offstage(),
                               hintText: 'Enter Your Mobile Number',

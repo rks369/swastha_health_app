@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
@@ -31,13 +32,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Swastha',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: kPrimaryColor),
-          scaffoldBackgroundColor: kGrey,
-        ),
-        builder: (context, child) => ColoredBox(
-          color: kPrimaryColor,
-          child: SafeArea(child: child!),
+        theme: buildAppTheme(),
+        builder: (context, child) => AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.dark,
+          child: ColoredBox(
+            color: kWhite,
+            child: SafeArea(child: child!),
+          ),
         ),
         home: BlocBuilder<AuthCubit, Authstate>(
           buildWhen: (previous, current) =>
@@ -76,10 +77,11 @@ class _LoadFailed extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.cloud_off, size: 64, color: kPrimaryColor),
+            const Icon(Icons.cloud_off_outlined, size: 56, color: kPrimaryColor),
             const SizedBox(height: 16),
             const Text('Could not load your profile',
                 style: kSubHeadingTextStyle),
+            const SizedBox(height: 8),
             RoundedButton(
               title: 'Retry',
               colour: kPrimaryColor,

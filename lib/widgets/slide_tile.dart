@@ -17,17 +17,20 @@ class SlideTile extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset('assets/images/logo.png', width: 100, height: 100),
+        Image.asset('assets/images/logo.png', width: 72, height: 72),
         const SizedBox(height: 20),
         Text(title, textAlign: TextAlign.center, style: kHeadingTextStyle),
-        const SizedBox(height: 12),
-        Text(
-          description,
-          textAlign: TextAlign.center,
-          style: kSubHeadingTextStyle,
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Text(
+            description,
+            textAlign: TextAlign.center,
+            style: kSubHeadingTextStyle,
+          ),
         ),
-        const SizedBox(height: 30),
-        Image.asset(imageAssetPath, height: 360),
+        const SizedBox(height: 24),
+        Image.asset(imageAssetPath, height: 320),
       ],
     );
   }

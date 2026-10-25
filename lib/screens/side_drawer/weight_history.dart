@@ -10,6 +10,8 @@ import 'package:swastha/widgets/app_page.dart';
 
 enum _Metric { weight, bmi }
 
+FlLine _gridLine(double value) => const FlLine(color: kBorder, strokeWidth: 1);
+
 class WeightHistory extends StatefulWidget {
   const WeightHistory({super.key});
 
@@ -107,7 +109,10 @@ class _WeightHistoryState extends State<WeightHistory> {
       LineChartData(
         minY: minY,
         maxY: maxY,
-        gridData: const FlGridData(drawVerticalLine: false),
+        gridData: const FlGridData(
+          drawVerticalLine: false,
+          getDrawingHorizontalLine: _gridLine,
+        ),
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(
           topTitles: const AxisTitles(),
@@ -124,7 +129,10 @@ class _WeightHistoryState extends State<WeightHistory> {
                   meta: meta,
                   child: Text(
                     value.toStringAsFixed(0),
-                    style: const TextStyle(fontSize: 11),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: kSecondaryColor,
+                    ),
                   ),
                 );
               },
@@ -148,7 +156,10 @@ class _WeightHistoryState extends State<WeightHistory> {
                   meta: meta,
                   child: Text(
                     dateFormat.format(entries[index].date),
-                    style: const TextStyle(fontSize: 11),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: kSecondaryColor,
+                    ),
                   ),
                 );
               },
@@ -163,11 +174,11 @@ class _WeightHistoryState extends State<WeightHistory> {
             ],
             isCurved: true,
             color: kPrimaryColor,
-            barWidth: 3,
+            barWidth: 2.5,
             dotData: const FlDotData(show: true),
             belowBarData: BarAreaData(
               show: true,
-              color: kPrimaryColor.withValues(alpha: 0.15),
+              color: kPrimaryColor.withValues(alpha: 0.08),
             ),
           ),
         ],
@@ -179,13 +190,17 @@ class _WeightHistoryState extends State<WeightHistory> {
     final change = previous == null ? null : entry.weight - previous.weight;
     final date = DateFormat('d MMM yyyy').format(entry.date);
     return ListTile(
-      leading: const CircleAvatar(
-        backgroundColor: kPrimaryColor,
-        child: Icon(Icons.monitor_weight, color: kWhite),
+      leading: CircleAvatar(
+        backgroundColor: kPrimaryColor.withValues(alpha: 0.1),
+        child: const Icon(Icons.monitor_weight_outlined, color: kPrimaryColor),
       ),
-      title: Text('${entry.weight.toStringAsFixed(1)} kg'),
+      title: Text(
+        '${entry.weight.toStringAsFixed(1)} kg',
+        style: const TextStyle(fontWeight: FontWeight.w600),
+      ),
       subtitle: Text(
         '$date  •  BMI ${entry.bmi.toStringAsFixed(1)} (${bmiCategory(entry.bmi)})',
+        style: kNormalTextStyle,
       ),
       trailing: change == null || change == 0
           ? null

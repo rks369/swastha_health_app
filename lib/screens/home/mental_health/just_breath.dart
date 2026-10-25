@@ -70,11 +70,15 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         floatingActionButton: FloatingActionButton(
+          mini: true,
+          heroTag: null,
+          tooltip: 'Back',
           onPressed: () {
             Navigator.pop(context);
           },
-          backgroundColor: kPrimaryColor,
-          child: const Icon(Icons.arrow_back),
+          backgroundColor: kWhite,
+          shape: const CircleBorder(side: BorderSide(color: kBorder)),
+          child: const Icon(Icons.arrow_back_ios_new, size: 18, color: kInk),
         ),
         body: SafeArea(
           child: Column(
@@ -106,7 +110,7 @@ class _JustBreathState extends State<JustBreath> with TickerProviderStateMixin {
                 style: kHeadingTextStyle,
               ),
               const SizedBox(
-                height: 20,
+                height: 8,
               ),
               const Text(
                 "Take time to breathe",

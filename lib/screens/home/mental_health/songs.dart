@@ -22,23 +22,31 @@ class SongWidget extends StatelessWidget {
         final song = songList[index];
         final selected = index == currentIndex;
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 16),
           child: Card(
-            color: selected ? kActiveSelect.withValues(alpha: 0.15) : null,
+            margin: EdgeInsets.zero,
+            color: selected ? kPrimaryColor.withValues(alpha: 0.06) : null,
             child: ListTile(
               contentPadding: const EdgeInsets.all(8),
               leading: CircleAvatar(
-                radius: 30,
+                radius: 26,
                 backgroundColor: kPrimaryColor.withValues(alpha: 0.15),
                 foregroundImage: NetworkImage(song.cover),
                 onForegroundImageError: (_, _) {},
                 child: const Icon(Icons.music_note, color: kPrimaryColor),
               ),
-              title: Text(song.title, style: kSubHeadingTextStyle),
-              subtitle: Text(song.duration),
+              title: Text(
+                song.title,
+                style: const TextStyle(
+                  color: kInk,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              subtitle: Text(song.duration, style: kNormalTextStyle),
               trailing: IconButton(
                 tooltip: selected && isPlaying ? 'Pause' : 'Play',
-                iconSize: 40,
+                iconSize: 36,
                 color: kPrimaryColor,
                 icon: Icon(selected && isPlaying
                     ? Icons.pause_circle_outline

@@ -19,7 +19,7 @@ class MentalHealth extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 25),
+            const SizedBox(height: 16),
             SvgPicture.asset(
               'assets/images/lotus.svg',
               semanticsLabel: 'logo logo',
@@ -27,84 +27,81 @@ class MentalHealth extends StatelessWidget {
                 kPrimaryColor,
                 BlendMode.srcIn,
               ),
-              height: 240,
+              height: 200,
             ),
-            const SizedBox(height: 120),
-            Row(
-              children: [
-                Expanded(
-                  child: InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/meditation.gif',
-                                  height: 150,
-                                ),
-                                Text(
-                                  'Just Breath',
-                                  style: kHeadingTextStyle.copyWith(
-                                    fontSize: 24,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+            const SizedBox(height: 64),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _ActivityCard(
+                      image: 'assets/images/meditation.gif',
+                      label: 'Just Breath',
+                      onTap: () => changeScreen(context, const JustBreath()),
                     ),
-                    onTap: () {
-                      changeScreen(context, const JustBreath());
-                    },
                   ),
-                ),
-                Expanded(
-                  child: InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  'assets/images/upset.png',
-                                  height: 150,
-                                ),
-                                Text(
-                                  'Relax Music',
-                                  style: kHeadingTextStyle.copyWith(
-                                    fontSize: 24,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                  Expanded(
+                    child: _ActivityCard(
+                      image: 'assets/images/upset.png',
+                      label: 'Relax Music',
+                      onTap: () => changeScreen(context, const MusicPlayer()),
                     ),
-                    onTap: () {
-                      changeScreen(context, const MusicPlayer());
-                    },
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const SizedBox(width: 60),
+            const SizedBox(height: 16),
             RoundedButton(
               title: 'Resources',
               colour: kPrimaryColor,
               onPressed: () {
-                changeScreen(context, Resources());
+                changeScreen(context, const Resources());
               },
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ActivityCard extends StatelessWidget {
+  final String image;
+  final String label;
+  final VoidCallback onTap;
+
+  const _ActivityCard({
+    required this.image,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Image.asset(image, height: 120),
+                const SizedBox(height: 12),
+                Text(
+                  label,
+                  style: kHeadingTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

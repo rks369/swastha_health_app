@@ -21,13 +21,13 @@ class SettingsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 32.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
       margin: const EdgeInsets.only(bottom: 1.0, left: 21.0, right: 21.0),
       decoration: BoxDecoration(
-        color: kWhite,
+        color: kSurface,
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(start ? 20.0 : 0.0),
-          bottom: Radius.circular(end ? 20.0 : 0.0),
+          top: Radius.circular(start ? kRadius : 0.0),
+          bottom: Radius.circular(end ? kRadius : 0.0),
         ),
       ),
       child: Row(

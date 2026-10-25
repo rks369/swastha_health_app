@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swastha/utils/styles.dart';
+import 'package:swastha/widgets/app_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Resources extends StatelessWidget {
@@ -7,68 +8,38 @@ class Resources extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
-      floatingActionButton: FloatingActionButton(
-          backgroundColor: kWhite,
-          mini: true,
-          onPressed: (() {
-            Navigator.pop(context);
-          }),
-          child: const Icon(
-            Icons.arrow_back,
-            color: kPrimaryColor,
-          )),
-      body: Container(
-        decoration: const BoxDecoration(color: kPrimaryColor),
-        child: SafeArea(
-            child: Column(children: [
-          const SizedBox(
-            height: 20,
-          ),
-          const Text(
-            'Resources',
-            style: TextStyle(
-                color: kWhite, fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Expanded(
-              child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            decoration: const BoxDecoration(
-                color: kGrey,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30))),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
+    return AppPage(
+      title: 'Resources',
+      child: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        children: [
+          ResrouceTile(
+            title: "National Mental Health Program",
+            link: "www.nhp.gov.in",
+            ontap: () {
+              launchUrl(
+                Uri.parse(
+                  "https://www.nhp.gov.in/national-mental-health-programme_pg",
                 ),
-                ResrouceTile(
-                    title: "National Mental Health Program",
-                    link: "www.nhp.gov.in",
-                    ontap: () {
-                      launchUrl(Uri.parse(
-                          "https://www.nhp.gov.in/national-mental-health-programme_pg"));
-                    }),
-                ResrouceTile(
-                    title: "Very Well Mind",
-                    link: "www.verywellmind.com",
-                    ontap: () {}),
-                ResrouceTile(
-                    title: "Better Help",
-                    link: "www.betterhelp.com",
-                    ontap: () {}),
-                ResrouceTile(
-                    title: "Calm Sage", link: "www.calmsage.com", ontap: () {}),
-              ],
-            ),
-          )),
-        ])),
+              );
+            },
+          ),
+          ResrouceTile(
+            title: "Very Well Mind",
+            link: "www.verywellmind.com",
+            ontap: () {},
+          ),
+          ResrouceTile(
+            title: "Better Help",
+            link: "www.betterhelp.com",
+            ontap: () {},
+          ),
+          ResrouceTile(
+            title: "Calm Sage",
+            link: "www.calmsage.com",
+            ontap: () {},
+          ),
+        ],
       ),
     );
   }
@@ -78,57 +49,65 @@ class ResrouceTile extends StatelessWidget {
   final String title;
   final String link;
   final Function()? ontap;
-  const ResrouceTile(
-      {super.key, required this.title, required this.link, required this.ontap});
+  const ResrouceTile({
+    super.key,
+    required this.title,
+    required this.link,
+    required this.ontap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: ontap,
-        child: Container(
-          decoration: const BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            const Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.language,
-                  color: kWhite,
-                  size: 48,
-                ),
-              ),
-            ),
-            Column(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      child: Card(
+        margin: EdgeInsets.zero,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: ontap,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
               children: [
-                Text(
-                  title,
-                  style:
-                      kHeadingTextStyle.copyWith(color: kWhite, fontSize: 20),
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: kPrimaryColor.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.language,
+                    color: kPrimaryColor,
+                    size: 22,
+                  ),
                 ),
-                Text(
-                  link,
-                  style: kSubHeadingTextStyle.copyWith(color: kWhite),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          color: kInk,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(link, style: kNormalTextStyle),
+                    ],
+                  ),
                 ),
-                const SizedBox(
-                  height: 10,
+                const Icon(
+                  Icons.arrow_outward,
+                  color: kSecondaryColor,
+                  size: 20,
                 ),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Icon(
-                Icons.trending_up,
-                color: kWhite,
-                size: 36,
-              ),
-            ),
-          ]),
+          ),
         ),
       ),
     );

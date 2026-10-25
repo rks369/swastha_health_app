@@ -1,4 +1,4 @@
-import 'package:fl_chart/fl_chart.dart' hide GaugePointer;
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:swastha/Bloc/auth_cubit.dart';
@@ -7,7 +7,7 @@ import 'package:swastha/models/metric.dart';
 import 'package:swastha/utils/constants.dart';
 import 'package:swastha/utils/styles.dart';
 import 'package:swastha/widgets/app_page.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:swastha/widgets/ring_gauge.dart';
 
 class MetricDashboard extends StatefulWidget {
   final Metric metric;
@@ -39,93 +39,60 @@ class _MetricDashboardState extends State<MetricDashboard> {
             Semantics(
               label:
                   '${metric.label} today ${metric.format(today)} of ${metric.format(goal)}',
-              child: SizedBox(
-                height: gaugeSize,
-                width: gaugeSize,
-                child: SfRadialGauge(
-                  enableLoadingAnimation: true,
-                  axes: <RadialAxis>[
-                    RadialAxis(
-                      startAngle: 90,
-                      endAngle: 90,
-                      canScaleToFit: false,
-                      minimum: 0,
-                      maximum: goal,
-                      showLabels: false,
-                      showTicks: false,
-                      axisLineStyle: AxisLineStyle(
-                        thickness: 0.2,
-                        cornerStyle: CornerStyle.bothCurve,
-                        color: metric.color.withValues(alpha: 0.3),
-                        thicknessUnit: GaugeSizeUnit.factor,
-                      ),
-                      pointers: <GaugePointer>[
-                        RangePointer(
-                          value: today.clamp(0, goal).toDouble(),
-                          cornerStyle: CornerStyle.bothCurve,
-                          width: 0.2,
-                          sizeUnit: GaugeSizeUnit.factor,
-                          color: metric.color,
-                        ),
-                      ],
-                      annotations: <GaugeAnnotation>[
-                        GaugeAnnotation(
-                          positionFactor: 0.1,
-                          angle: 90,
-                          widget: Text(
-                            '${metric.format(today)}/${metric.format(goal)}',
-                            style: kHeadingTextStyle.copyWith(
-                              color: metric.color,
-                              fontSize: 20.0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+              child: RingGauge(
+                size: gaugeSize,
+                stroke: 0.09,
+                rings: [RingData(value: today, max: goal, color: metric.color)],
+                center: Text(
+                  '${metric.format(today)}/${metric.format(goal)}',
+                  style: kHeadingTextStyle.copyWith(fontSize: 20.0),
                 ),
               ),
             ),
-            const SizedBox(height: 10),
-            const Text('Last 7 days', style: TextStyle(fontSize: 20)),
-            const SizedBox(height: 10),
-            SizedBox(
+            const SizedBox(height: 16),
+            const Text(
+              'Last 7 days',
+              style: TextStyle(
+                color: kInk,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Container(
               height: 300,
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                ),
-                color: const Color(0xff020227),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: FutureBuilder<List<Map<String, dynamic>>>(
-                    future: weekly,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Center(
-                          child: Text(
-                            'Could not load data',
-                            style: TextStyle(color: kWhite),
-                          ),
-                        );
-                      }
-                      if (!snapshot.hasData) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      final rows = snapshot.data!;
-                      if (rows.every((row) => metric.fromRow(row) == 0)) {
-                        return Center(
-                          child: Text(
-                            'No ${metric.label.toLowerCase()} logged yet',
-                            style: const TextStyle(color: kWhite),
-                          ),
-                        );
-                      }
-                      return buildChart(rows, goal);
-                    },
-                  ),
-                ),
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: kWhite,
+                border: Border.all(color: kBorder),
+                borderRadius: BorderRadius.circular(kRadius),
+              ),
+              child: FutureBuilder<List<Map<String, dynamic>>>(
+                future: weekly,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(
+                      child: Text(
+                        'Could not load data',
+                        style: kSubHeadingTextStyle,
+                      ),
+                    );
+                  }
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final rows = snapshot.data!;
+                  if (rows.every((row) => metric.fromRow(row) == 0)) {
+                    return Center(
+                      child: Text(
+                        'No ${metric.label.toLowerCase()} logged yet',
+                        style: kSubHeadingTextStyle,
+                      ),
+                    );
+                  }
+                  return buildChart(rows, goal);
+                },
               ),
             ),
           ],
@@ -137,14 +104,14 @@ class _MetricDashboardState extends State<MetricDashboard> {
   Widget buildChart(List<Map<String, dynamic>> rows, double goal) {
     final values = rows.map(metric.fromRow).toList();
     final highest = values.fold<double>(goal, (a, b) => a > b ? a : b);
-    const labelStyle = TextStyle(color: kWhite, fontSize: 11);
+    const labelStyle = TextStyle(color: kSecondaryColor, fontSize: 11);
 
     return BarChart(
       BarChartData(
         alignment: BarChartAlignment.spaceAround,
         maxY: highest * 1.2,
         minY: 0,
-        barTouchData: BarTouchData(enabled: true),
+        barTouchData: const BarTouchData(enabled: true),
         gridData: const FlGridData(show: false),
         borderData: FlBorderData(show: false),
         titlesData: FlTitlesData(
@@ -192,12 +159,9 @@ class _MetricDashboardState extends State<MetricDashboard> {
               barRods: [
                 BarChartRodData(
                   toY: values[i],
-                  width: 14,
-                  color: barColor[i % barColor.length],
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(6),
-                    topRight: Radius.circular(6),
-                  ),
+                  width: 12,
+                  color: metric.color,
+                  borderRadius: const BorderRadius.all(Radius.circular(6)),
                 ),
               ],
             ),

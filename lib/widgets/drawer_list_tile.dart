@@ -15,31 +15,22 @@ class DrawerListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPress,
+      borderRadius: BorderRadius.circular(12),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: kWhite,
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                const SizedBox(width: 5),
-                Icon(icon, color: kPrimaryColor),
-                const SizedBox(width: 10),
-                Text(
-                  title,
-                  style: kHeadingTextStyle.copyWith(
-                    fontSize: 15,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+        child: Row(
+          children: [
+            Icon(icon, color: kPrimaryColor, size: 22),
+            const SizedBox(width: 16),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 15,
+                color: kInk,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

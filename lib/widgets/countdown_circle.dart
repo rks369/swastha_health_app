@@ -34,8 +34,8 @@ class _CountdownCircleState extends State<CountdownCircle>
         aspectRatio: 1.0,
         child: CustomPaint(
           painter: _CircleCountdownPainter(
-            thinRing: kPrimaryColor,
-            tickerRing: kPrimaryColor,
+            thinRing: kPrimaryColor.withValues(alpha: 0.12),
+            tickerRing: kActiveSelect,
             animation: Tween<double>(begin: 0.0, end: pi * 2).animate(
               CurvedAnimation(parent: _controller, curve: Curves.linear),
             ),
@@ -55,7 +55,7 @@ class _CircleCountdownPainter extends CustomPainter {
   }) : fillerPaint = Paint()
          ..color = kPrimaryColor
          ..style = PaintingStyle.stroke
-         ..strokeWidth = 42.0
+         ..strokeWidth = 12.0
          ..strokeCap = StrokeCap.round,
        super(repaint: animation);
 
@@ -69,7 +69,7 @@ class _CircleCountdownPainter extends CustomPainter {
 
   Paint circlePaint = Paint()
     ..style = PaintingStyle.stroke
-    ..strokeWidth = 3.0
+    ..strokeWidth = 12.0
     ..strokeCap = StrokeCap.round;
 
   @override
@@ -84,8 +84,7 @@ class _CircleCountdownPainter extends CustomPainter {
     final Gradient gradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-      colors: <Color>[kPrimaryColor, tickerRing, Colors.blue],
-      stops: const [0.0, 0.5, 1.0],
+      colors: <Color>[kPrimaryColor, tickerRing],
     );
 
     /// Draw the countdown circle based on [animation.value]

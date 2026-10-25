@@ -127,7 +127,13 @@ class _TimerCountdown extends State<TimerCountdown> {
                     SizedBox.expand(
                       child: CountdownCircle(duration: widget.duration),
                     ),
-                    Text(_display, style: kHeadingTextStyle),
+                    Text(
+                      _display,
+                      style: kHeadingTextStyle.copyWith(
+                        fontSize: 44,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
                   ],
                 ),
               ),

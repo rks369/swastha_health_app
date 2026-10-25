@@ -3,7 +3,7 @@ import 'package:swastha/models/data_model.dart';
 import 'package:swastha/models/metric.dart';
 import 'package:swastha/models/user_model.dart';
 import 'package:swastha/utils/styles.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:swastha/widgets/ring_gauge.dart';
 
 /// Concentric rings for water, steps, sleep and calories with a legend.
 class ProgressRings extends StatelessWidget {
@@ -11,8 +11,6 @@ class ProgressRings extends StatelessWidget {
   final UserModel user;
 
   const ProgressRings({super.key, required this.data, required this.user});
-
-  static const _radii = [1.0, 0.83, 0.73, 0.63];
 
   static const _order = [
     Metric.water,
@@ -31,25 +29,30 @@ class ProgressRings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context).width / 2;
+    final size = MediaQuery.sizeOf(context).width * 0.55;
     return Column(
       children: [
         Semantics(
           label: 'Overall daily goal progress $overallPercent percent',
-          child: SizedBox(
-            height: size,
-            width: size,
-            child: SfRadialGauge(
-              enableLoadingAnimation: true,
-              axes: [
-                for (var i = 0; i < _order.length; i++) _ring(i, _order[i]),
-              ],
+          child: RingGauge(
+            size: size,
+            rings: [
+              for (final metric in _order)
+                RingData(
+                  value: metric.today(data),
+                  max: metric.goal(user),
+                  color: metric.color,
+                ),
+            ],
+            center: Text(
+              '$overallPercent%',
+              style: kHeadingTextStyle.copyWith(fontSize: 24.0),
             ),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         Wrap(
-          spacing: 16,
+          spacing: 20,
           runSpacing: 4,
           alignment: WrapAlignment.center,
           children: [
@@ -57,58 +60,14 @@ class ProgressRings extends StatelessWidget {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.circle, size: 12, color: metric.color),
-                  const SizedBox(width: 4),
+                  Icon(Icons.circle, size: 8, color: metric.color),
+                  const SizedBox(width: 6),
                   Text(metric.label, style: kNormalTextStyle),
                 ],
               ),
           ],
         ),
       ],
-    );
-  }
-
-  RadialAxis _ring(int index, Metric metric) {
-    final goal = metric.goal(user);
-    return RadialAxis(
-      startAngle: 90,
-      endAngle: 90,
-      radiusFactor: _radii[index],
-      canScaleToFit: false,
-      minimum: 0,
-      maximum: goal,
-      showLabels: false,
-      showTicks: false,
-      axisLineStyle: AxisLineStyle(
-        thickness: 0.1,
-        cornerStyle: CornerStyle.bothCurve,
-        color: metric.color.withValues(alpha: 0.3),
-        thicknessUnit: GaugeSizeUnit.factor,
-      ),
-      pointers: <GaugePointer>[
-        RangePointer(
-          value: metric.today(data).clamp(0, goal).toDouble(),
-          cornerStyle: CornerStyle.bothCurve,
-          width: 0.1,
-          sizeUnit: GaugeSizeUnit.factor,
-          color: metric.color,
-        ),
-      ],
-      annotations: index == 0
-          ? <GaugeAnnotation>[
-              GaugeAnnotation(
-                positionFactor: 0.1,
-                angle: 90,
-                widget: Text(
-                  '$overallPercent%',
-                  style: kHeadingTextStyle.copyWith(
-                    color: kPrimaryColor,
-                    fontSize: 30.0,
-                  ),
-                ),
-              ),
-            ]
-          : null,
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:swastha/models/audio_model.dart';
 import 'package:swastha/screens/home/mental_health/songs.dart';
 import 'package:swastha/utils/styles.dart';
+import 'package:swastha/widgets/app_page.dart';
 
 class MusicPlayer extends StatefulWidget {
   const MusicPlayer({super.key});
@@ -89,13 +90,9 @@ class _MusicPlayer extends State<MusicPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kPrimaryColor,
-        foregroundColor: kWhite,
-        title: const Text('Relaxing Music Player'),
-      ),
-      body: Column(
+    return AppPage(
+      title: 'Relaxing Music',
+      child: Column(
         children: <Widget>[
           Expanded(
             child: SongWidget(
@@ -111,7 +108,7 @@ class _MusicPlayer extends State<MusicPlayer> {
   }
 
   Widget songProgress() {
-    const style = TextStyle(color: kPrimaryColor);
+    const style = TextStyle(color: kSecondaryColor, fontSize: 12);
     final total = duration.inMilliseconds;
     final value = total == 0
         ? 0.0
@@ -121,8 +118,6 @@ class _MusicPlayer extends State<MusicPlayer> {
         Text(formatDuration(position), style: style),
         Expanded(
           child: Slider(
-            activeColor: kPrimaryColor,
-            inactiveColor: kActiveSelect,
             value: value,
             onChanged: total == 0
                 ? null
@@ -147,35 +142,28 @@ class _MusicPlayer extends State<MusicPlayer> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              CircleAvatar(
-                radius: 25,
-                backgroundColor: kActiveSelect,
-                child: IconButton(
-                  tooltip: 'Previous',
-                  icon: const Icon(Icons.skip_previous, color: kWhite),
-                  onPressed: () => skip(-1),
-                ),
+              IconButton(
+                tooltip: 'Previous',
+                iconSize: 32,
+                icon: const Icon(Icons.skip_previous),
+                onPressed: () => skip(-1),
               ),
-              CircleAvatar(
-                backgroundColor: kPrimaryColor,
-                radius: 30,
-                child: IconButton(
-                  tooltip: isPlaying ? 'Pause' : 'Play',
-                  onPressed: togglePlay,
-                  icon: Icon(
-                    isPlaying ? Icons.pause : Icons.play_arrow,
-                    color: kWhite,
-                  ),
+              IconButton.filled(
+                tooltip: isPlaying ? 'Pause' : 'Play',
+                iconSize: 32,
+                style: IconButton.styleFrom(
+                  backgroundColor: kPrimaryColor,
+                  foregroundColor: kWhite,
+                  fixedSize: const Size(64, 64),
                 ),
+                onPressed: togglePlay,
+                icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
               ),
-              CircleAvatar(
-                radius: 25,
-                backgroundColor: kActiveSelect,
-                child: IconButton(
-                  tooltip: 'Next',
-                  icon: const Icon(Icons.skip_next, color: kWhite),
-                  onPressed: () => skip(1),
-                ),
+              IconButton(
+                tooltip: 'Next',
+                iconSize: 32,
+                icon: const Icon(Icons.skip_next),
+                onPressed: () => skip(1),
               ),
             ],
           ),

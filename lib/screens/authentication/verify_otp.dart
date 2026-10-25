@@ -39,15 +39,15 @@ class _VerifyOTPState extends State<VerifyOTP> {
                 const SizedBox(height: 18),
                 Image.asset(
                   'assets/images/logo.png',
-                  width: 100,
-                  height: 100,
+                  width: 72,
+                  height: 72,
                 ),
                 const SizedBox(height: 24),
                 const Text(
                   'Verification',
                   style: kHeadingTextStyle,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 const Text(
                   'Enter the 6-digit code we sent you',
                   style: kSubHeadingTextStyle,

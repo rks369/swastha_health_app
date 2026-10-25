@@ -47,19 +47,26 @@ class _BMICalculatorState extends State<BMICalculator> {
             title: const Center(
               child: Text(
                 'Your BMI Is',
-                style: kHeadingTextStyle,
+                style: TextStyle(
+                  color: kInk,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             content: Column(mainAxisSize: MainAxisSize.min, children: [
               Text(
                 bmi.toStringAsFixed(1),
-                style: kSubHeadingTextStyle.copyWith(
-                    fontWeight: FontWeight.bold, fontSize: 36),
+                style: kHeadingTextStyle.copyWith(
+                    color: kPrimaryColor,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 48),
               ),
               Text(
                 bmiCategory(bmi),
-                style: kHeadingTextStyle,
+                style: kHeadingTextStyle.copyWith(fontSize: 20),
               ),
+              const SizedBox(height: 8),
               Text(
                 bmiInterpretation(bmi),
                 textAlign: TextAlign.center,
@@ -93,6 +100,7 @@ class _BMICalculatorState extends State<BMICalculator> {
               style: kSubHeadingTextStyle,
             ),
           ),
+          const SizedBox(height: 4),
           Expanded(
             child: BodyMetricsInput(
               height: height,

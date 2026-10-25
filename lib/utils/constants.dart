@@ -1,15 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:swastha/models/quote.dart';
-
-const List<Color> barColor = [
-  Color(0xff19bfff),
-  Color(0xffff4d94),
-  Color(0xff2bdb90),
-  Color(0xffffdd80),
-  Color(0xff2bdb90),
-  Color(0xffffdd80),
-  Color(0xffff4d94),
-];
 
 const List<String> weekday = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 

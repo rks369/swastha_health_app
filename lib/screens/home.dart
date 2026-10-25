@@ -38,136 +38,111 @@ class _HomeState extends State<Home> {
     final blocProvider = BlocProvider.of<AuthCubit>(context);
 
     return AdvancedDrawer(
-      backdropColor: kPrimaryColor,
+      backdropColor: kSurface,
       controller: advancedDrawerController,
       drawer: SafeArea(
-        child: Container(
-          color: kPrimaryColor,
-          child: ListTileTheme(
-            textColor: kWhite,
-            iconColor: kWhite,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: kWhite,
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                      ),
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 20.0),
-                          ProfileAvatar(
-                            name: blocProvider.userModel.name,
-                            url: blocProvider.userModel.profileURL,
-                            radius: 60,
-                          ),
-                          const SizedBox(height: 15.0),
-                          Text(
-                            blocProvider.userModel.name,
-                            style: kHeadingTextStyle.copyWith(
-                              fontSize: 24.0,
-                              color: kPrimaryColor,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          const SizedBox(height: 5.0),
-                          Text(
-                            blocProvider.userModel.bmi,
-                            style: kHeadingTextStyle.copyWith(fontSize: 18.0),
-                          ),
-                          const SizedBox(height: 5.0),
-                          Text(
-                            blocProvider.userModel.mobile,
-                            style: kSubHeadingTextStyle,
-                          ),
-                          const SizedBox(height: 20.0),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    const Divider(color: kWhite, thickness: 1.5),
-                    DrawerListTile(
-                      title: 'My Account',
-                      icon: Icons.person,
-                      onPress: () {
-                        changeScreen(context, const MyAccount());
-                      },
-                    ),
-                    DrawerListTile(
-                      title: 'BMI Calculator',
-                      icon: Icons.monitor_heart,
-                      onPress: () {
-                        changeScreen(context, const BMICalculator());
-                      },
-                    ),
-                    DrawerListTile(
-                      title: 'Weight & BMI History',
-                      icon: Icons.show_chart,
-                      onPress: () {
-                        changeScreen(context, const WeightHistory());
-                      },
-                    ),
-                    DrawerListTile(
-                      title: 'Privacy Policy',
-                      icon: Icons.privacy_tip,
-                      onPress: () {
-                        changeScreen(context, const PrivacyPolicy());
-                      },
-                    ),
-                    DrawerListTile(
-                      title: 'Term & Conditions',
-                      icon: Icons.report,
-                      onPress: () {
-                        changeScreen(context, const TermAndCondtion());
-                      },
-                    ),
-                    BlocConsumer<AuthCubit, Authstate>(
-                      listener: (context, state) {
-                        if (state == Authstate.loggedOut) {
-                          changeScreenReplacement(context, const Register());
-                        }
-                      },
-                      builder: (context, state) {
-                        if (state == Authstate.loading) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        return DrawerListTile(
-                          title: 'Logout',
-                          icon: Icons.logout,
-                          onPress: () async {
-                            final confirmed = await showDialog<bool>(
-                              context: context,
-                              builder: (ctx) => AlertDialog(
-                                title: const Text('Log out?'),
-                                content: const Text(
-                                  'You will need to sign in again.',
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(ctx, false),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () => Navigator.pop(ctx, true),
-                                    child: const Text('Log out'),
-                                  ),
-                                ],
-                              ),
-                            );
-                            if (confirmed == true) blocProvider.logOut();
-                          },
-                        );
-                      },
-                    ),
-                  ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 20.0),
+                ProfileAvatar(
+                  name: blocProvider.userModel.name,
+                  url: blocProvider.userModel.profileURL,
+                  radius: 48,
                 ),
-              ),
+                const SizedBox(height: 16.0),
+                Text(
+                  blocProvider.userModel.name,
+                  style: kHeadingTextStyle.copyWith(fontSize: 22.0),
+                ),
+                const SizedBox(height: 4.0),
+                Text(
+                  'BMI ${blocProvider.userModel.bmi}',
+                  style: kSubHeadingTextStyle,
+                ),
+                const SizedBox(height: 2.0),
+                Text(
+                  blocProvider.userModel.mobile,
+                  style: kNormalTextStyle,
+                ),
+                const SizedBox(height: 20.0),
+                const Divider(),
+                DrawerListTile(
+                  title: 'My Account',
+                  icon: Icons.person_outline,
+                  onPress: () {
+                    changeScreen(context, const MyAccount());
+                  },
+                ),
+                DrawerListTile(
+                  title: 'BMI Calculator',
+                  icon: Icons.monitor_heart_outlined,
+                  onPress: () {
+                    changeScreen(context, const BMICalculator());
+                  },
+                ),
+                DrawerListTile(
+                  title: 'Weight & BMI History',
+                  icon: Icons.show_chart,
+                  onPress: () {
+                    changeScreen(context, const WeightHistory());
+                  },
+                ),
+                DrawerListTile(
+                  title: 'Privacy Policy',
+                  icon: Icons.privacy_tip_outlined,
+                  onPress: () {
+                    changeScreen(context, const PrivacyPolicy());
+                  },
+                ),
+                DrawerListTile(
+                  title: 'Term & Conditions',
+                  icon: Icons.description_outlined,
+                  onPress: () {
+                    changeScreen(context, const TermAndCondtion());
+                  },
+                ),
+                BlocConsumer<AuthCubit, Authstate>(
+                  listener: (context, state) {
+                    if (state == Authstate.loggedOut) {
+                      changeScreenReplacement(context, const Register());
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state == Authstate.loading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    return DrawerListTile(
+                      title: 'Logout',
+                      icon: Icons.logout,
+                      onPress: () async {
+                        final confirmed = await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text('Log out?'),
+                            content: const Text(
+                              'You will need to sign in again.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(ctx, false),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () => Navigator.pop(ctx, true),
+                                child: const Text('Log out'),
+                              ),
+                            ],
+                          ),
+                        );
+                        if (confirmed == true) blocProvider.logOut();
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
           ),
         ),
@@ -176,8 +151,10 @@ class _HomeState extends State<Home> {
         floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
         floatingActionButton: FloatingActionButton(
           mini: true,
+          heroTag: null,
           tooltip: 'Menu',
           backgroundColor: kWhite,
+          shape: const CircleBorder(side: BorderSide(color: kBorder)),
           onPressed: () {
             advancedDrawerController.showDrawer();
           },
@@ -188,7 +165,7 @@ class _HomeState extends State<Home> {
                 duration: const Duration(milliseconds: 250),
                 child: Icon(
                   value.visible ? Icons.clear : Icons.menu,
-                  color: kPrimaryColor,
+                  color: kInk,
                   key: ValueKey<bool>(value.visible),
                 ),
               );
@@ -203,14 +180,14 @@ class _HomeState extends State<Home> {
             });
           }),
           currentIndex: index,
-          selectedItemColor: kPrimaryColor,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.fitness_center),
               label: 'Physical',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.psychology),
+              icon: Icon(Icons.psychology_outlined),
+              activeIcon: Icon(Icons.psychology),
               label: 'Mental',
             ),
           ],

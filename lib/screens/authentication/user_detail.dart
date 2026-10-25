@@ -57,10 +57,10 @@ class _UserDetailState extends State<UserDetail> {
               children: [
                 const Align(alignment: Alignment.topLeft, child: BackButton()),
                 const SizedBox(height: 18),
-                Image.asset('assets/images/logo.png', width: 100, height: 100),
+                Image.asset('assets/images/logo.png', width: 72, height: 72),
                 const SizedBox(height: 24),
                 const Text('Complete Registration', style: kHeadingTextStyle),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 const Text(
                   "Complete Your Profile",
                   style: kSubHeadingTextStyle,
@@ -91,8 +91,8 @@ class _UserDetailState extends State<UserDetail> {
                           },
                           decoration: kTextFieldDecoration.copyWith(
                             prefixIcon: const Icon(
-                              Icons.person,
-                              color: kPrimaryColor,
+                              Icons.person_outline,
+                              color: kSecondaryColor,
                             ),
                             hintText: 'Enter Your Name',
                             labelText: 'Enter Your Name',
@@ -115,8 +115,8 @@ class _UserDetailState extends State<UserDetail> {
                           },
                           decoration: kTextFieldDecoration.copyWith(
                             prefixIcon: const Icon(
-                              Icons.cake,
-                              color: kPrimaryColor,
+                              Icons.cake_outlined,
+                              color: kSecondaryColor,
                             ),
                             hintText: 'Date of Birth',
                             labelText: 'Date of Birth',

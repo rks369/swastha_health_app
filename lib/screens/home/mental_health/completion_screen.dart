@@ -21,14 +21,18 @@ class CompletionScreen extends StatelessWidget {
               const Image(image: AssetImage('assets/images/c1.png')),
               Text(
                 '“${quote.body}”',
-                style: kHeadingTextStyle,
+                style: kHeadingTextStyle.copyWith(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w500,
+                  height: 1.4,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12.0),
               Text(
                 quote.author,
-                textAlign: TextAlign.right,
-                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
+                style: kSubHeadingTextStyle,
               ),
               const SizedBox(height: 36.0),
               RoundedButton(

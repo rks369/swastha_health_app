@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swastha/utils/styles.dart';
 
 class UserCard extends StatelessWidget {
   const UserCard({
@@ -16,10 +17,11 @@ class UserCard extends StatelessWidget {
     return GestureDetector(
       onTap: onPress,
       child: Container(
-        margin: const EdgeInsets.all(15.0),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: colour,
-          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(color: kBorder),
+          borderRadius: BorderRadius.circular(kRadius),
         ),
         child: cardChild,
       ),

@@ -93,8 +93,8 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
         openForegroundColor: kPrimaryColor,
         closedBackgroundColor: kPrimaryColor,
         openBackgroundColor: kWhite,
-        labelsBackgroundColor: kPrimaryColor,
-        labelsStyle: kSubHeadingTextStyle.copyWith(color: kWhite),
+        labelsBackgroundColor: kWhite,
+        labelsStyle: const TextStyle(color: kInk, fontWeight: FontWeight.w500),
         speedDialChildren: [
           sheetAction(Icons.water_drop, 'Add Water', const AddWater()),
           sheetAction(Icons.hotel, 'Add Sleep', const AddSleep()),
@@ -105,7 +105,7 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
       child: loading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(8, 16, 8, 96),
+              padding: const EdgeInsets.fromLTRB(8, 8, 8, 96),
               child: Column(
                 children: [
                   if (!stepsAllowed) stepPermissionBanner(),
@@ -129,10 +129,13 @@ class _PhysicalHealthState extends State<PhysicalHealth> {
 
   Widget stepPermissionBanner() {
     return Card(
-      color: Colors.orange.shade50,
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 8),
       child: ListTile(
-        leading: const Icon(Icons.directions_run, color: Colors.orange),
-        title: const Text('Allow activity recognition to count your steps'),
+        leading: const Icon(Icons.directions_run, color: kPrimaryColor),
+        title: const Text(
+          'Allow activity recognition to count your steps',
+          style: TextStyle(fontSize: 14),
+        ),
         trailing: TextButton(
           onPressed: () async {
             final granted = await StepTracker.instance.start();

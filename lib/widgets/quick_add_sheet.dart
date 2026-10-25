@@ -66,13 +66,20 @@ class _QuickAddSheetState extends State<QuickAddSheet> {
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
         child: Form(
           key: formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(widget.title, style: kSubHeadingTextStyle),
+              Text(
+                widget.title,
+                style: const TextStyle(
+                  color: kInk,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 8,

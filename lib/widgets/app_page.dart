@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:swastha/utils/styles.dart';
 
-/// Purple header with a title and back button above a rounded light body.
+/// Plain page with a centered title and optional back button above the body.
 class AppPage extends StatelessWidget {
   final String title;
   final Widget child;
@@ -19,7 +19,7 @@ class AppPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kPrimaryColor,
+      backgroundColor: kWhite,
       floatingActionButton: floatingActionButton,
       body: SafeArea(
         child: Column(
@@ -36,11 +36,7 @@ class AppPage extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 8),
                         child: IconButton(
                           tooltip: 'Back',
-                          style: IconButton.styleFrom(backgroundColor: kWhite),
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: kPrimaryColor,
-                          ),
+                          icon: const Icon(Icons.arrow_back_ios_new, size: 20),
                           onPressed: () => Navigator.maybePop(context),
                         ),
                       ),
@@ -52,34 +48,16 @@ class AppPage extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        color: kWhite,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                        color: kInk,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: kGrey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
-                  child: child,
-                ),
-              ),
-            ),
+            Expanded(child: child),
           ],
         ),
       ),

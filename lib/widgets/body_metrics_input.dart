@@ -17,6 +17,13 @@ class BodyMetricsInput extends StatelessWidget {
     required this.onWeightChanged,
   });
 
+  static const _labelStyle = TextStyle(fontSize: 14.0, color: kSecondaryColor);
+  static const _valueStyle = TextStyle(
+    fontSize: 48.0,
+    color: kInk,
+    fontWeight: FontWeight.w300,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,20 +35,9 @@ class BodyMetricsInput extends StatelessWidget {
             cardChild: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Height (in cm)',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: kPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  height.round().toString(),
-                  style: const TextStyle(fontSize: 50.0, color: kPrimaryColor),
-                ),
+                const Text('Height (cm)', style: _labelStyle),
+                Text(height.round().toString(), style: _valueStyle),
                 Slider(
-                  activeColor: kPrimaryColor,
                   value: height,
                   min: 120.0,
                   max: 220.0,
@@ -59,18 +55,8 @@ class BodyMetricsInput extends StatelessWidget {
             cardChild: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Weight (in Kg)',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: kPrimaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  weight.toStringAsFixed(1),
-                  style: const TextStyle(fontSize: 50.0, color: kPrimaryColor),
-                ),
+                const Text('Weight (kg)', style: _labelStyle),
+                Text(weight.toStringAsFixed(1), style: _valueStyle),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -80,7 +66,6 @@ class BodyMetricsInput extends StatelessWidget {
                     ),
                     Expanded(
                       child: Slider(
-                        activeColor: kPrimaryColor,
                         value: weight,
                         min: 20.0,
                         max: 200.0,

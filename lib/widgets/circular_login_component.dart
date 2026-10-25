@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:swastha/utils/styles.dart';
 
 class CircularLoginOption extends StatelessWidget {
   const CircularLoginOption({
@@ -17,12 +18,17 @@ class CircularLoginOption extends StatelessWidget {
         child: GestureDetector(
           onTap: onTap,
           child: Container(
-            width: 50,
-            height: 50,
+            width: 52,
+            height: 52,
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
-              image: DecorationImage(fit: BoxFit.scaleDown, image: icon.image),
+              border: Border.all(color: kBorder),
+              image: DecorationImage(
+                fit: BoxFit.scaleDown,
+                scale: 1.6,
+                image: icon.image,
+              ),
             ),
           ),
         ),

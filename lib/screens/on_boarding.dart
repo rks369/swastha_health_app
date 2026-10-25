@@ -49,7 +49,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 description: slides[index].description);
           }),
       bottomSheet: SizedBox(
-        height: 150,
+        height: 160,
         child: Column(
           children: [
             Row(
@@ -114,14 +114,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   Widget pageIndexIndicator(bool isCurrentPage) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6.0),
-      margin: const EdgeInsets.symmetric(horizontal: 6.0),
-      height: isCurrentPage ? 12.0 : 8.0,
-      width: isCurrentPage ? 12.0 : 8.0,
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      margin: const EdgeInsets.symmetric(horizontal: 4.0),
+      height: 6.0,
+      width: isCurrentPage ? 20.0 : 6.0,
       decoration: BoxDecoration(
-          color: isCurrentPage ? kPrimaryColor : Colors.grey,
-          borderRadius: BorderRadius.circular(12)),
+          color: isCurrentPage ? kPrimaryColor : kBorder,
+          borderRadius: BorderRadius.circular(6)),
     );
   }
 }
