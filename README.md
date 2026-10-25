@@ -1,13 +1,13 @@
 # Swastha
 
-Swastha is a Flutter health and wellness app that brings physical and mental health tracking into one place.
+Swastha is a Flutter health and wellness app that brings physical and mental health tracking into one place, in a flat, minimal interface.
 
 ## Features
 
 **Physical health**
 - Step counter using the phone's hardware step sensor
 - Water, calorie and sleep tracking with daily dashboards and charts
-- BMI calculator (height and weight only; age and gender come from your profile)
+- BMI calculator for yourself (age and gender come from your profile) or for someone else (pick gender and age)
 - Weight and BMI history with a trend chart
 
 **Mental health**
@@ -22,15 +22,19 @@ Swastha is a Flutter health and wellness app that brings physical and mental hea
 
 ## Screenshots
 
-<!-- Put images in docs/screenshots/ and replace the placeholders below. -->
+<!-- Put images in docs/screenshots/ with the file names below. -->
 
-| Onboarding | Login | Home |
+| Onboarding | Login | Physical Health |
 | :---: | :---: | :---: |
-| ![Onboarding](docs/screenshots/onboarding.png) | ![Login](docs/screenshots/login.png) | ![Home](docs/screenshots/home.png) |
+| ![Onboarding](docs/screenshots/onboarding.png) | ![Login](docs/screenshots/login.png) | ![Physical Health](docs/screenshots/physical_health.png) |
 
-| Physical Health | Steps Dashboard | Water Dashboard |
+| Metric Dashboard | Quick Add | Side Menu |
 | :---: | :---: | :---: |
-| ![Physical Health](docs/screenshots/physical_health.png) | ![Steps](docs/screenshots/steps.png) | ![Water](docs/screenshots/water.png) |
+| ![Metric Dashboard](docs/screenshots/metric_dashboard.png) | ![Quick Add](docs/screenshots/quick_add.png) | ![Side Menu](docs/screenshots/drawer.png) |
+
+| BMI (Myself) | BMI (Someone else) | Weight History |
+| :---: | :---: | :---: |
+| ![BMI Myself](docs/screenshots/bmi_self.png) | ![BMI Someone else](docs/screenshots/bmi_other.png) | ![Weight History](docs/screenshots/weight_history.png) |
 
 | Mental Health | Breathing | Music Player |
 | :---: | :---: | :---: |
@@ -41,9 +45,10 @@ Swastha is a Flutter health and wellness app that brings physical and mental hea
 - Flutter / Dart
 - State management: `flutter_bloc`
 - Backend: Firebase (Auth, Firestore)
-- Local storage: `sqflite`, `shared_preferences`
+- Local storage: `sqflite`
 - Steps: `pedometer`, `permission_handler`
-- Charts and gauges: `fl_chart`, `syncfusion_flutter_gauges`
+- Charts: `fl_chart`; progress rings and bars are drawn with Flutter's own `CustomPaint`, so there is no commercial charting dependency
+- UI: Material 3 with a single shared theme (`lib/utils/styles.dart`)
 - Audio: `audioplayers`
 
 ## Project Structure
@@ -87,6 +92,16 @@ Create `android/key.properties` with `keyAlias`, `keyPassword`, `storeFile` and 
 ```
 flutter build apk --release
 ```
+
+To skip x86 emulator code and keep one installable file, build for ARM only:
+
+```
+flutter build apk --release --target-platform android-arm,android-arm64
+```
+
+### Sharing with testers (Firebase App Distribution)
+
+Upload the APK from `build/app/outputs/flutter-apk/app-release.apk`. An AAB is only accepted if the Firebase project is linked to Google Play. Increase the build number in `pubspec.yaml` (the part after `+`) before every upload.
 
 ## Permissions (Android)
 

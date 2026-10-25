@@ -3,6 +3,38 @@
 All notable changes to Swastha are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.0] - 2026-10-25
+
+### Added
+- BMI calculator for **Myself** or **Someone else**. For yourself it uses the gender and date-of-birth age from your profile; for someone else it asks for gender (selectable cards) and age (− / + stepper). Results for someone else are not saved to your history.
+- Reusable BMI result dialog, with neutral wording for other people and a note that adult ranges do not apply under 18.
+- Floating pill-style bottom switch (icon above label) with a sliding highlight, docked at the bottom centre.
+- Shared design tokens and one app-wide theme (`buildAppTheme`) covering cards, dialogs, sheets, sliders, chips and segmented buttons.
+- Package-free `RingGauge`, `ProgressBar`, `StepperCard` and `GenderSelector` widgets.
+
+### Changed
+- The whole UI is restyled to a flat, minimal look: white background, hairline borders, no elevation, quieter typography and the brand purple kept as the only accent.
+- The purple header and rounded sheet are replaced by a plain centred title with a simple back arrow on every page.
+- The side menu is now a standard Material `Drawer` with a light layout; menu items close the drawer before opening a screen.
+- Metric colours refreshed: water sky blue, steps soft green, sleep muted slate-indigo, calories warm orange. Sleep was previously red.
+- Progress rings now start at 12 o'clock; the 7-day charts use a light card with bars in each metric's colour.
+- Dashboard tiles use a tinted icon and a thin progress bar.
+- Resources and Music Player use the shared page layout; the breathing timer ring is thinner and the zen-mode animation is softer.
+- Weight and height cards share one style with the new age and gender cards.
+
+### Removed
+- `syncfusion_flutter_gauges` (community-licence) and `flutter_advanced_drawer`; `fl_chart` is kept for the bar and line charts.
+- Unused `barColor` and `kGrey` constants and the bottom navigation bar theme.
+
+### Fixed
+- Overflow in the bottom switch.
+- Possible hero-tag collision between the menu button and the speed-dial button when opening a screen from the Physical tab.
+
+### Upgrade notes
+- Run `flutter pub get` after pulling; two dependencies were removed.
+- For Firebase App Distribution, upload an APK (`flutter build apk --release`). An AAB is only accepted when the Firebase project is linked to Google Play.
+- Bump the build number in `pubspec.yaml` for every upload.
+
 ## [1.1.0] - 2026-10-25
 
 ### Added
