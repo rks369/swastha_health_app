@@ -6,6 +6,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [2.0.1] - 2026-10-25
 
 ### Added
+- `LICENSE`: PolyForm Noncommercial 1.0.0, so the code can be used for non-commercial purposes only.
 - A pop-up on the Physical tab explains why physical-activity access is needed before the system permission prompt appears. It is shown once per app session; the existing banner remains for allowing it later.
 - Sample Privacy Policy and Terms & Conditions pages on a shared `LegalPage` layout, replacing the "coming soon" messages. The text is placeholder and must be replaced with reviewed content before a public release.
 

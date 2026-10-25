@@ -151,3 +151,7 @@ See [CHANGELOG.md](CHANGELOG.md).
 ```
 flutter test
 ```
+
+## License
+
+Swastha is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE). You may use, study, modify and share it for non-commercial purposes, including personal and hobby use, and use by charities, schools, public research, public health and government bodies. Any other use, including commercial use, needs a separate written licence from the author.
