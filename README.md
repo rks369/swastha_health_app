@@ -43,7 +43,7 @@ Use light mode, one phone size for every shot, and realistic data.
 
 | Registration BMI | | |
 | :---: | :---: | :---: |
-| <img src="docs/screenshots/registration_bmi.png" alt="Registration BMI" width="220"> | | |
+| <img src="docs/screenshots/registration_bmi.png" alt="Registration BMI" width="220"> |
 
 ### Physical health
 
